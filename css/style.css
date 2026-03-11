@@ -577,3 +577,190 @@ main,
     font-size: 1.55rem;
   }
 }
+
+.rsvp-page {
+  position: relative;
+  z-index: 1;
+  padding: 3rem 6vw 5rem;
+}
+
+.rsvp-hero {
+  max-width: 900px;
+  margin: 0 auto 2rem;
+}
+
+.rsvp-hero h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.8rem, 6vw, 4.6rem);
+  line-height: 1;
+  margin: 0.5rem 0 0.8rem;
+  font-weight: 600;
+}
+
+.rsvp-subtitle {
+  max-width: 700px;
+  color: var(--text-soft);
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+.rsvp-layout {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.5fr 0.85fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.rsvp-card,
+.rsvp-side-card {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
+.rsvp-card-head h2,
+.rsvp-side-card h3 {
+  margin: 0 0 1rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.rsvp-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.form-group label {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  border: 1px solid rgba(142, 111, 86, 0.22);
+  background: rgba(255, 255, 255, 0.65);
+  color: var(--text-dark);
+  border-radius: 16px;
+  padding: 0.95rem 1rem;
+  font: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: rgba(201, 164, 106, 0.7);
+  box-shadow: 0 0 0 4px rgba(201, 164, 106, 0.12);
+}
+
+.radio-row {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.radio-pill {
+  position: relative;
+  cursor: pointer;
+}
+
+.radio-pill input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.radio-pill span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  padding: 0.8rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(142, 111, 86, 0.2);
+  background: rgba(255, 255, 255, 0.55);
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.radio-pill input:checked + span {
+  background: linear-gradient(135deg, var(--gold), var(--champagne));
+  border-color: transparent;
+  box-shadow: var(--shadow);
+}
+
+.guest-fields {
+  display: grid;
+  gap: 1rem;
+}
+
+.guest-field-card {
+  border: 1px solid rgba(142, 111, 86, 0.16);
+  background: rgba(255, 255, 255, 0.38);
+  border-radius: 20px;
+  padding: 1rem;
+}
+
+.guest-field-card h4 {
+  margin: 0 0 0.8rem;
+  font-size: 1rem;
+}
+
+.form-actions {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.form-message {
+  min-height: 1.2rem;
+  color: var(--text-soft);
+  font-size: 0.95rem;
+}
+
+.rsvp-notes {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--text-soft);
+  line-height: 1.8;
+}
+
+.rsvp-notes li + li {
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .rsvp-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .rsvp-page {
+    padding: 2rem 5vw 4rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
