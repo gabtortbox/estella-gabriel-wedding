@@ -1,1 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Estella & Gabriel | Welcome Aboard</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="site-bg"></div>
+
+  <header class="topbar">
+    <div class="brand">E&G Airways</div>
+    <nav class="nav">
+      <a href="#story">Route History</a>
+      <a href="#details">Flight Details</a>
+      <a href="rsvp.html">Check In</a>
+      <a href="advisory.html">Travel Advisory</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <p class="eyebrow">Welcome Aboard</p>
+        <h1>Estella <span>&</span> Gabriel</h1>
+        <p class="hero-date">11 July 2027</p>
+        <p class="hero-subtitle">
+          A celebration of love, family, joy, and a very special flight path that led us here.
+        </p>
+
+        <div class="hero-buttons">
+          <a class="btn btn-primary" href="rsvp.html">Check In</a>
+          <a class="btn btn-secondary" href="#details">View Flight Details</a>
+        </div>
+
+        <div class="boarding-pass-card">
+          <div class="bp-left">
+            <p class="bp-label">Passenger</p>
+            <p class="bp-value">Beloved Guest</p>
+          </div>
+          <div class="bp-middle">
+            <p class="bp-label">Flight</p>
+            <p class="bp-value">EG1107</p>
+          </div>
+          <div class="bp-right">
+            <p class="bp-label">Destination</p>
+            <p class="bp-value">Aloes Ballroom</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="countdown-section">
+      <p class="section-label">Departure In</p>
+      <div class="countdown" id="countdown">
+        <div class="time-box">
+          <span id="days">000</span>
+          <small>Days</small>
+        </div>
+        <div class="time-box">
+          <span id="hours">00</span>
+          <small>Hours</small>
+        </div>
+        <div class="time-box">
+          <span id="minutes">00</span>
+          <small>Minutes</small>
+        </div>
+        <div class="time-box">
+          <span id="seconds">00</span>
+          <small>Seconds</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="story-section" id="story">
+      <div class="section-header">
+        <p class="section-label">Route History</p>
+        <h2>How we got here</h2>
+      </div>
+
+      <div class="route-timeline">
+        <div class="route-stop">
+          <div class="route-dot"></div>
+          <div class="route-card">
+            <p class="route-date">Stop 01</p>
+            <h3>We met in school</h3>
+            <p>What began as a familiar chapter slowly became part of a much bigger story.</p>
+          </div>
+        </div>
+
+        <div class="route-stop">
+          <div class="route-dot"></div>
+          <div class="route-card">
+            <p class="route-date">Stop 02</p>
+            <h3>Time brought us closer</h3>
+            <p>Some routes loop back in the best ways, and ours did.</p>
+          </div>
+        </div>
+
+        <div class="route-stop">
+          <div class="route-dot"></div>
+          <div class="route-card">
+            <p class="route-date">Stop 03</p>
+            <h3>We chose each other</h3>
+            <p>With intention, with steadiness, and with joy.</p>
+          </div>
+        </div>
+
+        <div class="route-stop">
+          <div class="route-dot"></div>
+          <div class="route-card">
+            <p class="route-date">Final Destination</p>
+            <h3>11 July 2027</h3>
+            <p>Now we’d love for you to join us as we celebrate the start of our next chapter.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="details-section" id="details">
+      <div class="section-header">
+        <p class="section-label">Flight Details</p>
+        <h2>Your itinerary for the evening</h2>
+      </div>
+
+      <div class="details-board">
+        <div class="detail-row">
+          <span class="detail-key">Date</span>
+          <span class="detail-value">11 July 2027</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Venue</span>
+          <span class="detail-value">Aloes Ballroom, Sentosa</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Boarding Time</span>
+          <span class="detail-value">To be confirmed</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Dress Code</span>
+          <span class="detail-value">To be confirmed</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Special Feature</span>
+          <span class="detail-value">Cake Buffet</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="vision-section">
+      <div class="section-header">
+        <p class="section-label">Cabin Note</p>
+        <h2>Our vision for the night</h2>
+      </div>
+
+      <div class="vision-box">
+        <p>
+          We hope this evening feels warm, joyful, and full of conversation. More than anything,
+          we want it to feel like a celebration shared with the people who have shaped our lives,
+          supported our journey, and made this chapter possible.
+        </p>
+      </div>
+    </section>
+
+    <section class="quick-links-section">
+      <div class="section-header">
+        <p class="section-label">Passenger Access</p>
+        <h2>Everything you need</h2>
+      </div>
+
+      <div class="card-grid">
+        <a class="info-card" href="helpers.html">
+          <h3>Helpers</h3>
+          <p>Meet the people helping us on the day.</p>
+        </a>
+
+        <a class="info-card" href="directions.html">
+          <h3>Directions</h3>
+          <p>Venue location, parking, and arrival guidance.</p>
+        </a>
+
+        <a class="info-card" href="advisory.html">
+          <h3>Travel Advisory</h3>
+          <p>Dress code, timing, plus-ones, and common questions.</p>
+        </a>
+
+        <a class="info-card" href="rsvp.html">
+          <h3>Check In</h3>
+          <p>Confirm your attendance and passenger details.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="secret-section">
+      <button id="secretButton" class="secret-stamp">Open Hidden Stamp</button>
+      <p id="secretMessage" class="secret-message hidden">
+        Tiny hidden note: thank you for being part of our story and this very special journey.
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Estella & Gabriel • 11 July 2027 • Aloes Ballroom</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
