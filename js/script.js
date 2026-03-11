@@ -34,3 +34,21 @@ if (secretButton && secretMessage) {
     secretMessage.classList.toggle("hidden");
   });
 }
+
+const accessTabs = document.querySelectorAll(".access-tab");
+const accessPanels = document.querySelectorAll(".access-panel");
+
+accessTabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    const target = tab.dataset.tab;
+
+    accessTabs.forEach((item) => item.classList.remove("active"));
+    accessPanels.forEach((panel) => panel.classList.remove("active"));
+
+    tab.classList.add("active");
+    const targetPanel = document.getElementById(target);
+    if (targetPanel) {
+      targetPanel.classList.add("active");
+    }
+  });
+});
