@@ -749,6 +749,21 @@ main,
   margin-top: 0.5rem;
 }
 
+.required-tag {
+  display: inline-block;
+  margin-left: 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  background: rgba(201, 164, 106, 0.14);
+  border: 1px solid rgba(201, 164, 106, 0.2);
+  border-radius: 999px;
+  padding: 0.18rem 0.45rem;
+  vertical-align: middle;
+}
+
 @media (max-width: 900px) {
   .rsvp-layout {
     grid-template-columns: 1fr;
