@@ -621,6 +621,10 @@ main,
   gap: 0.35rem;
 }
 
+.form-grid + .form-group {
+  margin-top: 1rem;
+}
+
 .label-with-tag {
   display: flex;
   align-items: flex-end;
