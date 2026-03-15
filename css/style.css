@@ -88,7 +88,8 @@ main,
 }
 
 .eyebrow,
-.section-label {
+.section-label,
+.access-kicker {
   font-family: "Space Mono", monospace;
   text-transform: uppercase;
   letter-spacing: 0.18em;
@@ -134,11 +135,17 @@ main,
 }
 
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0.95rem 1.5rem;
   border-radius: 999px;
   text-decoration: none;
   font-weight: 600;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  border: none;
+  cursor: pointer;
+  font: inherit;
 }
 
 .btn:hover {
@@ -377,10 +384,6 @@ main,
   color: var(--text-soft);
 }
 
-.hidden {
-  display: none;
-}
-
 .footer {
   padding: 2rem 6vw 3rem;
   text-align: center;
@@ -388,56 +391,7 @@ main,
   font-size: 0.95rem;
 }
 
-@media (max-width: 900px) {
-  .boarding-pass-card,
-  .countdown,
-  .card-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .detail-row {
-    grid-template-columns: 1fr;
-    gap: 0.4rem;
-  }
-
-  .topbar {
-    flex-direction: column;
-    gap: 0.8rem;
-    align-items: flex-start;
-  }
-
-  .nav {
-    gap: 0.8rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .hero {
-    padding-top: 4rem;
-  }
-
-  .hero h1 {
-    font-size: 3.4rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1rem;
-  }
-
-  .topbar {
-    padding: 1rem 5vw;
-  }
-
-  .countdown-section,
-  .story-section,
-  .details-section,
-  .vision-section,
-  .quick-links-section,
-  .secret-section {
-    padding: 3rem 5vw;
-  }
-}
-
+/* Passenger Access Tabs */
 .access-tabs {
   max-width: 900px;
   margin: 0 auto 1.25rem;
@@ -499,11 +453,6 @@ main,
 }
 
 .access-kicker {
-  font-family: "Space Mono", monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--bronze);
   margin: 0 0 0.7rem;
 }
 
@@ -556,28 +505,7 @@ main,
   border: 1px solid rgba(142, 111, 86, 0.12);
 }
 
-@media (max-width: 900px) {
-  .access-panel-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 640px) {
-  .access-tabs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .access-tab {
-    width: 100%;
-    text-align: center;
-  }
-
-  .access-main h3 {
-    font-size: 1.55rem;
-  }
-}
-
+/* RSVP */
 .rsvp-page {
   position: relative;
   z-index: 1;
@@ -604,38 +532,6 @@ main,
   font-size: 1.05rem;
 }
 
-.rsvp-layout {
-  max-width: 900px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1.5fr 0.85fr;
-  gap: 1.25rem;
-  align-items: start;
-}
-
-.rsvp-card,
-.rsvp-side-card {
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid var(--border);
-  border-radius: 28px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(14px);
-}
-
-.rsvp-card-head h2,
-.rsvp-side-card h3 {
-  margin: 0 0 1rem;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 2rem;
-  font-weight: 600;
-}
-
-.rsvp-form {
-  display: grid;
-  gap: 1.25rem;
-}
-
 .rsvp-layout-polished {
   max-width: 1120px;
   margin: 0 auto;
@@ -649,14 +545,37 @@ main,
   min-width: 0;
 }
 
+.rsvp-card,
+.rsvp-side-card {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
 .rsvp-card-main {
   padding: 1.7rem;
+}
+
+.rsvp-card-head h2,
+.rsvp-side-card h3 {
+  margin: 0 0 1rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2rem;
+  font-weight: 600;
 }
 
 .rsvp-intro-copy {
   margin: 0.15rem 0 0;
   color: var(--text-soft);
   line-height: 1.7;
+}
+
+.rsvp-form {
+  display: grid;
+  gap: 1.35rem;
 }
 
 .form-section {
@@ -674,19 +593,31 @@ main,
   margin-bottom: 1.5rem;
 }
 
-.form-section-kicker {
-  margin: 0 0 0.25rem;
-  font-family: "Space Mono", monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--bronze);
-}
-
 .form-section-head h3 {
   margin: 0;
   font-family: "Cormorant Garamond", serif;
   font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.form-group {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.form-section .form-group + .form-group {
+  margin-top: 0.9rem;
+}
+
+.form-group label {
+  font-size: 0.95rem;
   font-weight: 600;
 }
 
@@ -698,6 +629,11 @@ main,
   width: 100%;
   min-height: 2rem;
   margin-bottom: 0.15rem;
+}
+
+.form-group > label:not(.label-with-tag) {
+  display: block;
+  min-height: 2rem;
 }
 
 .required-tag {
@@ -715,114 +651,6 @@ main,
   border: 1px solid rgba(143, 95, 88, 0.14);
   white-space: nowrap;
   line-height: 1;
-}
-
-.guest-fields-polished {
-  display: grid;
-  gap: 1.15rem;
-  margin-top: 0.75rem;
-}
-
-.guest-field-card {
-  position: relative;
-  border: 1px solid rgba(143, 95, 88, 0.14);
-  background: linear-gradient(180deg, rgba(255,255,255,0.52), rgba(255,255,255,0.36));
-  border-radius: 22px;
-  padding: 1.25rem;
-  box-shadow: 0 10px 30px rgba(44, 38, 35, 0.06);
-  overflow: hidden;
-}
-
-.guest-field-card::before {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 6px;
-  background: linear-gradient(180deg, var(--gold), rgba(143, 95, 88, 0.55));
-  opacity: 0.75;
-}
-
-.guest-field-card::after {
-  content: "";
-  position: absolute;
-  left: 1.15rem;
-  right: 1.15rem;
-  top: 3.15rem;
-  border-top: 1px dashed rgba(143, 95, 88, 0.2);
-}
-
-.guest-field-card h4 {
-  margin: 0 0 1rem;
-  padding-left: 0.35rem;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--text-dark);
-}
-
-.submit-pill {
-  min-width: 240px;
-  justify-self: start;
-}
-
-.rsvp-side-card-polished {
-  position: sticky;
-  top: 100px;
-  padding: 1.5rem;
-}
-
-.hidden {
-  display: none !important;
-}
-
-@media (max-width: 980px) {
-  .rsvp-layout-polished {
-    grid-template-columns: 1fr;
-  }
-
-  .rsvp-side-card-polished {
-    position: static;
-  }
-}
-
-@media (max-width: 640px) {
-  .form-section {
-    padding: 1rem;
-  }
-
-  .form-section-head h3 {
-    font-size: 1.45rem;
-  }
-
-  .submit-pill {
-    width: 100%;
-    justify-self: stretch;
-  }
-}
-
-.field-note,
-.required-note {
-  display: none;
-}
-
-.hidden {
-  display: none !important;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  align-items: start;
-}
-
-.form-group > label:not(.label-with-tag) {
-  display: block;
-  min-height: 2rem;
-}
-
-.form-group label {
-  font-size: 0.95rem;
-  font-weight: 600;
 }
 
 .form-group input,
@@ -890,21 +718,47 @@ main,
   box-shadow: var(--shadow);
 }
 
-.guest-fields {
+.guest-fields,
+.guest-fields-polished {
   display: grid;
-  gap: 1rem;
+  gap: 1.15rem;
+  margin-top: 0.75rem;
 }
 
 .guest-field-card {
-  border: 1px solid rgba(142, 111, 86, 0.16);
-  background: rgba(255, 255, 255, 0.38);
-  border-radius: 20px;
-  padding: 1rem;
+  position: relative;
+  border: 1px solid rgba(143, 95, 88, 0.14);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.36));
+  border-radius: 22px;
+  padding: 1.25rem;
+  box-shadow: 0 10px 30px rgba(44, 38, 35, 0.06);
+  overflow: hidden;
+}
+
+.guest-field-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: linear-gradient(180deg, var(--gold), rgba(143, 95, 88, 0.55));
+  opacity: 0.75;
+}
+
+.guest-field-card::after {
+  content: "";
+  position: absolute;
+  left: 1.15rem;
+  right: 1.15rem;
+  top: 3.15rem;
+  border-top: 1px dashed rgba(143, 95, 88, 0.2);
 }
 
 .guest-field-card h4 {
-  margin: 0 0 0.8rem;
-  font-size: 1rem;
+  margin: 0 0 1rem;
+  padding-left: 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-dark);
 }
 
 .form-actions {
@@ -913,10 +767,21 @@ main,
   margin-top: 0.5rem;
 }
 
+.submit-pill {
+  min-width: 240px;
+  justify-self: start;
+}
+
 .form-message {
   min-height: 1.2rem;
   color: var(--text-soft);
   font-size: 0.95rem;
+}
+
+.rsvp-side-card-polished {
+  position: sticky;
+  top: 100px;
+  padding: 1.5rem;
 }
 
 .rsvp-notes {
@@ -930,29 +795,112 @@ main,
   margin-top: 0.5rem;
 }
 
-.form-section .form-group + .form-group {
-  margin-top: 0.9rem;
+.field-note,
+.required-note {
+  display: none;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+  .rsvp-layout-polished {
+    grid-template-columns: 1fr;
+  }
+
+  .rsvp-side-card-polished {
+    position: static;
+  }
 }
 
 @media (max-width: 900px) {
-  .rsvp-layout {
+  .boarding-pass-card,
+  .countdown,
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-row {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
+  .topbar {
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: flex-start;
+  }
+
+  .nav {
+    gap: 0.8rem;
+  }
+
+  .access-panel-grid {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 640px) {
+  .hero {
+    padding-top: 4rem;
+  }
+
+  .hero h1 {
+    font-size: 3.4rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .topbar {
+    padding: 1rem 5vw;
+  }
+
+  .countdown-section,
+  .story-section,
+  .details-section,
+  .vision-section,
+  .quick-links-section,
+  .secret-section {
+    padding: 3rem 5vw;
+  }
+
+  .access-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .access-tab {
+    width: 100%;
+    text-align: center;
+  }
+
+  .access-main h3 {
+    font-size: 1.55rem;
+  }
+
   .rsvp-page {
     padding: 2rem 5vw 4rem;
   }
 
   .form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  align-items: start;
-}
-  
-  .form-section .form-group + .form-group {
-  margin-top: 0.9rem;
-}
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .form-section {
+    padding: 1rem;
+  }
+
+  .form-section-head h3 {
+    font-size: 1.45rem;
+  }
+
+  .submit-pill {
+    width: 100%;
+    justify-self: stretch;
+  }
 }
