@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
           id="guestDietary${i}"
           name="guestDietary${i}"
           rows="3"
-          placeholder="Please let us know of any dietary requirements."
+          placeholder="Example: shellfish allergy, vegetarian, no beef"
         ></textarea>
       </div>
     `;
