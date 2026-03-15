@@ -618,7 +618,7 @@ main,
 
 .form-group {
   display: grid;
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
 .label-with-tag {
