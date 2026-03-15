@@ -25,113 +25,116 @@
   </header>
 
   <main class="rsvp-page">
-    <section class="rsvp-hero">
-      <p class="section-label">Check In</p>
-      <h1>Passenger Registration</h1>
-      <p class="rsvp-subtitle">
-        Please complete your check-in details below.
-      </p>
-    </section>
+  <section class="rsvp-hero">
+    <p class="section-label">Check In</p>
+    <h1>Passenger Registration</h1>
+    <p class="rsvp-subtitle">
+      Please complete your check-in details below.
+    </p>
+  </section>
 
-    <section class="rsvp-layout">
-      <div class="rsvp-card">
-        <div class="rsvp-card-head">
-          <p class="access-kicker">Boarding Form</p>
-          <h2>Complete your RSVP</h2>
-        </div>
+  <section class="rsvp-layout">
+    <div class="rsvp-card">
+      <div class="rsvp-card-head">
+        <p class="access-kicker">Boarding Form</p>
+        <h2>Complete your RSVP</h2>
+      </div>
 
-        <form id="rsvpForm" class="rsvp-form" novalidate>
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="firstName">First Name <span class="required-tag">Required</span></label>
-              <input type="text" id="firstName" name="firstName" required />
-            </div>
-
-            <div class="form-group">
-              <label for="lastName">Last Name <span class="required-tag">Required</span></label>
-              <input type="text" id="lastName" name="lastName" required />
-            </div>
+      <form id="rsvpForm" class="rsvp-form" novalidate>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" required />
+            <p class="field-note required-note">Required</p>
           </div>
 
           <div class="form-group">
-            <label for="attendance">Attendance <span class="required-tag">Required</span></label>
-            <select id="attendance" name="attendance" required>
-              <option value="">Select one</option>
-              <option value="Joyfully attending">Joyfully attending</option>
-              <option value="Regretfully unable to attend">Regretfully unable to attend</option>
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" required />
+            <p class="field-note required-note">Required</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="attendance">Attendance</label>
+          <select id="attendance" name="attendance" required>
+            <option value="">Select one</option>
+            <option value="Joyfully attending">Joyfully attending</option>
+            <option value="Regretfully unable to attend">Regretfully unable to attend</option>
+          </select>
+          <p class="field-note required-note">Required</p>
+        </div>
+
+        <div class="form-group">
+          <label for="dietary">Dietary Restrictions</label>
+          <textarea
+            id="dietary"
+            name="dietary"
+            rows="3"
+            placeholder="Please let us know of any dietary requirements."
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="note">Note to Couple</label>
+          <textarea
+            id="note"
+            name="note"
+            rows="4"
+            placeholder="Your message"
+          ></textarea>
+        </div>
+
+        <div id="attendingFields">
+          <div class="form-group">
+            <label>Bringing additional guests?</label>
+            <div class="radio-row">
+              <label class="radio-pill">
+                <input type="radio" name="bringingGuests" value="No" checked />
+                <span>No</span>
+              </label>
+              <label class="radio-pill">
+                <input type="radio" name="bringingGuests" value="Yes" />
+                <span>Yes</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group hidden" id="guestCountGroup">
+            <label for="guestCount">Number of additional guests</label>
+            <select id="guestCount" name="guestCount">
+              <option value="0">Select one</option>
+              <option value="1">1 additional guest</option>
+              <option value="2">2 additional guests</option>
+              <option value="3">3 additional guests</option>
+              <option value="4">4 additional guests</option>
             </select>
           </div>
 
-          <div class="form-group">
-            <label for="dietary">Dietary Restrictions</label>
-            <textarea
-              id="dietary"
-              name="dietary"
-              rows="3"
-              placeholder="Please let us know of any dietary requirements."
-            ></textarea>
-          </div>
+          <div id="guestFields" class="guest-fields"></div>
+        </div>
 
-          <div id="attendingFields">
-            <div class="form-group">
-              <label>Bringing additional guests?</label>
-              <div class="radio-row">
-                <label class="radio-pill">
-                  <input type="radio" name="bringingGuests" value="No" checked />
-                  <span>No</span>
-                </label>
-                <label class="radio-pill">
-                  <input type="radio" name="bringingGuests" value="Yes" />
-                  <span>Yes</span>
-                </label>
-              </div>
-            </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="submitBtn">
+            Confirm Check-In
+          </button>
+          <p id="formMessage" class="form-message"></p>
+        </div>
+      </form>
+    </div>
 
-            <div class="form-group hidden" id="guestCountGroup">
-              <label for="guestCount">Number of additional guests</label>
-              <select id="guestCount" name="guestCount">
-                <option value="0">Select one</option>
-                <option value="1">1 additional guest</option>
-                <option value="2">2 additional guests</option>
-                <option value="3">3 additional guests</option>
-                <option value="4">4 additional guests</option>
-              </select>
-            </div>
-
-            <div id="guestFields" class="guest-fields"></div>
-          </div>
-
-          <div class="form-group">
-            <label for="note">Note to Couple</label>
-            <textarea
-              id="note"
-              name="note"
-              rows="4"
-              placeholder="Optional message"
-            ></textarea>
-          </div>
-
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary" id="submitBtn">
-              Confirm Check-In
-            </button>
-            <p id="formMessage" class="form-message"></p>
-          </div>
-        </form>
-      </div>
-
-      <aside class="rsvp-side-card">
-        <p class="access-kicker">Passenger Notes</p>
-        <h3>Before you submit</h3>
-        <ul class="rsvp-notes">
-          <li>Please enter your name clearly for our records.</li>
-          <li>You may add up to 4 additional guests if applicable.</li>
-          <li>Each additional guest can have their own attendance and dietary details.</li>
-          <li>You will later be able to connect this form to a boarding-confirmed success page.</li>
-        </ul>
-      </aside>
-    </section>
-  </main>
+    <aside class="rsvp-side-card">
+      <p class="access-kicker">Passenger Notes</p>
+      <h3>Before you submit</h3>
+      <ul class="rsvp-notes">
+        <li>Please enter your name clearly for our records.</li>
+        <li>You may add up to 4 additional guests if applicable.</li>
+        <li>Each additional guest can have their own attendance and dietary details.</li>
+        <li>You will later be able to connect this form to a boarding-confirmed success page.</li>
+      </ul>
+    </aside>
+  </section>
+</main>
 
   <script src="js/script.js"></script>
 </body>
