@@ -43,26 +43,31 @@
       <form id="rsvpForm" class="rsvp-form" novalidate>
         <div class="form-grid">
           <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="firstName" required />
-            <p class="field-note required-note">Required</p>
-          </div>
-
-          <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" name="lastName" required />
-            <p class="field-note required-note">Required</p>
-          </div>
+          <label for="firstName" class="label-with-tag">
+            <span>First Name</span>
+            <span class="required-tag">Required</span>
+          </label>
+          <input type="text" id="firstName" name="firstName" required />
         </div>
-
+        
         <div class="form-group">
-          <label for="attendance">Attendance</label>
+          <label for="lastName" class="label-with-tag">
+            <span>Last Name</span>
+            <span class="required-tag">Required</span>
+          </label>
+          <input type="text" id="lastName" name="lastName" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="attendance" class="label-with-tag">
+            <span>Attendance</span>
+            <span class="required-tag">Required</span>
+          </label>
           <select id="attendance" name="attendance" required>
             <option value="">Select one</option>
             <option value="Joyfully attending">Joyfully attending</option>
             <option value="Regretfully unable to attend">Regretfully unable to attend</option>
           </select>
-          <p class="field-note required-note">Required</p>
         </div>
 
         <div class="form-group">
