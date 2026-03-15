@@ -98,18 +98,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <div class="form-grid">
           <div class="form-group">
-            <label for="guestFirstName${i}">First Name</label>
+            <label for="guestFirstName${i}">First Name <span class="required-tag">Required</span></label>
             <input type="text" id="guestFirstName${i}" name="guestFirstName${i}" />
           </div>
 
           <div class="form-group">
-            <label for="guestLastName${i}">Last Name</label>
+            <label for="guestLastName${i}">Last Name <span class="required-tag">Required</span></label>
             <input type="text" id="guestLastName${i}" name="guestLastName${i}" />
           </div>
         </div>
 
         <div class="form-group">
-          <label for="guestAttendance${i}">Attendance</label>
+          <label for="guestAttendance${i}">Attendance <span class="required-tag">Required</span></label>
           <select id="guestAttendance${i}" name="guestAttendance${i}">
             <option value="">Select one</option>
             <option value="Attending">Attending</option>
