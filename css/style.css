@@ -633,7 +633,7 @@ main,
 
 .rsvp-form {
   display: grid;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .rsvp-layout-polished {
@@ -663,7 +663,7 @@ main,
   border: 1px solid rgba(142, 111, 86, 0.12);
   background: rgba(255, 255, 255, 0.34);
   border-radius: 24px;
-  padding: 1.2rem;
+  padding: 1.35rem;
 }
 
 .form-section + .form-section {
@@ -671,7 +671,7 @@ main,
 }
 
 .form-section-head {
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .form-section-kicker {
@@ -696,6 +696,7 @@ main,
   justify-content: space-between;
   gap: 0.75rem;
   width: 100%;
+  min-height: 1.5rem;
 }
 
 .required-tag {
@@ -716,17 +717,16 @@ main,
 
 .guest-fields-polished {
   display: grid;
-  gap: 1rem;
-  margin-top: 0.5rem;
+  gap: 1.15rem;
+  margin-top: 0.75rem;
 }
 
 .guest-field-card {
   position: relative;
   border: 1px solid rgba(143, 95, 88, 0.14);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.52), rgba(255,255,255,0.36));
+  background: linear-gradient(180deg, rgba(255,255,255,0.52), rgba(255,255,255,0.36));
   border-radius: 22px;
-  padding: 1.15rem;
+  padding: 1.25rem;
   box-shadow: 0 10px 30px rgba(44, 38, 35, 0.06);
   overflow: hidden;
 }
@@ -750,7 +750,7 @@ main,
 }
 
 .guest-field-card h4 {
-  margin: 0 0 1.15rem;
+  margin: 0 0 1rem;
   padding-left: 0.35rem;
   font-size: 1.05rem;
   font-weight: 700;
@@ -834,6 +834,7 @@ main,
 .form-group select,
 .form-group textarea {
   width: 100%;
+  min-height: 54px;
   border: 1px solid rgba(142, 111, 86, 0.22);
   background: rgba(255, 255, 255, 0.65);
   color: var(--text-dark);
@@ -849,6 +850,13 @@ main,
   outline: none;
   border-color: rgba(201, 164, 106, 0.7);
   box-shadow: 0 0 0 4px rgba(201, 164, 106, 0.12);
+}
+
+.compact-textarea {
+  min-height: 54px;
+  height: 54px;
+  resize: vertical;
+  overflow-y: auto;
 }
 
 .radio-row {
@@ -955,6 +963,9 @@ main,
   }
 
   .form-grid {
-    grid-template-columns: 1fr;
-  }
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: start;
+}
 }
