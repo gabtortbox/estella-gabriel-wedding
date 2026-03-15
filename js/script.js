@@ -160,14 +160,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateAttendanceVisibility() {
     if (!attendanceSelect || !attendingFields || !guestCountSelect) return;
-
-    if (attendanceSelect.value === "Regretfully unable to attend") {
+  
+    if (attendanceSelect.value === "Joyfully attending") {
+      attendingFields.classList.remove("hidden");
+      updateGuestVisibility();
+    } else {
       attendingFields.classList.add("hidden");
       guestCountSelect.value = "0";
       renderGuestFields(0);
-    } else {
-      attendingFields.classList.remove("hidden");
-      updateGuestVisibility();
     }
   }
 
