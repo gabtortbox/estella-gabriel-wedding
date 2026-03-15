@@ -968,4 +968,8 @@ main,
   gap: 1rem;
   align-items: start;
 }
+  
+  .form-section .form-group + .form-group {
+  margin-top: 0.15rem;
+}
 }
