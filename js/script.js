@@ -86,52 +86,55 @@ document.addEventListener("DOMContentLoaded", () => {
   const formMessage = document.getElementById("formMessage");
 
   function renderGuestFields(count) {
-    if (!guestFieldsContainer) return;
+  if (!guestFieldsContainer) return;
 
-    guestFieldsContainer.innerHTML = "";
+  guestFieldsContainer.innerHTML = "";
 
-    for (let i = 1; i <= count; i += 1) {
-      const guestCard = document.createElement("div");
-      guestCard.className = "guest-field-card";
-      guestCard.innerHTML = `
-        <h4>Additional Guest ${i}</h4>
+  for (let i = 1; i <= count; i += 1) {
+    const guestCard = document.createElement("div");
+    guestCard.className = "guest-field-card";
+    guestCard.innerHTML = `
+      <h4>Additional Guest ${i}</h4>
 
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="guestFirstName${i}">First Name <span class="required-tag">Required</span></label>
-            <input type="text" id="guestFirstName${i}" name="guestFirstName${i}" />
-          </div>
-
-          <div class="form-group">
-            <label for="guestLastName${i}">Last Name <span class="required-tag">Required</span></label>
-            <input type="text" id="guestLastName${i}" name="guestLastName${i}" />
-          </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="guestFirstName${i}">First Name</label>
+          <input type="text" id="guestFirstName${i}" name="guestFirstName${i}" />
+          <p class="field-note required-note">Required</p>
         </div>
 
         <div class="form-group">
-          <label for="guestAttendance${i}">Attendance <span class="required-tag">Required</span></label>
-          <select id="guestAttendance${i}" name="guestAttendance${i}">
-            <option value="">Select one</option>
-            <option value="Attending">Attending</option>
-            <option value="Not attending">Not attending</option>
-          </select>
+          <label for="guestLastName${i}">Last Name</label>
+          <input type="text" id="guestLastName${i}" name="guestLastName${i}" />
+          <p class="field-note required-note">Required</p>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="guestDietary${i}">Dietary Restrictions</label>
-          <textarea
-            id="guestDietary${i}"
-            name="guestDietary${i}"
-            rows="3"
-            placeholder="Please let us know of any dietary requirements."
-          ></textarea>
-        </div>
-      `;
+      <div class="form-group">
+        <label for="guestAttendance${i}">Attendance</label>
+        <select id="guestAttendance${i}" name="guestAttendance${i}">
+          <option value="">Select one</option>
+          <option value="Attending">Attending</option>
+          <option value="Not attending">Not attending</option>
+        </select>
+        <p class="field-note required-note">Required</p>
+      </div>
 
-      guestFieldsContainer.appendChild(guestCard);
-    }
+      <div class="form-group">
+        <label for="guestDietary${i}">Dietary Restrictions</label>
+        <textarea
+          id="guestDietary${i}"
+          name="guestDietary${i}"
+          rows="3"
+          placeholder="Please let us know of any dietary requirements."
+        ></textarea>
+      </div>
+    `;
+
+    guestFieldsContainer.appendChild(guestCard);
   }
-
+}
+  
   function updateGuestVisibility() {
     if (!guestCountGroup || !guestCountSelect) return;
 
