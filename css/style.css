@@ -607,7 +607,7 @@ main,
   align-items: start;
 }
 
-.form-section .form-group + .form-group {
+.form-section > .form-group + .form-group {
   margin-top: 0.9rem;
 }
 
