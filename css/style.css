@@ -636,6 +636,21 @@ main,
   gap: 1rem;
 }
 
+.field-note {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+
+.required-note {
+  color: #9c6a63;
+  opacity: 0.8;
+}
+
+.hidden {
+  display: none !important;
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
