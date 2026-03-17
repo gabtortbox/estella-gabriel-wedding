@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
       note
     };
 
-    const scriptUrl = "https://script.google.com/u/0/home/projects/187FHIrpLxyNIIE8nDaDB-gM_0IMIop0tPtrvBNlwGrf29khWNwR_sVoG/edit";
+    const scriptUrl = "https://script.google.com/macros/s/AKfycbxc49phWZDv8t3q2k6mn-7A9xB6WbnyY5orVR-TxFzlQkmF0uQO_i5KSDJ-YAdcmgQ/exec";
 
     try {
       formMessage.textContent = "Submitting your RSVP...";
