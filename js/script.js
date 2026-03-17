@@ -191,41 +191,94 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (rsvpForm && formMessage) {
-    rsvpForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      formMessage.textContent = "";
+  rsvpForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    formMessage.textContent = "";
 
-      const firstName = document.getElementById("firstName")?.value.trim();
-      const lastName = document.getElementById("lastName")?.value.trim();
-      const attendance = attendanceSelect?.value;
-      const bringingGuests =
-        document.querySelector('input[name="bringingGuests"]:checked')?.value || "No";
-      const guestCount = Number(guestCountSelect?.value || 0);
+    const firstName = document.getElementById("firstName")?.value.trim();
+    const phone = document.getElementById("phone")?.value.trim();
+    const lastName = document.getElementById("lastName")?.value.trim();
+    const attendance = attendanceSelect?.value;
+    const dietary = document.getElementById("dietary")?.value.trim() || "";
+    const note = document.getElementById("note")?.value.trim() || "";
+    const bringingGuests =
+      document.querySelector('input[name="bringingGuests"]:checked')?.value || "No";
+    const guestCount = Number(guestCountSelect?.value || 0);
 
-      if (!firstName || !lastName || !attendance) {
-        formMessage.textContent = "Please complete first name, last name, and attendance.";
-        return;
-      }
+    if (!firstName || !phone || !lastName || !attendance) {
+      formMessage.textContent = "Please complete first name, phone number, last name, and attendance.";
+      return;
+    }
 
-      if (attendance !== "Regretfully unable to attend" && bringingGuests === "Yes" && guestCount < 1) {
-        formMessage.textContent = "Please select the number of additional guests.";
-        return;
-      }
+    if (attendance === "Joyfully attending" && bringingGuests === "Yes" && guestCount < 1) {
+      formMessage.textContent = "Please select the number of additional guests.";
+      return;
+    }
 
-      if (attendance !== "Regretfully unable to attend" && bringingGuests === "Yes") {
-        for (let i = 1; i <= guestCount; i += 1) {
-          const guestFirstName = document.getElementById(`guestFirstName${i}`)?.value.trim();
-          const guestLastName = document.getElementById(`guestLastName${i}`)?.value.trim();
-          const guestAttendance = document.getElementById(`guestAttendance${i}`)?.value;
+    const additionalGuests = [];
 
-          if (!guestFirstName || !guestLastName || !guestAttendance) {
-            formMessage.textContent = `Please complete all required details for Additional Guest ${i}.`;
-            return;
-          }
+    if (attendance === "Joyfully attending" && bringingGuests === "Yes") {
+      for (let i = 1; i <= guestCount; i += 1) {
+        const guestFirstName = document.getElementById(`guestFirstName${i}`)?.value.trim();
+        const guestLastName = document.getElementById(`guestLastName${i}`)?.value.trim();
+        const guestAttendance = document.getElementById(`guestAttendance${i}`)?.value;
+        const guestDietary = document.getElementById(`guestDietary${i}`)?.value.trim() || "";
+
+        if (!guestFirstName || !guestLastName || !guestAttendance) {
+          formMessage.textContent = `Please complete all required details for Additional Guest ${i}.`;
+          return;
         }
-      }
 
-      formMessage.textContent = "Form looks good. Next we’ll connect this to Google Sheets.";
-    });
-  }
+        additionalGuests.push({
+          firstName: guestFirstName,
+          lastName: guestLastName,
+          attendance: guestAttendance,
+          dietary: guestDietary
+        });
+      }
+    }
+
+    const payload = {
+      firstName,
+      phone,
+      lastName,
+      attendance,
+      dietary,
+      bringingGuests,
+      guestCount,
+      additionalGuests,
+      note
+    };
+
+    const scriptUrl = "https://script.google.com/u/0/home/projects/187FHIrpLxyNIIE8nDaDB-gM_0IMIop0tPtrvBNlwGrf29khWNwR_sVoG/edit";
+
+    try {
+      formMessage.textContent = "Submitting your RSVP...";
+
+      const response = await fetch(scriptUrl, {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        formMessage.textContent = "RSVP submitted successfully.";
+        rsvpForm.reset();
+        renderGuestFields(0);
+        if (guestCountGroup) guestCountGroup.classList.add("hidden");
+        if (attendingFields) attendingFields.classList.add("hidden");
+      } else {
+        formMessage.textContent = "There was an issue submitting your RSVP.";
+        console.error(result.message);
+      }
+    } catch (error) {
+      formMessage.textContent = "There was an issue submitting your RSVP.";
+      console.error(error);
+    }
+  });
+}
 });
