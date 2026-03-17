@@ -251,30 +251,32 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const scriptUrl = "https://script.google.com/macros/s/AKfycbxc49phWZDv8t3q2k6mn-7A9xB6WbnyY5orVR-TxFzlQkmF0uQO_i5KSDJ-YAdcmgQ/exec";
-
     try {
       formMessage.textContent = "Submitting your RSVP...";
-
-      const response = await fetch(scriptUrl, {
+    
+      await fetch(scriptUrl, {
         method: "POST",
-        body: JSON.stringify(payload),
+        mode: "no-cors",
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(payload)
       });
-
-      const result = await response.json();
-
-      if (result.success) {
-        formMessage.textContent = "RSVP submitted successfully.";
-        rsvpForm.reset();
-        renderGuestFields(0);
-        if (guestCountGroup) guestCountGroup.classList.add("hidden");
-        if (attendingFields) attendingFields.classList.add("hidden");
-      } else {
-        formMessage.textContent = "There was an issue submitting your RSVP.";
-        console.error(result.message);
-      }
+    
+      formMessage.textContent = "RSVP submitted successfully.";
+    
+      rsvpForm.reset();
+      renderGuestFields(0);
+    
+      if (guestCountGroup) guestCountGroup.classList.add("hidden");
+      if (attendingFields) attendingFields.classList.add("hidden");
+    
+      if (attendanceSelect) attendanceSelect.value = "";
+    
+      setTimeout(() => {
+        window.location.href = "confirmed.html";
+      }, 800);
+    
     } catch (error) {
       formMessage.textContent = "There was an issue submitting your RSVP.";
       console.error(error);
