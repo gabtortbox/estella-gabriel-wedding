@@ -273,8 +273,17 @@ document.addEventListener("DOMContentLoaded", () => {
     
       if (attendanceSelect) attendanceSelect.value = "";
     
+      const params = new URLSearchParams({
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        attendance: attendance,
+        bringingGuests: bringingGuests,
+        guestCount: String(guestCount)
+      });
+      
       setTimeout(() => {
-        window.location.href = "confirmed.html";
+        window.location.href = `confirmed.html?${params.toString()}`;
       }, 800);
     
     } catch (error) {
