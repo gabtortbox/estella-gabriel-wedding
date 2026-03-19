@@ -1,1 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RSVP Confirmed</title>
 
+  <style>
+    :root {
+      --bg: #f8f4ee;
+      --card: rgba(255, 255, 255, 0.88);
+      --text: #3c342e;
+      --muted: #7a6f66;
+      --accent: #b58b5d;
+      --accent-dark: #8f6d47;
+      --border: rgba(181, 139, 93, 0.18);
+      --shadow: 0 20px 50px rgba(60, 52, 46, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Georgia", "Times New Roman", serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(181, 139, 93, 0.10), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(181, 139, 93, 0.08), transparent 25%),
+        var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 760px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 48px 32px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(181, 139, 93, 0.12);
+      color: var(--accent-dark);
+      font-size: 34px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      margin: 0 auto;
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .summary {
+      margin: 32px auto 0;
+      max-width: 520px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px 22px;
+      text-align: left;
+    }
+
+    .summary h2 {
+      margin: 0 0 14px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--accent-dark);
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(181, 139, 93, 0.12);
+    }
+
+    .row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .value {
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .actions {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-size: 0.98rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-dark);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--accent-dark);
+      border: 1px solid rgba(181, 139, 93, 0.35);
+    }
+
+    .footnote {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 640px) {
+      .card {
+        padding: 36px 20px;
+      }
+
+      .row {
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .value {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="icon">✓</div>
+
+    <h1>RSVP Received</h1>
+    <p class="subtitle" id="mainMessage">
+      Thank you for your response. Your RSVP has been successfully submitted.
+    </p>
+
+    <section class="summary" id="summaryBox" hidden>
+      <h2>Your Submission</h2>
+
+      <div class="row" id="nameRow" hidden>
+        <div class="label">Guest Name</div>
+        <div class="value" id="guestName">-</div>
+      </div>
+
+      <div class="row" id="attendanceRow" hidden>
+        <div class="label">Attendance</div>
+        <div class="value" id="attendanceValue">-</div>
+      </div>
+
+      <div class="row" id="phoneRow" hidden>
+        <div class="label">Phone</div>
+        <div class="value" id="phoneValue">-</div>
+      </div>
+
+      <div class="row" id="guestCountRow" hidden>
+        <div class="label">Additional Guests</div>
+        <div class="value" id="guestCountValue">-</div>
+      </div>
+    </section>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="index.html">Back to Main Page</a>
+      <button class="btn btn-secondary" onclick="window.print()">Save / Print</button>
+    </div>
+
+    <p class="footnote">
+      If you need to make changes to your RSVP, please contact us directly.
+    </p>
+  </main>
+
+  <script>
+    function getParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
+    function showRow(rowId, valueId, value) {
+      if (!value) return;
+      document.getElementById(rowId).hidden = false;
+      document.getElementById(valueId).textContent = value;
+      document.getElementById("summaryBox").hidden = false;
+    }
+
+    const firstName = getParam("first_name") || "";
+    const lastName = getParam("last_name") || "";
+    const attendance = getParam("attendance") || "";
+    const phone = getParam("phone") || "";
+    const additionalGuestCount = getParam("additional_guest_count") || "";
+
+    const fullName = `${firstName} ${lastName}`.trim();
+
+    if (fullName) {
+      document.getElementById("mainMessage").textContent =
+        `Thank you, ${fullName}. Your RSVP has been successfully submitted.`;
+      showRow("nameRow", "guestName", fullName);
+    }
+
+    if (attendance) {
+      showRow("attendanceRow", "attendanceValue", attendance);
+    }
+
+    if (phone) {
+      showRow("phoneRow", "phoneValue", phone);
+    }
+
+    if (additionalGuestCount) {
+      showRow("guestCountRow", "guestCountValue", additionalGuestCount);
+    }
+  </script>
+</body>
+</html>
