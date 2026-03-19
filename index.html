@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Estella & Gabriel | Welcome Aboard</title>
+  <title>Estella & Gabriel | 11 July 2027</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,305 +11,172 @@
 
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
-  <div class="site-bg"></div>
-
-  <header class="topbar">
-    <div class="brand">E&G Airways</div>
-    <nav class="nav">
-      <a href="#story">Route History</a>
-      <a href="#details">Flight Details</a>
-      <a href="rsvp.html">Check In</a>
-      <a href="advisory.html">Travel Advisory</a>
+<body class="editorial-site">
+  <header class="site-header">
+    <div class="brand">Estella & Gabriel</div>
+    <nav class="site-nav">
+      <a href="#journey">Our Journey</a>
+      <a href="#celebration">The Celebration</a>
+      <a href="#guests">Guest Information</a>
+      <a href="rsvp.html">RSVP</a>
     </nav>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="hero-overlay"></div>
-      <div class="hero-content">
-        <p class="eyebrow">Welcome Aboard</p>
-        <h1>Estella <span>&</span> Gabriel</h1>
-        <p class="hero-date">11 July 2027</p>
-        <p class="hero-subtitle">
-          A celebration of love, family, joy, and a very special flight path that led us here.
+    <section class="hero-section">
+      <div class="hero-image-wrap">
+        <img src="images/hero.jpg" alt="Estella and Gabriel" class="hero-image" />
+        <div class="hero-overlay"></div>
+      </div>
+
+      <div class="hero-content reveal">
+        <p class="eyebrow">A journey worth celebrating</p>
+        <h1>Estella & Gabriel</h1>
+        <p class="hero-meta">11 July 2027 • Aloes Ballroom, Sentosa</p>
+        <p class="hero-text">
+          A celebration of love, memory, family, and the beautiful roads that brought us here.
         </p>
 
-        <div class="hero-buttons">
-          <a class="btn btn-primary" href="rsvp.html">Check In</a>
-          <a class="btn btn-secondary" href="#details">View Flight Details</a>
-        </div>
-
-        <div class="boarding-pass-card">
-          <div class="bp-left">
-            <p class="bp-label">Passenger</p>
-            <p class="bp-value">Beloved Guest</p>
-          </div>
-          <div class="bp-middle">
-            <p class="bp-label">Flight</p>
-            <p class="bp-value">EG1107</p>
-          </div>
-          <div class="bp-right">
-            <p class="bp-label">Destination</p>
-            <p class="bp-value">Aloes Ballroom</p>
-          </div>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="rsvp.html">RSVP</a>
+          <a class="btn btn-secondary" href="#celebration">View Details</a>
         </div>
       </div>
     </section>
 
-    <section class="countdown-section">
-      <p class="section-label">Departure In</p>
-      <div class="countdown" id="countdown">
-        <div class="time-box">
-          <span id="days">000</span>
-          <small>Days</small>
-        </div>
-        <div class="time-box">
-          <span id="hours">00</span>
-          <small>Hours</small>
-        </div>
-        <div class="time-box">
-          <span id="minutes">00</span>
-          <small>Minutes</small>
-        </div>
-        <div class="time-box">
-          <span id="seconds">00</span>
-          <small>Seconds</small>
-        </div>
-      </div>
-    </section>
-
-    <section class="story-section" id="story">
-      <div class="section-header">
-        <p class="section-label">Route History</p>
-        <h2>How we got here</h2>
-      </div>
-
-      <div class="route-timeline">
-        <div class="route-stop">
-          <div class="route-dot"></div>
-          <div class="route-card">
-            <p class="route-date">Stop 01</p>
-            <h3>We met in school</h3>
-            <p>What began as a familiar chapter slowly became part of a much bigger story.</p>
-          </div>
-        </div>
-
-        <div class="route-stop">
-          <div class="route-dot"></div>
-          <div class="route-card">
-            <p class="route-date">Stop 02</p>
-            <h3>Time brought us closer</h3>
-            <p>Some routes loop back in the best ways, and ours did.</p>
-          </div>
-        </div>
-
-        <div class="route-stop">
-          <div class="route-dot"></div>
-          <div class="route-card">
-            <p class="route-date">Stop 03</p>
-            <h3>We chose each other</h3>
-            <p>With intention, with steadiness, and with joy.</p>
-          </div>
-        </div>
-
-        <div class="route-stop">
-          <div class="route-dot"></div>
-          <div class="route-card">
-            <p class="route-date">Final Destination</p>
-            <h3>11 July 2027</h3>
-            <p>Now we’d love for you to join us as we celebrate the start of our next chapter.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="details-section" id="details">
-      <div class="section-header">
-        <p class="section-label">Flight Details</p>
-        <h2>Your itinerary for the evening</h2>
-      </div>
-
-      <div class="details-board">
-        <div class="detail-row">
-          <span class="detail-key">Date</span>
-          <span class="detail-value">11 July 2027</span>
-        </div>
-        <div class="detail-row">
-          <span class="detail-key">Venue</span>
-          <span class="detail-value">Aloes Ballroom, Sentosa</span>
-        </div>
-        <div class="detail-row">
-          <span class="detail-key">Boarding Time</span>
-          <span class="detail-value">To be confirmed</span>
-        </div>
-        <div class="detail-row">
-          <span class="detail-key">Dress Code</span>
-          <span class="detail-value">To be confirmed</span>
-        </div>
-        <div class="detail-row">
-          <span class="detail-key">Special Feature</span>
-          <span class="detail-value">Cake Buffet</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="vision-section">
-      <div class="section-header">
-        <p class="section-label">Cabin Note</p>
-        <h2>Our vision for the night</h2>
-      </div>
-
-      <div class="vision-box">
+    <section class="intro-section reveal">
+      <div class="intro-inner">
+        <p class="section-tag">Chapter One</p>
+        <h2>Our story has always felt like a journey.</h2>
         <p>
-          We hope this evening feels warm, joyful, and full of conversation. More than anything,
-          we want it to feel like a celebration shared with the people who have shaped our lives,
-          supported our journey, and made this chapter possible.
+          Not rushed, not straight, not predictable. Just full of moments, places, timing,
+          and quiet turns that slowly became something lasting.
         </p>
       </div>
     </section>
 
-    <section class="quick-links-section" id="passenger-access">
-  <div class="section-header">
-    <p class="section-label">Passenger Access</p>
-    <h2>Everything you need</h2>
-  </div>
+    <section class="journey-section" id="journey">
+      <div class="section-heading reveal">
+        <p class="section-tag">Our Journey</p>
+        <h2>A few places in the story</h2>
+      </div>
 
-  <div class="access-tabs">
-    <button class="access-tab active" data-tab="helpers">Helpers</button>
-    <button class="access-tab" data-tab="directions">Directions</button>
-    <button class="access-tab" data-tab="advisory">Travel Advisory</button>
-    <button class="access-tab" data-tab="checkin">Check In</button>
-  </div>
-
-  <div class="access-content-wrap">
-    <div class="access-panel active" id="helpers">
-      <div class="access-panel-grid">
-        <div class="access-main">
-          <p class="access-kicker">Ground Crew</p>
-          <h3>Meet the people helping us on the day</h3>
-          <p>
-            These are the familiar faces helping things run smoothly throughout the celebration.
-            If you need help finding your way, have a question, or are not sure where to go,
-            they’ll be happy to assist.
-          </p>
-        </div>
-
-        <div class="access-side">
-          <div class="mini-card">
-            <h4>Name Placeholder</h4>
-            <p>Day-of helper / guest support</p>
+      <div class="journey-grid">
+        <article class="story-card reveal">
+          <img src="images/journey-1.jpg" alt="A memory from our story" />
+          <div class="story-copy">
+            <p class="story-label">Chapter 01</p>
+            <h3>Where it began</h3>
+            <p>Some stories start loudly. Ours took its time, then stayed.</p>
           </div>
-          <div class="mini-card">
-            <h4>Name Placeholder</h4>
-            <p>Reception flow / seating help</p>
+        </article>
+
+        <article class="story-card reveal">
+          <img src="images/journey-2.jpg" alt="A memory from our story" />
+          <div class="story-copy">
+            <p class="story-label">Chapter 02</p>
+            <h3>Growing closer</h3>
+            <p>What felt familiar slowly became essential.</p>
           </div>
-          <div class="mini-card">
-            <h4>Name Placeholder</h4>
-            <p>Family coordination / logistics</p>
+        </article>
+
+        <article class="story-card reveal">
+          <img src="images/journey-3.jpg" alt="A memory from our story" />
+          <div class="story-copy">
+            <p class="story-label">Chapter 03</p>
+            <h3>Choosing forever</h3>
+            <p>And now, with joy, we invite you into the next chapter.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="celebration-section" id="celebration">
+      <div class="celebration-media reveal">
+        <img src="images/celebration.jpg" alt="Celebration setting" />
+      </div>
+
+      <div class="celebration-copy reveal">
+        <p class="section-tag">The Celebration</p>
+        <h2>For the evening ahead</h2>
+
+        <div class="detail-list">
+          <div class="detail-item">
+            <span>Date</span>
+            <strong>11 July 2027</strong>
+          </div>
+          <div class="detail-item">
+            <span>Venue</span>
+            <strong>Aloes Ballroom, Sentosa</strong>
+          </div>
+          <div class="detail-item">
+            <span>Arrival Time</span>
+            <strong>To be confirmed</strong>
+          </div>
+          <div class="detail-item">
+            <span>Dress Code</span>
+            <strong>To be confirmed</strong>
+          </div>
+          <div class="detail-item">
+            <span>Special Note</span>
+            <strong>Cake buffet and an evening of celebration</strong>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="access-panel" id="directions">
-      <div class="access-panel-grid">
-        <div class="access-main">
-          <p class="access-kicker">Arrival Guidance</p>
-          <h3>Getting to Aloes Ballroom</h3>
-          <p>
-            Venue details, parking notes, and arrival recommendations will be shared here
-            so your journey is as smooth as possible.
-          </p>
-
-          <div class="info-list">
-            <div><strong>Venue:</strong> Aloes Ballroom, Sentosa</div>
-            <div><strong>Parking:</strong> To be confirmed</div>
-            <div><strong>Arrival:</strong> We recommend arriving a little before the stated time</div>
-          </div>
-        </div>
-
-        <div class="access-side">
-          <div class="mini-card">
-            <h4>Drop-off</h4>
-            <p>Quick arrival notes for cars and taxis.</p>
-          </div>
-          <div class="mini-card">
-            <h4>Parking</h4>
-            <p>Nearest parking and walking directions.</p>
-          </div>
-        </div>
+    <section class="guest-section" id="guests">
+      <div class="section-heading reveal">
+        <p class="section-tag">Guest Information</p>
+        <h2>Everything you may need</h2>
       </div>
-    </div>
 
-    <div class="access-panel" id="advisory">
-      <div class="access-panel-grid">
-        <div class="access-main">
-          <p class="access-kicker">Travel Advisory</p>
-          <h3>Important guest information</h3>
-          <p>
-            This section will cover common questions such as dress code, plus-ones,
-            timing, and other useful details for the evening.
-          </p>
+      <div class="guest-cards">
+        <article class="info-card reveal">
+          <h3>Directions</h3>
+          <p>Arrival guidance, parking notes, and venue directions will be shared here.</p>
+        </article>
 
-          <div class="info-list">
-            <div><strong>Dress code:</strong> To be confirmed</div>
-            <div><strong>Plus-ones:</strong> By invitation only unless otherwise stated</div>
-            <div><strong>Arrival time:</strong> Please arrive before the programme begins</div>
-          </div>
-        </div>
+        <article class="info-card reveal">
+          <h3>Travel Advisory</h3>
+          <p>Dress code, timing, plus-one notes, and useful details for the evening.</p>
+        </article>
 
-        <div class="access-side">
-          <div class="mini-card">
-            <h4>Dress Code</h4>
-            <p>Colour direction and attire guidance.</p>
-          </div>
-          <div class="mini-card">
-            <h4>Timing</h4>
-            <p>When to arrive and what to expect.</p>
-          </div>
-        </div>
+        <article class="info-card reveal">
+          <h3>On-the-Day Help</h3>
+          <p>Helpful contacts and familiar faces who can assist throughout the celebration.</p>
+        </article>
       </div>
-    </div>
+    </section>
 
-    <div class="access-panel" id="checkin">
-      <div class="access-panel-grid">
-        <div class="access-main">
-          <p class="access-kicker">Boarding Procedure</p>
-          <h3>Ready to check in?</h3>
-          <p>
-            Confirm your attendance, let us know if you are bringing additional guests,
-            and share any key details with us through the RSVP form.
-          </p>
-
-          <a class="btn btn-primary" href="rsvp.html">Proceed to Check In</a>
-        </div>
-
-        <div class="access-side">
-          <div class="mini-card">
-            <h4>What you’ll submit</h4>
-            <p>Names, attendance, guest details, and any special notes.</p>
-          </div>
-          <div class="mini-card">
-            <h4>Confirmation</h4>
-            <p>You’ll receive a boarding-confirmed style response page.</p>
-          </div>
-        </div>
+    <section class="rsvp-promo-section reveal">
+      <div class="rsvp-promo-card">
+        <p class="section-tag">RSVP</p>
+        <h2>We would be so happy to celebrate with you.</h2>
+        <p>
+          Let us know if you’ll be joining us, and share any details we should know before the day.
+        </p>
+        <a class="btn btn-primary" href="rsvp.html">Respond Here</a>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-    <section class="secret-section">
-      <button id="secretButton" class="secret-stamp">Open Hidden Stamp</button>
-      <p id="secretMessage" class="secret-message hidden">
-        Tiny hidden note: thank you for being part of our story and this very special journey.
-      </p>
+    <section class="closing-section">
+      <div class="closing-image reveal">
+        <img src="images/closing.jpg" alt="Estella and Gabriel" />
+      </div>
+      <div class="closing-copy reveal">
+        <p class="section-tag">A Note From Us</p>
+        <h2>Thank you for being part of our story.</h2>
+        <p>
+          More than anything, we hope this celebration feels warm, joyful, and full of love.
+          We cannot wait to share it with the people who matter most to us.
+        </p>
+      </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <p>Estella & Gabriel • 11 July 2027 • Aloes Ballroom</p>
+  <footer class="site-footer">
+    <p>Estella & Gabriel • 11 July 2027 • Sentosa, Singapore</p>
   </footer>
 
   <script src="js/script.js"></script>
