@@ -239,18 +239,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const payload = {
-      firstName,
-      phone,
-      lastName,
-      attendance,
-      dietary,
-      bringingGuests,
-      guestCount,
-      additionalGuests,
-      note
-    };
+  firstName,
+  phone,
+  lastName,
+  attendance,
+  dietary,
+  bringingGuests,
+  guestCount,
+  additionalGuests,
+  note
+};
 
-    console.log("PAYLOAD BEING SENT:", payload);
+console.log("PAYLOAD BEING SENT:", JSON.stringify(payload));
+alert("Submitting payload. Check console.");
 
     const scriptUrl = "https://script.google.com/macros/s/AKfycbxc49phWZDv8t3q2k6mn-7A9xB6WbnyY5orVR-TxFzlQkmF0uQO_i5KSDJ-YAdcmgQ/exec";
     try {
