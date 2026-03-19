@@ -221,43 +221,46 @@
   </main>
 
   <script>
-    function getParam(name) {
-      const params = new URLSearchParams(window.location.search);
-      return params.get(name);
-    }
+  function getParam(name) {
+    const params = new URLSearchParams(window.location.search);
+    return params.get(name);
+  }
 
-    function showRow(rowId, valueId, value) {
-      if (!value) return;
-      document.getElementById(rowId).hidden = false;
-      document.getElementById(valueId).textContent = value;
-      document.getElementById("summaryBox").hidden = false;
-    }
+  function showRow(rowId, valueId, value) {
+    if (!value) return;
+    document.getElementById(rowId).hidden = false;
+    document.getElementById(valueId).textContent = value;
+    document.getElementById("summaryBox").hidden = false;
+  }
 
-    const firstName = getParam("first_name") || "";
-    const lastName = getParam("last_name") || "";
-    const attendance = getParam("attendance") || "";
-    const phone = getParam("phone") || "";
-    const additionalGuestCount = getParam("additional_guest_count") || "";
+  const firstName = getParam("firstName") || "";
+  const lastName = getParam("lastName") || "";
+  const attendance = getParam("attendance") || "";
+  const phone = getParam("phone") || "";
+  const bringingGuests = getParam("bringingGuests") || "";
+  const guestCount = getParam("guestCount") || "";
 
-    const fullName = `${firstName} ${lastName}`.trim();
+  const fullName = `${firstName} ${lastName}`.trim();
 
-    if (fullName) {
-      document.getElementById("mainMessage").textContent =
-        `Thank you, ${fullName}. Your RSVP has been successfully submitted.`;
-      showRow("nameRow", "guestName", fullName);
-    }
+  if (fullName) {
+    document.getElementById("mainMessage").textContent =
+      `Thank you, ${fullName}. Your RSVP has been successfully submitted.`;
+    showRow("nameRow", "guestName", fullName);
+  }
 
-    if (attendance) {
-      showRow("attendanceRow", "attendanceValue", attendance);
-    }
+  if (attendance) {
+    showRow("attendanceRow", "attendanceValue", attendance);
+  }
 
-    if (phone) {
-      showRow("phoneRow", "phoneValue", phone);
-    }
+  if (phone) {
+    showRow("phoneRow", "phoneValue", phone);
+  }
 
-    if (additionalGuestCount) {
-      showRow("guestCountRow", "guestCountValue", additionalGuestCount);
-    }
-  </script>
+  if (bringingGuests === "Yes") {
+    showRow("guestCountRow", "guestCountValue", guestCount || "0");
+  } else if (bringingGuests === "No" && attendance === "Joyfully attending") {
+    showRow("guestCountRow", "guestCountValue", "0");
+  }
+</script>
 </body>
 </html>
