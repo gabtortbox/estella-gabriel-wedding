@@ -91,8 +91,12 @@ document.addEventListener("DOMContentLoaded", () => {
       updateGuestVisibility();
     } else {
       attendingFields.classList.add("hidden");
+      guestCountGroup.classList.add("hidden");
       guestCountSelect.value = "0";
       renderGuestFields(0);
+
+      const noRadio = document.querySelector('input[name="bringingGuests"][value="No"]');
+      if (noRadio) noRadio.checked = true;
     }
   }
 
@@ -105,7 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
     bringingGuestsRadios.forEach((radio) => {
       radio.addEventListener("change", updateGuestVisibility);
     });
-    updateGuestVisibility();
   }
 
   if (guestCountSelect) {
@@ -117,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   rsvpForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-    formMessage.textContent = "";
+    if (formMessage) formMessage.textContent = "";
 
     const firstName = document.getElementById("firstName")?.value.trim();
     const lastName = document.getElementById("lastName")?.value.trim();
@@ -130,12 +133,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const guestCount = Number(guestCountSelect?.value || 0);
 
     if (!firstName || !lastName || !phone || !attendance) {
-      formMessage.textContent = "Please complete first name, last name, phone number, and attendance.";
+      if (formMessage) {
+        formMessage.textContent = "Please complete first name, last name, phone number, and attendance.";
+      }
       return;
     }
 
     if (attendance === "Joyfully attending" && bringingGuests === "Yes" && guestCount < 1) {
-      formMessage.textContent = "Please select the number of additional guests.";
+      if (formMessage) {
+        formMessage.textContent = "Please select the number of additional guests.";
+      }
       return;
     }
 
@@ -149,7 +156,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const guestDietary = document.getElementById(`guestDietary${i}`)?.value.trim() || "";
 
         if (!guestFirstName || !guestLastName || !guestAttendance) {
-          formMessage.textContent = `Please complete all required details for Additional Guest ${i}.`;
+          if (formMessage) {
+            formMessage.textContent = `Please complete all required details for Additional Guest ${i}.`;
+          }
           return;
         }
 
@@ -177,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const scriptUrl = "https://script.google.com/macros/s/AKfycbxc49phWZDv8t3q2k6mn-7A9xB6WbnyY5orVR-TxFzlQkmF0uQO_i5KSDJ-YAdcmgQ/exec";
 
     try {
-      formMessage.textContent = "Submitting your RSVP...";
+      if (formMessage) formMessage.textContent = "Submitting your RSVP...";
 
       await fetch(scriptUrl, {
         method: "POST",
@@ -188,8 +197,6 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify(payload)
       });
 
-      formMessage.textContent = "RSVP submitted successfully.";
-
       const params = new URLSearchParams({
         firstName,
         lastName,
@@ -199,19 +206,12 @@ document.addEventListener("DOMContentLoaded", () => {
         guestCount: String(guestCount)
       });
 
-      rsvpForm.reset();
-      renderGuestFields(0);
-
-      if (guestCountGroup) guestCountGroup.classList.add("hidden");
-      if (attendingFields) attendingFields.classList.add("hidden");
-      if (attendanceSelect) attendanceSelect.value = "";
-
-      setTimeout(() => {
-        window.location.href = `confirmed.html?${params.toString()}`;
-      }, 800);
+      window.location.href = `confirmed.html?${params.toString()}`;
     } catch (error) {
       console.error(error);
-      formMessage.textContent = "There was an issue submitting your RSVP.";
+      if (formMessage) {
+        formMessage.textContent = "There was an issue submitting your RSVP.";
+      }
     }
   });
 });
