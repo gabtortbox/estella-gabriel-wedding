@@ -19,21 +19,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const coverPhoto = document.querySelector(".cover-photo");
   const coverRoute = document.querySelector(".cover-route-line");
 
-  if (coverPhoto || coverRoute) {
-    window.addEventListener("scroll", () => {
-      const offset = window.scrollY;
+  function updateCoverMotion() {
+    const offset = window.scrollY;
 
-      if (coverPhoto) {
-        coverPhoto.style.transform = `scale(1.04) translateY(${offset * 0.06}px)`;
-      }
+    if (coverPhoto) {
+      coverPhoto.style.transform = `scale(1.04) translateY(${offset * 0.06}px)`;
+    }
 
-      if (coverRoute) {
-        coverRoute.style.transform = `translateY(${offset * 0.03}px)`;
-      }
-    });
+    if (coverRoute) {
+      coverRoute.style.transform = `translateY(${offset * 0.03}px)`;
+    }
   }
 
-    const openingSection = document.querySelector(".opening-page-turn");
+  const openingSection = document.querySelector(".opening-page-turn");
   const openingLayer = document.querySelector(".opening-page-layer");
 
   function updateOpeningPageTurn() {
@@ -58,8 +56,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  updateOpeningPageTurn();
-  window.addEventListener("scroll", updateOpeningPageTurn, { passive: true });
-  window.addEventListener("resize", updateOpeningPageTurn);
-  
+  function updateScrollEffects() {
+    updateCoverMotion();
+    updateOpeningPageTurn();
+  }
+
+  updateScrollEffects();
+
+  window.addEventListener("scroll", updateScrollEffects, { passive: true });
+  window.addEventListener("resize", updateScrollEffects);
 });
