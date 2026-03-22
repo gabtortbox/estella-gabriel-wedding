@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Check In | Estella & Gabriel</title>
+  <title>RSVP | Estella & Gabriel</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,167 +11,165 @@
 
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
-  <div class="site-bg"></div>
-
-  <header class="topbar">
-    <div class="brand">E&G Airways</div>
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="index.html#details">Flight Details</a>
-      <a href="index.html#passenger-access">Passenger Access</a>
-      <a href="advisory.html">Travel Advisory</a>
+<body class="editorial-site">
+  <header class="site-header">
+    <div class="brand">Estella & Gabriel</div>
+    <nav class="site-nav">
+      <a href="index.html#journey">Our Journey</a>
+      <a href="index.html#celebration">The Celebration</a>
+      <a href="index.html#guests">Guest Information</a>
+      <a href="rsvp.html">RSVP</a>
     </nav>
   </header>
 
   <main class="rsvp-page">
-  <section class="rsvp-hero">
-    <p class="section-label">Check In</p>
-    <h1>Passenger Registration</h1>
-    <p class="rsvp-subtitle">
-      Please complete your check-in details below.
-    </p>
-  </section>
+    <section class="rsvp-hero reveal">
+      <p class="section-tag">RSVP</p>
+      <h1>We would be so happy to celebrate with you.</h1>
+      <p class="rsvp-subtitle">
+        Please let us know if you’ll be joining us, and share any details we should know before the day.
+      </p>
+    </section>
 
-  <section class="rsvp-layout rsvp-layout-polished">
-  <div class="rsvp-main-column">
-    <div class="rsvp-card rsvp-card-main">
-      <div class="rsvp-card-head">
-        <p class="access-kicker">Boarding Form</p>
-        <h2>Complete your RSVP</h2>
-        <p class="rsvp-intro-copy">
-          Please complete your passenger details below.
-        </p>
+    <section class="rsvp-layout">
+      <div class="rsvp-main-column">
+        <div class="rsvp-card">
+          <div class="rsvp-card-head">
+            <p class="section-tag">Response Form</p>
+            <h2>Complete your RSVP</h2>
+            <p class="rsvp-intro-copy">
+              Please fill in your details below.
+            </p>
+          </div>
+
+          <form id="rsvpForm" class="rsvp-form" novalidate>
+            <section class="form-section">
+              <div class="form-section-head">
+                <h3>Main Guest</h3>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="firstName" class="label-with-tag">
+                    <span>First Name</span>
+                    <span class="required-tag">Required</span>
+                  </label>
+                  <input type="text" id="firstName" name="firstName" required />
+                </div>
+
+                <div class="form-group">
+                  <label for="lastName" class="label-with-tag">
+                    <span>Last Name</span>
+                    <span class="required-tag">Required</span>
+                  </label>
+                  <input type="text" id="lastName" name="lastName" required />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="phone" class="label-with-tag">
+                  <span>Phone Number</span>
+                  <span class="required-tag">Required</span>
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  inputmode="tel"
+                  autocomplete="tel"
+                  placeholder="e.g. 91234567"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="attendance" class="label-with-tag">
+                  <span>Attendance</span>
+                  <span class="required-tag">Required</span>
+                </label>
+                <select id="attendance" name="attendance" required>
+                  <option value="">Select one</option>
+                  <option value="Joyfully attending">Joyfully attending</option>
+                  <option value="Regretfully unable to attend">Regretfully unable to attend</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="dietary">Dietary Restrictions</label>
+                <textarea
+                  id="dietary"
+                  name="dietary"
+                  rows="2"
+                  placeholder="Example: shellfish allergy, vegetarian, no beef"
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="note">Note to Couple</label>
+                <textarea
+                  id="note"
+                  name="note"
+                  rows="3"
+                  placeholder="Leave us a message"
+                ></textarea>
+              </div>
+            </section>
+
+            <section class="form-section hidden" id="attendingFields">
+              <div class="form-section-head">
+                <h3>Additional Guests</h3>
+              </div>
+
+              <div class="form-group">
+                <label>Bringing additional guests?</label>
+                <div class="radio-row">
+                  <label class="radio-pill">
+                    <input type="radio" name="bringingGuests" value="No" checked />
+                    <span>No</span>
+                  </label>
+                  <label class="radio-pill">
+                    <input type="radio" name="bringingGuests" value="Yes" />
+                    <span>Yes</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group hidden" id="guestCountGroup">
+                <label for="guestCount">Number of additional guests</label>
+                <select id="guestCount" name="guestCount">
+                  <option value="0">Select one</option>
+                  <option value="1">1 additional guest</option>
+                  <option value="2">2 additional guests</option>
+                  <option value="3">3 additional guests</option>
+                  <option value="4">4 additional guests</option>
+                </select>
+              </div>
+
+              <div id="guestFields" class="guest-fields"></div>
+            </section>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary submit-pill" id="submitBtn">
+                Confirm RSVP
+              </button>
+              <p id="formMessage" class="form-message"></p>
+            </div>
+          </form>
+        </div>
       </div>
 
-      <form id="rsvpForm" class="rsvp-form" novalidate>
-        <section class="form-section">
-          <div class="form-section-head">
-            <h3>Main Guest</h3>
-          </div>
-
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="firstName" class="label-with-tag">
-                <span>First Name</span>
-                <span class="required-tag">Required</span>
-              </label>
-              <input type="text" id="firstName" name="firstName" required />
-            </div>
-          
-            <div class="form-group">
-              <label for="lastName" class="label-with-tag">
-                <span>Last Name</span>
-                <span class="required-tag">Required</span>
-              </label>
-              <input type="text" id="lastName" name="lastName" required />
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="phone" class="label-with-tag">
-              <span>Phone Number</span>
-              <span class="required-tag">Required</span>
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              inputmode="tel"
-              autocomplete="tel"
-              placeholder="e.g. 91234567"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="attendance" class="label-with-tag">
-              <span>Attendance</span>
-              <span class="required-tag">Required</span>
-            </label>
-            <select id="attendance" name="attendance" required>
-              <option value="">Select one</option>
-              <option value="Joyfully attending">Joyfully attending</option>
-              <option value="Regretfully unable to attend">Regretfully unable to attend</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="dietary">Dietary Restrictions</label>
-            <textarea
-              id="dietary"
-              name="dietary"
-              rows="1"
-              placeholder="Example: shellfish allergy, vegetarian, no beef"
-            ></textarea>
-          </div>
-
-          <div class="form-group">
-            <label for="note">Note to Couple</label>
-            <textarea
-              id="note"
-              name="note"
-              rows="2"
-              placeholder="Leave us a message"
-            ></textarea>
-          </div>
-        </section>
-
-        <section class="form-section hidden" id="attendingFields">
-          <div class="form-section-head">
-            <h3>Additional Guests</h3>
-          </div>
-
-          <div class="form-group">
-            <label>Bringing additional guests?</label>
-            <div class="radio-row">
-              <label class="radio-pill">
-                <input type="radio" name="bringingGuests" value="No" checked />
-                <span>No</span>
-              </label>
-              <label class="radio-pill">
-                <input type="radio" name="bringingGuests" value="Yes" />
-                <span>Yes</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group hidden" id="guestCountGroup">
-            <label for="guestCount">Number of additional guests</label>
-            <select id="guestCount" name="guestCount">
-              <option value="0">Select one</option>
-              <option value="1">1 additional guest</option>
-              <option value="2">2 additional guests</option>
-              <option value="3">3 additional guests</option>
-              <option value="4">4 additional guests</option>
-            </select>
-          </div>
-
-          <div id="guestFields" class="guest-fields guest-fields-polished"></div>
-        </section>
-
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary submit-pill" id="submitBtn">
-            Confirm Check-In
-          </button>
-          <p id="formMessage" class="form-message"></p>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <aside class="rsvp-side-card rsvp-side-card-polished">
-    <p class="access-kicker">Passenger Notes</p>
-    <h3>Before you submit</h3>
-    <ul class="rsvp-notes">
-      <li>Please enter your name clearly for our records.</li>
-      <li>You may add up to 4 additional guests if applicable.</li>
-      <li>Each additional guest can have their own attendance and dietary details.</li>
-      <li>You will later be able to connect this form to a boarding-confirmed success page.</li>
-    </ul>
-  </aside>
-</section>
-</main>
+      <aside class="rsvp-side-card">
+        <p class="section-tag">Before You Submit</p>
+        <h3>A few helpful notes</h3>
+        <ul class="rsvp-notes">
+          <li>Please enter your name clearly for our records.</li>
+          <li>You may add up to 4 additional guests if applicable.</li>
+          <li>Each additional guest can have their own attendance and dietary details.</li>
+          <li>If your plans change later, we can build an edit RSVP flow next.</li>
+        </ul>
+      </aside>
+    </section>
+  </main>
 
   <script src="js/script.js"></script>
   <script src="js/rsvp.js"></script>
