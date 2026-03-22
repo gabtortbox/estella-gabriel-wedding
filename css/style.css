@@ -335,6 +335,68 @@ a {
   color: var(--muted);
 }
 
+/* OPENING PAGE TURN */
+
+.opening-page-turn {
+  position: relative;
+  min-height: 180vh;
+  padding: 0 24px;
+}
+
+.opening-page-layer {
+  position: sticky;
+  top: 88px;
+  min-height: calc(100vh - 110px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: top center;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, border-radius 0.2s ease-out;
+  will-change: transform;
+}
+
+.opening-page-layer::before {
+  content: "";
+  position: absolute;
+  inset: 24px 0;
+  border-radius: 34px;
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,0.68), rgba(255,255,255,0.42)),
+    linear-gradient(to bottom, rgba(201, 166, 107, 0.05), rgba(255,255,255,0));
+  box-shadow: 0 28px 70px rgba(47, 41, 36, 0.08);
+  border: 1px solid rgba(47, 41, 36, 0.05);
+  z-index: 0;
+}
+
+.opening-page-layer .opening-inner {
+  position: relative;
+  z-index: 1;
+  padding: 90px 56px;
+}
+
+.opening-page-layer.is-turning {
+  box-shadow: 0 24px 60px rgba(47, 41, 36, 0.12);
+}
+
+@media (max-width: 980px) {
+  .opening-page-turn {
+    min-height: 150vh;
+  }
+
+  .opening-page-layer {
+    top: 92px;
+    min-height: auto;
+  }
+
+  .opening-page-layer .opening-inner {
+    padding: 48px 24px;
+  }
+
+  .opening-page-layer::before {
+    inset: 12px 0;
+  }
+}
+
 .photobook-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
