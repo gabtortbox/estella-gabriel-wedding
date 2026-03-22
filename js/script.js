@@ -2,20 +2,22 @@ document.addEventListener("DOMContentLoaded", () => {
   // Scroll reveal
   const revealItems = document.querySelectorAll(".reveal");
 
-  if (revealItems.length) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-          }
-        });
-      },
-      { threshold: 0.16 }
-    );
+if (revealItems.length) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+        } else {
+          entry.target.classList.remove("is-visible");
+        }
+      });
+    },
+    { threshold: 0.16 }
+  );
 
-    revealItems.forEach((item) => observer.observe(item));
-  }
+  revealItems.forEach((item) => observer.observe(item));
+}
 
   // Hero parallax
   const heroImage = document.querySelector(".hero-image");
