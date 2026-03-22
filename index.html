@@ -17,79 +17,117 @@
     <nav class="site-nav">
       <a href="#journey">Our Journey</a>
       <a href="#celebration">The Celebration</a>
-      <a href="#guests">Guest Information</a>
+      <a href="#guests">For Our Guests</a>
       <a href="rsvp.html">RSVP</a>
     </nav>
   </header>
 
   <main>
-    <section class="hero-section">
-      <div class="hero-image-wrap">
-        <img src="assets/photos/hero.jpg" alt="Estella and Gabriel" class="hero-image" />        <div class="hero-overlay"></div>
+    <!-- COVER SPREAD -->
+    <section class="cover-spread">
+      <div class="cover-paper-layer cover-paper-back"></div>
+      <div class="cover-paper-layer cover-paper-front"></div>
+
+      <div class="cover-photo-wrap">
+        <img src="assets/photos/hero.jpg" alt="Estella and Gabriel" class="cover-photo" />
+        <div class="cover-photo-overlay"></div>
       </div>
 
-      <div class="hero-content reveal">
-        <p class="eyebrow">A journey worth celebrating</p>
-        <h1>Estella & Gabriel</h1>
-        <p class="hero-meta">11 July 2027 • Aloes Ballroom, Sentosa</p>
-        <p class="hero-text">
-          A celebration of love, memory, family, and the beautiful roads that brought us here.
-        </p>
+      <div class="cover-route-line" aria-hidden="true">
+        <span class="route-dot route-dot-start"></span>
+        <span class="route-dot route-dot-end"></span>
+      </div>
 
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="rsvp.html">RSVP</a>
-          <a class="btn btn-secondary" href="#celebration">View Details</a>
+      <div class="cover-content">
+        <div class="cover-top-details reveal">
+          <span class="micro-label">Singapore</span>
+          <span class="micro-divider"></span>
+          <span class="micro-label">11 July 2027</span>
+          <span class="micro-divider"></span>
+          <span class="micro-label">Aloes Ballroom, Sentosa</span>
+        </div>
+
+        <div class="cover-title-block reveal">
+          <p class="cover-kicker">A travel editorial photobook</p>
+          <h1>Estella <span>&</span> Gabriel</h1>
+          <p class="cover-subtitle">
+            A celebration of love, memory, and the beautiful roads that brought us here.
+          </p>
+        </div>
+
+        <div class="cover-bottom-row reveal">
+          <div class="stamp-mark">
+            <span>11.07.2027</span>
+          </div>
+
+          <div class="cover-actions">
+            <a class="btn btn-primary" href="rsvp.html">RSVP</a>
+            <a class="btn btn-secondary-dark" href="#journey">Open the Story</a>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="intro-section reveal">
-      <div class="intro-inner">
-        <p class="section-tag">Chapter One</p>
-        <h2>Our story has always felt like a journey.</h2>
-        <p>
-          Not rushed, not straight, not predictable. Just full of moments, places, timing,
-          and quiet turns that slowly became something lasting.
-        </p>
+    <!-- OPENING NOTE -->
+    <section class="opening-spread reveal">
+      <div class="opening-inner">
+        <div class="opening-left">
+          <p class="section-tag">Opening Note</p>
+          <h2>Some stories are less about where they begin, and more about how they quietly become home.</h2>
+        </div>
+        <div class="opening-right">
+          <p>
+            This celebration is our way of gathering the people who shaped us, stood by us,
+            and helped turn a journey into something lasting.
+          </p>
+        </div>
       </div>
     </section>
 
-    <section class="journey-section" id="journey">
+    <!-- JOURNEY PREVIEW -->
+    <section class="journey-preview" id="journey">
       <div class="section-heading reveal">
         <p class="section-tag">Our Journey</p>
-        <h2>A few places in the story</h2>
+        <h2>A few pages from the story</h2>
       </div>
 
-      <div class="journey-grid">
-        <article class="story-card reveal">
-          <img src="assets/photos/journey-1.jpg" alt="A memory from our story" />
-          <div class="story-copy">
+      <div class="photobook-grid">
+        <article class="photobook-card reveal tilt-card">
+          <div class="photo-frame">
+            <img src="assets/photos/journey-1.jpg" alt="A memory from our story" />
+          </div>
+          <div class="photobook-copy">
             <p class="story-label">Chapter 01</p>
             <h3>Where it began</h3>
-            <p>Some stories start loudly. Ours took its time, then stayed.</p>
+            <p>Some beginnings arrive softly, then stay for good.</p>
           </div>
         </article>
 
-        <article class="story-card reveal">
-          <img src="assets/photos/journey-2.jpg" alt="A memory from our story" />
-          <div class="story-copy">
+        <article class="photobook-card reveal tilt-card">
+          <div class="photo-frame">
+            <img src="assets/photos/journey-2.jpg" alt="A memory from our story" />
+          </div>
+          <div class="photobook-copy">
             <p class="story-label">Chapter 02</p>
-            <h3>Growing closer</h3>
-            <p>What felt familiar slowly became essential.</p>
+            <h3>Becoming us</h3>
+            <p>With time, steadiness, and all the in-between moments.</p>
           </div>
         </article>
 
-        <article class="story-card reveal">
-          <img src="assets/photos/journey-3.jpg" alt="A memory from our story" />
-          <div class="story-copy">
+        <article class="photobook-card reveal tilt-card">
+          <div class="photo-frame">
+            <img src="assets/photos/journey-3.jpg" alt="A memory from our story" />
+          </div>
+          <div class="photobook-copy">
             <p class="story-label">Chapter 03</p>
-            <h3>Choosing forever</h3>
-            <p>And now, with joy, we invite you into the next chapter.</p>
+            <h3>The next page</h3>
+            <p>And now, with joy, we invite you into the chapter ahead.</p>
           </div>
         </article>
       </div>
     </section>
 
+    <!-- CELEBRATION PREVIEW -->
     <section class="celebration-section" id="celebration">
       <div class="celebration-media reveal">
         <img src="assets/photos/celebration.jpg" alt="Celebration setting" />
@@ -124,9 +162,10 @@
       </div>
     </section>
 
+    <!-- GUESTS PREVIEW -->
     <section class="guest-section" id="guests">
       <div class="section-heading reveal">
-        <p class="section-tag">Guest Information</p>
+        <p class="section-tag">For Our Guests</p>
         <h2>Everything you may need</h2>
       </div>
 
@@ -148,6 +187,7 @@
       </div>
     </section>
 
+    <!-- RSVP PREVIEW -->
     <section class="rsvp-promo-section reveal">
       <div class="rsvp-promo-card">
         <p class="section-tag">RSVP</p>
@@ -159,6 +199,7 @@
       </div>
     </section>
 
+    <!-- CLOSING -->
     <section class="closing-section">
       <div class="closing-image reveal">
         <img src="assets/photos/closing.jpg" alt="Estella and Gabriel" />
