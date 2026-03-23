@@ -36,20 +36,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateOpeningPageTurn() {
     if (!openingSection || !openingLayer) return;
-
+  
     const rect = openingSection.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
     const total = rect.height - viewportHeight;
     const progressed = Math.min(Math.max(-rect.top / total, 0), 1);
-
-    const lift = progressed * -36;
-    const scale = 1 - progressed * 0.035;
-    const rotateX = progressed * 5;
-
+  
+    const rotateY = progressed * -68;
+    const translateX = progressed * -24;
+    const translateY = progressed * -10;
+    const scale = 1 - progressed * 0.02;
+  
     openingLayer.style.transform =
-      `perspective(1200px) translateY(${lift}px) rotateX(${rotateX}deg) scale(${scale})`;
-
-    if (progressed > 0.08) {
+      `rotateY(${rotateY}deg) translateX(${translateX}px) translateY(${translateY}px) scale(${scale})`;
+  
+    if (progressed > 0.05) {
       openingLayer.classList.add("is-turning");
     } else {
       openingLayer.classList.remove("is-turning");
