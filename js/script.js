@@ -1,8 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
+  /* ---------------------------------
+     Reveal-on-scroll
+  --------------------------------- */
   const revealItems = document.querySelectorAll(".reveal");
 
   if (revealItems.length) {
-    const observer = new IntersectionObserver(
+    const revealObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -10,12 +13,17 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
       },
-      { threshold: 0.16 }
+      {
+        threshold: 0.16
+      }
     );
 
-    revealItems.forEach((item) => observer.observe(item));
+    revealItems.forEach((item) => revealObserver.observe(item));
   }
 
+  /* ---------------------------------
+     Cover motion
+  --------------------------------- */
   const coverPhoto = document.querySelector(".cover-photo");
   const coverRoute = document.querySelector(".cover-route-line");
 
@@ -31,45 +39,81 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /* ---------------------------------
+     Section 2: Horizontal journey timeline
+  --------------------------------- */
   const journeySection = document.querySelector(".journey-timeline-section");
   const journeyTrack = document.getElementById("journeyTrack");
   const journeyDots = document.querySelectorAll(".journey-dot");
   const bgLayers = document.querySelectorAll(".journey-bg-layer");
 
-  function updateJourneyTimeline() {
-    if (!journeySection || !journeyTrack) return;
-    if (window.innerWidth <= 980) return;
+  const JOURNEY_PANELS = 4;
+  let currentJourneyIndex = 0;
+
+  function getJourneyProgress() {
+    if (!journeySection) return 0;
 
     const rect = journeySection.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
-    const totalScroll = rect.height - viewportHeight;
-    const progressed = Math.min(Math.max(-rect.top / totalScroll, 0), 1);
+    const totalScrollable = journeySection.offsetHeight - viewportHeight;
 
-    const panels = 4;
-    const maxTranslate = (panels - 1) * window.innerWidth;
-    const translateX = progressed * maxTranslate;
+    if (totalScrollable <= 0) return 0;
 
-    journeyTrack.style.transform = `translateX(-${translateX}px)`;
+    const rawProgress = -rect.top / totalScrollable;
+    return Math.min(Math.max(rawProgress, 0), 1);
+  }
 
-    const activeIndex = Math.min(panels - 1, Math.floor(progressed * panels));
+  function getJourneyActiveIndex(progress) {
+    const safeProgress = Math.min(progress, 0.999999);
+    return Math.floor(safeProgress * JOURNEY_PANELS);
+  }
 
+  function updateJourneyDots(activeIndex) {
     journeyDots.forEach((dot, index) => {
       dot.classList.toggle("is-active", index === activeIndex);
     });
+  }
 
+  function updateJourneyBackgrounds(activeIndex) {
     bgLayers.forEach((layer, index) => {
       layer.classList.toggle("is-active", index === activeIndex);
     });
   }
 
-  function jumpToJourneyPanel(index) {
-    if (!journeySection || window.innerWidth <= 980) return;
+  function updateJourneyTimeline() {
+    if (!journeySection || !journeyTrack) return;
 
+    if (window.innerWidth <= 980) {
+      journeyTrack.style.transform = "none";
+      return;
+    }
+
+    const progress = getJourneyProgress();
+    const maxTranslate = (JOURNEY_PANELS - 1) * window.innerWidth;
+    const translateX = progress * maxTranslate;
+
+    journeyTrack.style.transform = `translateX(-${translateX}px)`;
+
+    const activeIndex = getJourneyActiveIndex(progress);
+    currentJourneyIndex = activeIndex;
+
+    updateJourneyDots(activeIndex);
+    updateJourneyBackgrounds(activeIndex);
+  }
+
+  function jumpToJourneyPanel(index) {
+    if (!journeySection) return;
+    if (window.innerWidth <= 980) return;
+
+    const clampedIndex = Math.max(0, Math.min(index, JOURNEY_PANELS - 1));
     const sectionTop = window.scrollY + journeySection.getBoundingClientRect().top;
     const viewportHeight = window.innerHeight;
-    const totalScroll = journeySection.offsetHeight - viewportHeight;
-    const progress = index / 4;
-    const targetY = sectionTop + totalScroll * progress;
+    const totalScrollable = journeySection.offsetHeight - viewportHeight;
+
+    if (totalScrollable <= 0) return;
+
+    const targetProgress = clampedIndex / JOURNEY_PANELS;
+    const targetY = sectionTop + totalScrollable * targetProgress;
 
     window.scrollTo({
       top: targetY,
@@ -77,20 +121,41 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  journeyDots.forEach((dot) => {
-    dot.addEventListener("click", () => {
-      const index = Number(dot.dataset.index || 0);
-      jumpToJourneyPanel(index);
+  if (journeyDots.length) {
+    journeyDots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        const index = Number(dot.dataset.index || 0);
+        jumpToJourneyPanel(index);
+      });
     });
-  });
+  }
 
-  function updateAllScrollEffects() {
+  /* ---------------------------------
+     Combined scroll updates
+  --------------------------------- */
+  let ticking = false;
+
+  function runScrollEffects() {
+    updateCoverMotion();
+    updateJourneyTimeline();
+    ticking = false;
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      window.requestAnimationFrame(runScrollEffects);
+      ticking = true;
+    }
+  }
+
+  function onResize() {
     updateCoverMotion();
     updateJourneyTimeline();
   }
 
-  updateAllScrollEffects();
+  updateCoverMotion();
+  updateJourneyTimeline();
 
-  window.addEventListener("scroll", updateAllScrollEffects, { passive: true });
-  window.addEventListener("resize", updateAllScrollEffects);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onResize);
 });
