@@ -282,32 +282,154 @@
     </section>
 
     <!-- SECTION 4: FOR OUR GUESTS -->
-    <section class="guest-section" id="guests">
-      <div class="section-heading reveal">
-        <p class="section-tag">For Our Guests</p>
-        <h2>Everything you may need</h2>
+<section class="guest-section" id="guests">
+  <div class="section-heading reveal">
+    <p class="section-tag">For Our Guests</p>
+    <h2>Everything you may need</h2>
+  </div>
+
+  <div class="guest-tabs-shell reveal">
+    <div class="guest-tab-buttons" role="tablist" aria-label="Guest information tabs">
+      <button class="guest-tab-btn is-active" data-guest-tab="directions" role="tab" aria-selected="true">
+        Directions
+      </button>
+      <button class="guest-tab-btn" data-guest-tab="helpers" role="tab" aria-selected="false">
+        Helpers
+      </button>
+      <button class="guest-tab-btn" data-guest-tab="faq" role="tab" aria-selected="false">
+        FAQ
+      </button>
+    </div>
+
+    <div class="guest-tab-panels">
+      <!-- Directions -->
+      <div class="guest-tab-panel is-active" id="guest-tab-directions" data-guest-panel="directions" role="tabpanel">
+        <div class="guest-panel-grid">
+          <div class="guest-panel-main">
+            <p class="section-tag">Directions</p>
+            <h3>Getting to Oasia Hotel Sentosa</h3>
+            <p>
+              We’ll share the best routes, arrival notes, and drop-off details here so your journey to the celebration feels smooth and easy.
+            </p>
+
+            <div class="guest-info-list">
+              <div>
+                <strong>Venue</strong>
+                <span>Oasia Hotel Sentosa, Aloes Ballroom</span>
+              </div>
+              <div>
+                <strong>By Car / Taxi</strong>
+                <span>Drop-off and parking details will be updated closer to the day.</span>
+              </div>
+              <div>
+                <strong>By Public Transport</strong>
+                <span>Nearest station and walking guidance will be added here.</span>
+              </div>
+              <div>
+                <strong>Arrival Tip</strong>
+                <span>We recommend arriving a little before the stated start time.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="guest-panel-side">
+            <div class="guest-mini-card">
+              <h4>Parking</h4>
+              <p>Closest lots and walking path to the ballroom.</p>
+            </div>
+            <div class="guest-mini-card">
+              <h4>Drop-off</h4>
+              <p>Best arrival point for taxis and ride-hailing.</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="guest-cards">
-        <article class="info-card reveal">
-          <h3>Directions</h3>
-          <p>Travel routes, drop-off notes, parking details, and the easiest ways to get to the venue.</p>
-          <a class="btn btn-primary" href="directions.html">View Directions</a>
-        </article>
+      <!-- Helpers -->
+      <div class="guest-tab-panel" id="guest-tab-helpers" data-guest-panel="helpers" role="tabpanel">
+        <div class="guest-panel-grid">
+          <div class="guest-panel-main">
+            <p class="section-tag">Helpers</p>
+            <h3>Friendly faces on the day</h3>
+            <p>
+              If you need help finding your way, have a question, or are unsure where to go, these are the familiar faces who will be around to assist.
+            </p>
 
-        <article class="info-card reveal">
-          <h3>Helpers</h3>
-          <p>Friendly faces and day-of contacts who can help if you need anything along the way.</p>
-          <a class="btn btn-primary" href="helpers.html">Meet the Helpers</a>
-        </article>
+            <div class="helper-list">
+              <div class="helper-row">
+                <strong>Name Placeholder</strong>
+                <span>Guest support / reception flow</span>
+              </div>
+              <div class="helper-row">
+                <strong>Name Placeholder</strong>
+                <span>Family coordination / logistics</span>
+              </div>
+              <div class="helper-row">
+                <strong>Name Placeholder</strong>
+                <span>Directions / venue assistance</span>
+              </div>
+            </div>
+          </div>
 
-        <article class="info-card reveal">
-          <h3>FAQ</h3>
-          <p>Answers to common questions on timing, dress code, additional guests, dietary details, and more.</p>
-          <a class="btn btn-primary" href="advisory.html">Read FAQs</a>
-        </article>
+          <div class="guest-panel-side">
+            <div class="guest-mini-card">
+              <h4>Need Help?</h4>
+              <p>We’ll add day-of contact details here later if needed.</p>
+            </div>
+            <div class="guest-mini-card">
+              <h4>Easy to Spot</h4>
+              <p>Helpers can later be marked with a small icon or colour cue.</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
+
+      <!-- FAQ -->
+      <div class="guest-tab-panel" id="guest-tab-faq" data-guest-panel="faq" role="tabpanel">
+        <div class="guest-panel-grid">
+          <div class="guest-panel-main">
+            <p class="section-tag">FAQ</p>
+            <h3>Some helpful answers</h3>
+
+            <div class="faq-list">
+              <div class="faq-item">
+                <strong>When should I arrive?</strong>
+                <p>We recommend arriving a little before the programme begins so you can settle in comfortably.</p>
+              </div>
+
+              <div class="faq-item">
+                <strong>Can I bring additional guests?</strong>
+                <p>Please follow the details stated in your invitation. If you are unsure, feel free to check with us.</p>
+              </div>
+
+              <div class="faq-item">
+                <strong>What if I have dietary restrictions?</strong>
+                <p>Please include them in your RSVP so we can make the necessary arrangements.</p>
+              </div>
+
+              <div class="faq-item">
+                <strong>How do I update my RSVP?</strong>
+                <p>We’ll be adding an RSVP update flow later, or you may contact us directly in the meantime.</p>
+              </div>
+
+              <div class="faq-item">
+                <strong>What should I wear?</strong>
+                <p>Dress code details will be shared here once finalised.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="guest-panel-side">
+            <div class="guest-mini-card">
+              <h4>More Details Later</h4>
+              <p>We’ll continue updating this section as plans are finalised.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
     <!-- SECTION 5: RSVP PROMPT -->
     <section class="rsvp-promo-section reveal">
