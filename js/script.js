@@ -48,7 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const bgLayers = document.querySelectorAll(".journey-bg-layer");
 
   const JOURNEY_PANELS = 4;
-  let currentJourneyIndex = 0;
 
   function getJourneyProgress() {
     if (!journeySection) return 0;
@@ -95,8 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
     journeyTrack.style.transform = `translateX(-${translateX}px)`;
 
     const activeIndex = getJourneyActiveIndex(progress);
-    currentJourneyIndex = activeIndex;
-
     updateJourneyDots(activeIndex);
     updateJourneyBackgrounds(activeIndex);
   }
@@ -126,6 +123,34 @@ document.addEventListener("DOMContentLoaded", () => {
       dot.addEventListener("click", () => {
         const index = Number(dot.dataset.index || 0);
         jumpToJourneyPanel(index);
+      });
+    });
+  }
+
+  /* ---------------------------------
+     Section 4: Guest tabs
+  --------------------------------- */
+  const guestTabButtons = document.querySelectorAll(".guest-tab-btn");
+  const guestTabPanels = document.querySelectorAll(".guest-tab-panel");
+
+  function setGuestTab(tabName) {
+    guestTabButtons.forEach((button) => {
+      const isActive = button.dataset.guestTab === tabName;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+
+    guestTabPanels.forEach((panel) => {
+      const isActive = panel.dataset.guestPanel === tabName;
+      panel.classList.toggle("is-active", isActive);
+    });
+  }
+
+  if (guestTabButtons.length) {
+    guestTabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const tabName = button.dataset.guestTab;
+        if (tabName) setGuestTab(tabName);
       });
     });
   }
