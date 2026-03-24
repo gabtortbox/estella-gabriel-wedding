@@ -31,39 +31,66 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const openingSection = document.querySelector(".opening-page-turn");
-  const openingLayer = document.querySelector(".opening-page-layer");
+  const journeySection = document.querySelector(".journey-timeline-section");
+  const journeyTrack = document.getElementById("journeyTrack");
+  const journeyDots = document.querySelectorAll(".journey-dot");
+  const bgLayers = document.querySelectorAll(".journey-bg-layer");
 
-  function updateOpeningPageTurn() {
-    if (!openingSection || !openingLayer) return;
-  
-    const rect = openingSection.getBoundingClientRect();
+  function updateJourneyTimeline() {
+    if (!journeySection || !journeyTrack) return;
+    if (window.innerWidth <= 980) return;
+
+    const rect = journeySection.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
-    const total = rect.height - viewportHeight;
-    const progressed = Math.min(Math.max(-rect.top / total, 0), 1);
-  
-    const rotateY = progressed * -68;
-    const translateX = progressed * -24;
-    const translateY = progressed * -10;
-    const scale = 1 - progressed * 0.02;
-  
-    openingLayer.style.transform =
-      `rotateY(${rotateY}deg) translateX(${translateX}px) translateY(${translateY}px) scale(${scale})`;
-  
-    if (progressed > 0.05) {
-      openingLayer.classList.add("is-turning");
-    } else {
-      openingLayer.classList.remove("is-turning");
-    }
+    const totalScroll = rect.height - viewportHeight;
+    const progressed = Math.min(Math.max(-rect.top / totalScroll, 0), 1);
+
+    const panels = 4;
+    const maxTranslate = (panels - 1) * window.innerWidth;
+    const translateX = progressed * maxTranslate;
+
+    journeyTrack.style.transform = `translateX(-${translateX}px)`;
+
+    const activeIndex = Math.min(panels - 1, Math.floor(progressed * panels));
+
+    journeyDots.forEach((dot, index) => {
+      dot.classList.toggle("is-active", index === activeIndex);
+    });
+
+    bgLayers.forEach((layer, index) => {
+      layer.classList.toggle("is-active", index === activeIndex);
+    });
   }
 
-  function updateScrollEffects() {
+  function jumpToJourneyPanel(index) {
+    if (!journeySection || window.innerWidth <= 980) return;
+
+    const sectionTop = window.scrollY + journeySection.getBoundingClientRect().top;
+    const viewportHeight = window.innerHeight;
+    const totalScroll = journeySection.offsetHeight - viewportHeight;
+    const progress = index / 4;
+    const targetY = sectionTop + totalScroll * progress;
+
+    window.scrollTo({
+      top: targetY,
+      behavior: "smooth"
+    });
+  }
+
+  journeyDots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      const index = Number(dot.dataset.index || 0);
+      jumpToJourneyPanel(index);
+    });
+  });
+
+  function updateAllScrollEffects() {
     updateCoverMotion();
-    updateOpeningPageTurn();
+    updateJourneyTimeline();
   }
 
-  updateScrollEffects();
+  updateAllScrollEffects();
 
-  window.addEventListener("scroll", updateScrollEffects, { passive: true });
-  window.addEventListener("resize", updateScrollEffects);
+  window.addEventListener("scroll", updateAllScrollEffects, { passive: true });
+  window.addEventListener("resize", updateAllScrollEffects);
 });
