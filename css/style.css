@@ -298,16 +298,16 @@ textarea {
 /* remove hero route graphic */
 .cover-route-line {
   display: none;
-}
+}c
 
 .cover-content {
   position: relative;
   z-index: 3;
   width: min(1180px, 100%);
   min-height: calc(100vh - 196px);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-items: stretch;
   color: #fffaf3;
 }
 
@@ -341,19 +341,22 @@ textarea {
 }
 
 .cover-title-block {
-  max-width: 780px;
-  margin-top: auto;
-  margin-bottom: auto;
-  padding: clamp(28px, 4vw, 42px);
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  transform: translate(-50%, -50%);
+  width: min(760px, calc(100% - 48px));
+  padding: clamp(30px, 4vw, 46px);
   border-radius: 30px;
   background: linear-gradient(
     135deg,
-    rgba(32, 24, 18, 0.28),
-    rgba(32, 24, 18, 0.12)
+    rgba(32, 24, 18, 0.18),
+    rgba(32, 24, 18, 0.06)
   );
-  border: 1px solid rgba(255, 250, 243, 0.12);
-  box-shadow: 0 22px 60px rgba(18, 14, 11, 0.16);
-  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 250, 243, 0.1);
+  box-shadow: 0 22px 60px rgba(18, 14, 11, 0.12);
+  backdrop-filter: blur(8px);
+  text-align: center;
 }
 
 /* remove little helper label */
@@ -362,12 +365,12 @@ textarea {
 }
 
 .cover-title-block h1 {
-  margin: 0 0 18px;
+  margin: 0 0 20px;
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(4.8rem, 10vw, 8.6rem);
-  line-height: 0.88;
+  font-size: clamp(5.8rem, 11vw, 9.8rem);
+  line-height: 0.86;
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
 }
 
 .cover-title-block h1 span {
@@ -376,16 +379,16 @@ textarea {
 }
 
 .cover-subtitle {
-  max-width: 650px;
-  margin: 0;
-  font-size: 1.18rem;
-  line-height: 1.78;
-  color: rgba(255, 250, 243, 0.94);
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1.28rem;
+  line-height: 1.82;
+  color: rgba(255, 250, 243, 0.95);
 }
 
 .cover-bottom-row {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: end;
   gap: 24px;
   flex-wrap: wrap;
@@ -400,9 +403,11 @@ textarea {
 /* keep only RSVP button */
 .cover-actions {
   display: flex;
+  justify-content: center;
   gap: 14px;
   flex-wrap: wrap;
   align-items: center;
+  margin-top: 18px;
 }
 
 .cover-actions .btn-secondary-dark {
@@ -1337,16 +1342,20 @@ textarea {
   }
 
   .cover-title-block {
+    left: 50%;
+    top: 54%;
+    transform: translate(-50%, -50%);
+    width: min(92%, 92%);
     padding: 24px 20px;
     border-radius: 24px;
   }
-
+  
   .cover-title-block h1 {
-    font-size: clamp(3.7rem, 13vw, 5.6rem);
+    font-size: clamp(4.6rem, 15vw, 6.4rem);
   }
-
+  
   .cover-subtitle {
-    font-size: 1.02rem;
+    font-size: 1.06rem;
     line-height: 1.72;
   }
 
