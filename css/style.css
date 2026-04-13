@@ -224,8 +224,8 @@ textarea {
   justify-content: center;
   overflow: hidden;
   background:
-    radial-gradient(circle at 14% 18%, rgba(201, 166, 107, 0.1), transparent 28%),
-    radial-gradient(circle at 84% 84%, rgba(141, 120, 100, 0.08), transparent 24%),
+    radial-gradient(circle at 14% 18%, rgba(201, 166, 107, 0.08), transparent 28%),
+    radial-gradient(circle at 84% 84%, rgba(141, 120, 100, 0.06), transparent 24%),
     linear-gradient(to bottom, #f5eee4, #f7f2ea 46%, #f4ede2);
 }
 
@@ -234,7 +234,7 @@ textarea {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.16;
+  opacity: 0.12;
   background-image:
     radial-gradient(circle at 20% 20%, rgba(47, 41, 36, 0.07) 0.7px, transparent 0.8px),
     radial-gradient(circle at 80% 40%, rgba(47, 41, 36, 0.05) 0.7px, transparent 0.8px),
@@ -251,13 +251,13 @@ textarea {
 
 .cover-paper-back {
   background: rgba(255, 255, 255, 0.38);
-  transform: rotate(-1.25deg);
+  transform: rotate(-1deg);
   box-shadow: var(--shadow-soft);
 }
 
 .cover-paper-front {
-  background: rgba(255, 251, 245, 0.5);
-  transform: rotate(0.85deg);
+  background: rgba(255, 251, 245, 0.52);
+  transform: rotate(0.55deg);
   box-shadow: var(--shadow);
 }
 
@@ -274,7 +274,7 @@ textarea {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at center, transparent 48%, rgba(16, 12, 9, 0.18) 100%);
+    radial-gradient(circle at center, transparent 46%, rgba(16, 12, 9, 0.14) 100%);
   pointer-events: none;
 }
 
@@ -291,47 +291,13 @@ textarea {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to bottom, rgba(17, 13, 10, 0.08), rgba(17, 13, 10, 0.34)),
-    linear-gradient(to right, rgba(20, 16, 12, 0.22), rgba(20, 16, 12, 0.04) 42%, rgba(20, 16, 12, 0.12));
+    linear-gradient(to bottom, rgba(17, 13, 10, 0.06), rgba(17, 13, 10, 0.26)),
+    linear-gradient(to right, rgba(20, 16, 12, 0.24), rgba(20, 16, 12, 0.08) 42%, rgba(20, 16, 12, 0.08));
 }
 
+/* remove hero route graphic */
 .cover-route-line {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  will-change: transform;
-}
-
-.cover-route-line::before {
-  content: "";
-  position: absolute;
-  top: 22%;
-  left: 11%;
-  width: 42%;
-  height: 28%;
-  border-top: 2px dashed rgba(255, 248, 239, 0.5);
-  border-right: 2px dashed rgba(255, 248, 239, 0.5);
-  border-radius: 0 300px 0 0;
-  transform: rotate(3deg);
-}
-
-.route-dot {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #fff8ef;
-  box-shadow: 0 0 0 8px rgba(255, 248, 239, 0.13);
-}
-
-.route-dot-start {
-  top: 21.5%;
-  left: 10.7%;
-}
-
-.route-dot-end {
-  top: 33.6%;
-  left: 52%;
+  display: none;
 }
 
 .cover-content {
@@ -358,16 +324,14 @@ textarea {
 }
 
 .micro-divider {
-  width: 22px;
-  height: 1px;
-  background: rgba(255, 250, 243, 0.4);
+  display: none;
 }
 
 .cover-top-details .micro-label {
   min-height: 34px;
   padding: 0 14px;
   border-radius: 999px;
-  background: rgba(255, 250, 243, 0.1);
+  background: rgba(255, 250, 243, 0.12);
   border: 1px solid rgba(255, 250, 243, 0.18);
   backdrop-filter: blur(10px);
   color: rgba(255, 250, 243, 0.92);
@@ -377,33 +341,33 @@ textarea {
 }
 
 .cover-title-block {
-  max-width: 760px;
+  max-width: 780px;
   margin-top: auto;
   margin-bottom: auto;
-  padding: clamp(26px, 4vw, 38px);
+  padding: clamp(28px, 4vw, 42px);
   border-radius: 30px;
   background: linear-gradient(
     135deg,
-    rgba(32, 24, 18, 0.34),
-    rgba(32, 24, 18, 0.18)
+    rgba(32, 24, 18, 0.28),
+    rgba(32, 24, 18, 0.12)
   );
-  border: 1px solid rgba(255, 250, 243, 0.14);
-  box-shadow: 0 22px 60px rgba(18, 14, 11, 0.18);
-  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 250, 243, 0.12);
+  box-shadow: 0 22px 60px rgba(18, 14, 11, 0.16);
+  backdrop-filter: blur(10px);
 }
 
+/* remove little helper label */
 .cover-kicker {
-  margin: 0 0 12px;
-  color: rgba(255, 250, 243, 0.78);
+  display: none;
 }
 
 .cover-title-block h1 {
-  margin: 0 0 16px;
+  margin: 0 0 18px;
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(3.9rem, 9vw, 7.2rem);
-  line-height: 0.9;
+  font-size: clamp(4.8rem, 10vw, 8.6rem);
+  line-height: 0.88;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 .cover-title-block h1 span {
@@ -412,42 +376,52 @@ textarea {
 }
 
 .cover-subtitle {
-  max-width: 580px;
+  max-width: 650px;
   margin: 0;
-  font-size: 1.08rem;
-  line-height: 1.75;
-  color: rgba(255, 250, 243, 0.92);
+  font-size: 1.18rem;
+  line-height: 1.78;
+  color: rgba(255, 250, 243, 0.94);
 }
 
 .cover-bottom-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: end;
   gap: 24px;
   flex-wrap: wrap;
+  min-height: 24px;
 }
 
+/* remove bottom date stamp */
 .stamp-mark {
-  width: 112px;
-  height: 112px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255, 250, 243, 0.55);
-  display: grid;
-  place-items: center;
-  transform: rotate(-10deg);
-  color: rgba(255, 250, 243, 0.9);
-  font-family: "Space Mono", monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  background: rgba(255, 250, 243, 0.06);
-  backdrop-filter: blur(8px);
+  display: none;
 }
 
+/* keep only RSVP button */
 .cover-actions {
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
+  align-items: center;
+}
+
+.cover-actions .btn-secondary-dark {
+  display: none;
+}
+
+/* remove editorial helper note */
+.cover-bottom-note {
+  display: none;
+}
+
+/* quiet scroll cue */
+.cover-bottom-row::after {
+  content: "Scroll to begin";
+  font-family: "Space Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.68rem;
+  color: rgba(255, 250, 243, 0.72);
 }
 
 /* SECTION 2: HORIZONTAL JOURNEY TIMELINE */
@@ -630,7 +604,6 @@ textarea {
   position: relative;
 }
 
-/* Spread 1 visuals */
 .journey-photo-stack {
   position: relative;
   min-height: 520px;
@@ -669,7 +642,6 @@ textarea {
   transform: rotate(-4deg);
 }
 
-/* Spread 2 visuals */
 .postcard-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -699,7 +671,6 @@ textarea {
   color: var(--accent-deep);
 }
 
-/* Spread 3 visuals */
 .journey-depth-layout {
   position: relative;
   min-height: 560px;
@@ -739,7 +710,6 @@ textarea {
   border-radius: 12px;
 }
 
-/* Spread 4 visuals */
 .photo-stack-finale .jp-large {
   width: 78%;
   left: 10%;
@@ -1367,27 +1337,25 @@ textarea {
   }
 
   .cover-title-block {
-    padding: 22px 18px;
+    padding: 24px 20px;
     border-radius: 24px;
   }
 
   .cover-title-block h1 {
-    font-size: clamp(3rem, 12vw, 4.9rem);
+    font-size: clamp(3.7rem, 13vw, 5.6rem);
   }
 
   .cover-subtitle {
-    font-size: 0.98rem;
-    line-height: 1.7;
+    font-size: 1.02rem;
+    line-height: 1.72;
   }
 
   .cover-bottom-row {
     align-items: start;
   }
 
-  .stamp-mark {
-    width: 88px;
-    height: 88px;
-    font-size: 0.58rem;
+  .cover-bottom-row::after {
+    font-size: 0.62rem;
   }
 
   .cover-photo-wrap {
