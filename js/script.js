@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const siteHeader = document.querySelector(".site-header");
+
   /* ---------------------------------
      Reveal-on-scroll
   --------------------------------- */
@@ -22,20 +24,33 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ---------------------------------
+     Header state
+  --------------------------------- */
+  function updateHeaderState() {
+    if (!siteHeader) return;
+    siteHeader.classList.toggle("is-scrolled", window.scrollY > 24);
+  }
+
+  /* ---------------------------------
      Cover motion
   --------------------------------- */
   const coverPhoto = document.querySelector(".cover-photo");
   const coverRoute = document.querySelector(".cover-route-line");
+  const coverTitleBlock = document.querySelector(".cover-title-block");
 
   function updateCoverMotion() {
     const offset = window.scrollY;
 
     if (coverPhoto) {
-      coverPhoto.style.transform = `scale(1.04) translateY(${offset * 0.06}px)`;
+      coverPhoto.style.transform = `scale(1.06) translateY(${offset * 0.045}px)`;
     }
 
     if (coverRoute) {
       coverRoute.style.transform = `translateY(${offset * 0.03}px)`;
+    }
+
+    if (coverTitleBlock) {
+      coverTitleBlock.style.transform = `translateY(${offset * 0.02}px)`;
     }
   }
 
@@ -161,6 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let ticking = false;
 
   function runScrollEffects() {
+    updateHeaderState();
     updateCoverMotion();
     updateJourneyTimeline();
     ticking = false;
@@ -174,10 +190,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function onResize() {
+    updateHeaderState();
     updateCoverMotion();
     updateJourneyTimeline();
   }
 
+  updateHeaderState();
   updateCoverMotion();
   updateJourneyTimeline();
 
