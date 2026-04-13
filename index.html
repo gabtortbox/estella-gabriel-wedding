@@ -12,61 +12,92 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body class="editorial-site">
-  <header class="site-header">
-    <div class="brand">Estella & Gabriel</div>
-    <nav class="site-nav">
-      <a href="#journey">Our Journey</a>
-      <a href="#celebration">The Celebration</a>
-      <a href="#guests">For Our Guests</a>
-      <a href="rsvp.html">RSVP</a>
-    </nav>
-  </header>
+  <header class="site-header" id="siteHeader">
+  <div class="header-left">
+    <a href="index.html#cover" class="brand brand-lockup">
+      <span class="brand-names">Estella & Gabriel</span>
+      <span class="brand-meta">11 July 2027 • Sentosa</span>
+    </a>
+  </div>
+
+  <nav class="site-nav" aria-label="Primary">
+    <a href="#journey">Our Journey</a>
+    <a href="#celebration">The Celebration</a>
+    <a href="#guests">For Our Guests</a>
+    <a href="rsvp.html" class="nav-rsvp-link">RSVP</a>
+  </nav>
+</header>
 
   <main>
     <!-- SECTION 1: COVER -->
     <section class="cover-spread" id="cover">
-      <div class="cover-paper-layer cover-paper-back"></div>
-      <div class="cover-paper-layer cover-paper-front"></div>
+  <div class="cover-atmosphere"></div>
+  <div class="cover-grain"></div>
 
-      <div class="cover-photo-wrap">
-        <img src="assets/photos/hero.jpg" alt="Estella and Gabriel" class="cover-photo" />
-        <div class="cover-photo-overlay"></div>
+  <div class="cover-paper-layer cover-paper-back"></div>
+  <div class="cover-paper-layer cover-paper-middle"></div>
+  <div class="cover-paper-layer cover-paper-front"></div>
+
+  <div class="cover-photo-wrap">
+    <img src="assets/photos/hero.jpg" alt="Estella and Gabriel" class="cover-photo" />
+    <div class="cover-photo-overlay"></div>
+    <div class="cover-photo-vignette"></div>
+  </div>
+
+  <div class="cover-route-line" aria-hidden="true">
+    <span class="route-dot route-dot-start"></span>
+    <span class="route-dot route-dot-end"></span>
+  </div>
+
+  <div class="cover-content">
+    <div class="cover-top-details reveal">
+      <div class="cover-meta-chip">
+        <span class="micro-label">Singapore</span>
       </div>
-
-      <div class="cover-route-line" aria-hidden="true">
-        <span class="route-dot route-dot-start"></span>
-        <span class="route-dot route-dot-end"></span>
+      <div class="cover-meta-chip">
+        <span class="micro-label">11 July 2027</span>
       </div>
+      <div class="cover-meta-chip">
+        <span class="micro-label">Aloes Ballroom</span>
+      </div>
+    </div>
 
-      <div class="cover-content">
-        <div class="cover-top-details reveal">
-          <span class="micro-label">Singapore</span>
-          <span class="micro-divider"></span>
-          <span class="micro-label">11 July 2027</span>
-          <span class="micro-divider"></span>
-          <span class="micro-label">Aloes Ballroom, Oasia Hotel Sentosa</span>
+    <div class="cover-editorial-panel reveal">
+      <p class="cover-kicker">A Travel Editorial Keepsake</p>
+      <h1>Estella <span>&</span> Gabriel</h1>
+      <p class="cover-subtitle">
+        A story shaped by friendship, adventure, and the journeys that brought us here.
+      </p>
+
+      <div class="cover-panel-footer">
+        <div class="cover-location-block">
+          <span class="cover-location-label">Celebration</span>
+          <strong>Oasia Hotel Sentosa, Singapore</strong>
         </div>
 
-        <div class="cover-title-block reveal">
-          <p class="cover-kicker">Travel Editorial Photobook</p>
-          <h1>Estella <span>&</span> Gabriel</h1>
-          <p class="cover-subtitle">
-            A story shaped by friendship, adventure, and the journeys that brought us here.
-          </p>
-        </div>
+        <div class="cover-panel-line"></div>
 
-        <div class="cover-bottom-row reveal">
-          <div class="stamp-mark">
-            <span>11.07.2027</span>
-          </div>
-
-          <div class="cover-actions">
-            <a class="btn btn-primary" href="rsvp.html">RSVP</a>
-            <a class="btn btn-secondary-dark" href="#journey">Open the Story</a>
-          </div>
+        <div class="cover-actions">
+          <a class="btn btn-primary" href="rsvp.html">RSVP</a>
+          <a class="btn btn-secondary-dark" href="#journey">Begin the Journey</a>
         </div>
       </div>
-    </section>
+    </div>
+
+    <div class="cover-bottom-row reveal">
+      <div class="stamp-mark stamp-mark-large">
+        <span>11.07.2027</span>
+      </div>
+
+      <div class="cover-bottom-note">
+        <span class="micro-label">Editorial Edition</span>
+        <p>
+          For our family and friends, with love.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
 
     <!-- SECTION 2: OUR JOURNEY -->
     <section class="journey-timeline-section" id="journey">
