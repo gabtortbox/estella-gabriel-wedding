@@ -379,11 +379,12 @@ textarea {
 }
 
 .cover-subtitle {
-  max-width: 700px;
+  max-width: 760px;
   margin: 0 auto;
   font-size: 1.28rem;
   line-height: 1.82;
   color: rgba(255, 250, 243, 0.95);
+  text-shadow: 0 4px 16px rgba(20, 16, 12, 0.14);
 }
 
 .cover-bottom-row {
@@ -407,7 +408,7 @@ textarea {
   gap: 14px;
   flex-wrap: wrap;
   align-items: center;
-  margin-top: 18px;
+  margin-top: 20px;
 }
 
 .cover-actions .btn-secondary-dark {
@@ -1342,17 +1343,29 @@ textarea {
   }
 
   .cover-title-block {
-    left: 50%;
-    top: 54%;
-    transform: translate(-50%, -50%);
-    width: min(92%, 92%);
-    padding: 24px 20px;
-    border-radius: 24px;
-  }
-  
-  .cover-title-block h1 {
-    font-size: clamp(4.6rem, 15vw, 6.4rem);
-  }
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%);
+  width: min(980px, calc(100% - 80px));
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  backdrop-filter: none;
+  text-align: center;
+}
+
+.cover-title-block h1 {
+  margin: 0 0 18px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(6.8rem, 14vw, 11rem);
+  line-height: 0.84;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  color: #fffaf3;
+  text-shadow: 0 8px 30px rgba(20, 16, 12, 0.18);
+}
   
   .cover-subtitle {
     font-size: 1.06rem;
