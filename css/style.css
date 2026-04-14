@@ -295,10 +295,9 @@ textarea {
     linear-gradient(to right, rgba(20, 16, 12, 0.24), rgba(20, 16, 12, 0.08) 42%, rgba(20, 16, 12, 0.08));
 }
 
-/* remove hero route graphic */
 .cover-route-line {
   display: none;
-}c
+}
 
 .cover-content {
   position: relative;
@@ -313,6 +312,7 @@ textarea {
 
 .cover-top-details {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   align-items: center;
   gap: 12px;
@@ -343,34 +343,30 @@ textarea {
 .cover-title-block {
   position: absolute;
   left: 50%;
-  top: 56%;
-  transform: translate(-50%, -50%);
-  width: min(760px, calc(100% - 48px));
-  padding: clamp(30px, 4vw, 46px);
-  border-radius: 30px;
-  background: linear-gradient(
-    135deg,
-    rgba(32, 24, 18, 0.18),
-    rgba(32, 24, 18, 0.06)
-  );
-  border: 1px solid rgba(255, 250, 243, 0.1);
-  box-shadow: 0 22px 60px rgba(18, 14, 11, 0.12);
-  backdrop-filter: blur(8px);
+  top: 26%;
+  transform: translateX(-50%);
+  width: min(1200px, calc(100% - 80px));
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  backdrop-filter: none;
   text-align: center;
 }
 
-/* remove little helper label */
 .cover-kicker {
   display: none;
 }
 
 .cover-title-block h1 {
-  margin: 0 0 20px;
+  margin: 0;
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(5.8rem, 11vw, 9.8rem);
-  line-height: 0.86;
+  font-size: clamp(7.6rem, 16vw, 13rem);
+  line-height: 0.84;
   font-weight: 600;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.06em;
+  color: #fffaf3;
+  text-shadow: 0 10px 34px rgba(20, 16, 12, 0.2);
 }
 
 .cover-title-block h1 span {
@@ -379,55 +375,58 @@ textarea {
 }
 
 .cover-subtitle {
-  max-width: 760px;
-  margin: 0 auto;
-  font-size: 1.28rem;
-  line-height: 1.82;
+  position: absolute;
+  left: 50%;
+  top: 72%;
+  transform: translateX(-50%);
+  width: min(760px, calc(100% - 64px));
+  margin: 0;
+  font-size: 1.18rem;
+  line-height: 1.8;
   color: rgba(255, 250, 243, 0.95);
-  text-shadow: 0 4px 16px rgba(20, 16, 12, 0.14);
+  text-align: center;
+  text-shadow: 0 4px 16px rgba(20, 16, 12, 0.16);
 }
 
 .cover-bottom-row {
-  display: flex;
-  justify-content: center;
-  align-items: end;
-  gap: 24px;
-  flex-wrap: wrap;
-  min-height: 24px;
+  display: block;
+  min-height: 0;
 }
 
-/* remove bottom date stamp */
 .stamp-mark {
   display: none;
 }
 
-/* keep only RSVP button */
 .cover-actions {
+  position: absolute;
+  left: 50%;
+  top: 83%;
+  transform: translateX(-50%);
   display: flex;
   justify-content: center;
   gap: 14px;
   flex-wrap: wrap;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 0;
 }
 
 .cover-actions .btn-secondary-dark {
   display: none;
 }
 
-/* remove editorial helper note */
 .cover-bottom-note {
   display: none;
 }
 
-/* quiet scroll cue */
 .cover-bottom-row::after {
-  content: "Scroll to begin";
-  font-family: "Space Mono", monospace;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 0.68rem;
-  color: rgba(255, 250, 243, 0.72);
+  content: "";
+}
+
+.cover-title-block .cover-location-block,
+.cover-title-block .cover-panel-line,
+.cover-title-block strong,
+.cover-title-block .cover-location-label {
+  display: none;
 }
 
 /* SECTION 2: HORIZONTAL JOURNEY TIMELINE */
@@ -1293,6 +1292,26 @@ textarea {
   .cover-paper-layer {
     inset: 64px 12px 16px;
   }
+
+  .cover-title-block {
+    top: 24%;
+    width: min(94%, calc(100% - 32px));
+  }
+
+  .cover-title-block h1 {
+    font-size: clamp(5.6rem, 14vw, 9rem);
+  }
+
+  .cover-subtitle {
+    top: 70%;
+    width: min(86%, calc(100% - 32px));
+    font-size: 1.06rem;
+    line-height: 1.72;
+  }
+
+  .cover-actions {
+    top: 82%;
+  }
 }
 
 @media (max-width: 680px) {
@@ -1343,41 +1362,23 @@ textarea {
   }
 
   .cover-title-block {
-  position: absolute;
-  left: 50%;
-  top: 52%;
-  transform: translate(-50%, -50%);
-  width: min(980px, calc(100% - 80px));
-  padding: 0;
-  border: none;
-  box-shadow: none;
-  background: transparent;
-  backdrop-filter: none;
-  text-align: center;
-}
+    top: 23%;
+    width: min(94%, calc(100% - 24px));
+  }
 
-.cover-title-block h1 {
-  margin: 0 0 18px;
-  font-family: "Cormorant Garamond", serif;
-  font-size: clamp(6.8rem, 14vw, 11rem);
-  line-height: 0.84;
-  font-weight: 600;
-  letter-spacing: -0.05em;
-  color: #fffaf3;
-  text-shadow: 0 8px 30px rgba(20, 16, 12, 0.18);
-}
-  
+  .cover-title-block h1 {
+    font-size: clamp(4.8rem, 17vw, 7rem);
+  }
+
   .cover-subtitle {
-    font-size: 1.06rem;
-    line-height: 1.72;
+    top: 69%;
+    width: min(90%, calc(100% - 24px));
+    font-size: 1rem;
+    line-height: 1.7;
   }
 
-  .cover-bottom-row {
-    align-items: start;
-  }
-
-  .cover-bottom-row::after {
-    font-size: 0.62rem;
+  .cover-actions {
+    top: 81%;
   }
 
   .cover-photo-wrap {
