@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
   --------------------------------- */
   const coverPhoto = document.querySelector(".cover-photo");
   const coverRoute = document.querySelector(".cover-route-line");
-  const coverTitleBlock = document.querySelector(".cover-title-block");
 
   function updateCoverMotion() {
     const offset = window.scrollY;
@@ -47,10 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (coverRoute) {
       coverRoute.style.transform = `translateY(${offset * 0.03}px)`;
-    }
-
-    if (coverTitleBlock) {
-      coverTitleBlock.style.transform = `translateY(${offset * 0.02}px)`;
     }
   }
 
