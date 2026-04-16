@@ -24,6 +24,17 @@
 
     html { scroll-behavior: smooth; }
 
+    /* ── PROGRESS BAR ── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(to right, var(--sand), var(--sand-dark));
+      z-index: 200;
+      transition: width 0.1s linear;
+    }
+
     body {
       background: var(--white);
       color: var(--ink);
@@ -82,6 +93,15 @@
     nav.scrolled .nav-links a { color: var(--ink-soft); }
     .nav-links a:hover { color: white; }
     nav.scrolled .nav-links a:hover { color: var(--sand-dark); }
+    .nav-links a.active {
+      color: white;
+      border-bottom: 0.5px solid rgba(255,255,255,0.5);
+      padding-bottom: 2px;
+    }
+    nav.scrolled .nav-links a.active {
+      color: var(--ink);
+      border-bottom-color: var(--sand-dark);
+    }
 
     /* ── HERO ── */
     #hero {
@@ -104,12 +124,55 @@
       object-fit: cover;
       object-position: center 30%;
       opacity: 0;
-      animation: heroReveal 1.8s cubic-bezier(0.22,1,0.36,1) 0.1s forwards;
+      transform-origin: center center;
+      animation: heroReveal 1.8s cubic-bezier(0.22,1,0.36,1) 0.1s forwards,
+                 kenBurns 22s ease-in-out 2s infinite alternate;
+      will-change: transform, opacity;
     }
 
     @keyframes heroReveal {
-      from { opacity: 0; transform: scale(1.04); }
+      from { opacity: 0; transform: scale(1.06); }
       to   { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes kenBurns {
+      from { transform: scale(1);    object-position: center 30%; }
+      to   { transform: scale(1.07); object-position: center 38%; }
+    }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeIn 1s ease 2.2s forwards;
+    }
+    .scroll-indicator span {
+      font-family: var(--sans);
+      font-size: 0.58rem;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent);
+      animation: scrollPulse 1.8s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      51%  { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+      100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
     }
 
     .hero-overlay {
@@ -147,8 +210,12 @@
       letter-spacing: 0.08em;
       color: #fff;
       text-shadow: 0 2px 24px rgba(0,0,0,0.25);
+    }
+    .hero-names .word {
+      display: inline-block;
       opacity: 0;
-      animation: fadeUp 1s cubic-bezier(0.22,1,0.36,1) 0.9s forwards;
+      transform: translateY(20px);
+      animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
     }
 
     .hero-meta {
@@ -302,6 +369,35 @@
     .reveal-delay-2 { transition-delay: 0.2s; }
     .reveal-delay-3 { transition-delay: 0.3s; }
     .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* Directional slide reveals for story spreads */
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal-left.visible, .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Section divider draw-on */
+    .section-divider {
+      width: 40px;
+      height: 0.5px;
+      background: var(--sand);
+      margin: 1.5rem 0 2.5rem;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s;
+    }
+    .section-divider.center { transform-origin: center; margin-left: auto; margin-right: auto; }
+    .section-divider.visible { transform: scaleX(1); }
 
     /* ── STORY SECTION ── */
     #story {
@@ -748,12 +844,13 @@
         grid-row: auto;
         height: 180px;
       }
-      .hero-photo-strip { height: 18vh; }
+      .hero-photo-strip { display: none; }
       .countdown { gap: 1.5rem; }
     }
   </style>
 </head>
 <body>
+  <div id="progress-bar" aria-hidden="true"></div>
 
   <!-- NAV -->
   <nav id="nav">
@@ -786,7 +883,11 @@
         onerror="this.style.display='none'"
       />
 
-      <h1 class="hero-names">Estella &amp; Gabriel</h1>
+      <h1 class="hero-names">
+        <span class="word" style="animation-delay:0.85s">Estella</span>
+        <span class="word" style="animation-delay:1.05s">&nbsp;&amp;&nbsp;</span>
+        <span class="word" style="animation-delay:1.25s">Gabriel</span>
+      </h1>
       <p class="hero-meta">11 July 2027 &nbsp;·&nbsp; Oasia Hotel Sentosa &nbsp;·&nbsp; Singapore</p>
       <div class="hero-divider"></div>
 
@@ -814,6 +915,11 @@
         <a href="rsvp.html" class="btn filled">RSVP</a>
       </div>
     </div>
+
+    <div class="scroll-indicator" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
   </div>
 
   <!-- OUR STORY -->
@@ -821,13 +927,12 @@
     <div class="story-header reveal">
       <p class="section-label">Our Story</p>
       <h2 class="section-title">A few pages from the journey</h2>
-      <div class="section-divider" style="margin: 1.5rem auto 0;"></div>
+      <div class="section-divider center"></div>
     </div>
 
     <!-- Spread 01 -->
-    <div class="story-spread reveal">
-      <div class="story-spread-text">
-        <p class="spread-num">Spread 01</p>
+    <div class="story-spread">
+      <div class="story-spread-text reveal-left">
         <h3>Before We Knew</h3>
         <p>We first met in 2018, when we enrolled in the same course at NTU's Asian School of the Environment, studying Environmental Earth Systems Science.</p>
         <p>What began as friendship grew quietly and naturally over time. Alongside two others from the same course, we became a close group of four — spending years studying, laughing, and moving through life together. Long before this became a love story, it was already built on comfort, familiarity, and a friendship that felt easy from the start.</p>
@@ -837,7 +942,7 @@
           <span class="story-tag">Friends First</span>
         </div>
       </div>
-      <div class="story-spread-photos">
+      <div class="story-spread-photos reveal-right">
         <div class="photo-card">
           <img src="assets/photos/journey-1.jpg" alt="University memories" onerror="this.style.display='none'" />
         </div>
@@ -851,9 +956,8 @@
     </div>
 
     <!-- Spread 02 -->
-    <div class="story-spread reverse reveal reveal-delay-1">
-      <div class="story-spread-text">
-        <p class="spread-num">Spread 02</p>
+    <div class="story-spread reverse">
+      <div class="story-spread-text reveal-right">
         <h3>The Routes We Shared</h3>
         <p>As the years went on, our friendship grew through shared experiences and travel. Korea after graduation. Cebu for an outdoor adventure. Japan for snowboarding.</p>
         <p>These journeys were not just holidays, but memories that deepened our closeness, shaped our friendship, and quietly became part of the story that led us here.</p>
@@ -863,7 +967,7 @@
           <span class="story-tag">Japan</span>
         </div>
       </div>
-      <div class="story-spread-photos">
+      <div class="story-spread-photos reveal-left">
         <div class="photo-card">
           <img src="assets/photos/travel-korea.jpg" alt="Korea" onerror="this.style.display='none'" />
         </div>
@@ -877,9 +981,8 @@
     </div>
 
     <!-- Spread 03 -->
-    <div class="story-spread reveal reveal-delay-2">
-      <div class="story-spread-text">
-        <p class="spread-num">Spread 03</p>
+    <div class="story-spread">
+      <div class="story-spread-text reveal-left">
         <h3>Then It Became Us</h3>
         <p>What brought us closer was not one single moment, but a series of shared interests, choices, and experiences that slowly made the story feel different.</p>
         <p>From a baking course to a barista course at Bettr Academy, and from Tioman to Taiwan to Okinawa — we kept finding joy in learning, exploring, and discovering new things side by side. Diving, especially, became part of that journey, bringing trust, calm, and a deeper closeness that stayed with us.</p>
@@ -890,7 +993,7 @@
           <span class="story-tag">Diving</span>
         </div>
       </div>
-      <div class="story-spread-photos">
+      <div class="story-spread-photos reveal-right">
         <div class="photo-card">
           <img src="assets/photos/together-1.jpg" alt="Adventures together" onerror="this.style.display='none'" />
         </div>
@@ -904,9 +1007,8 @@
     </div>
 
     <!-- Spread 04 -->
-    <div class="story-spread reverse reveal reveal-delay-3">
-      <div class="story-spread-text">
-        <p class="spread-num">Spread 04</p>
+    <div class="story-spread reverse">
+      <div class="story-spread-text reveal-right">
         <h3>The Next Chapter</h3>
         <p>What began as friendship became partnership, and what grew through years of shared experiences, places, and quiet turns now brings us here.</p>
         <p>This celebration is not only about a day, but about the life we have been building together — shaped by the people we love and the journey that brought us here. We are so happy to share this page with you.</p>
@@ -916,7 +1018,7 @@
           <span class="story-tag">11 July 2027</span>
         </div>
       </div>
-      <div class="story-spread-photos">
+      <div class="story-spread-photos reveal-left">
         <div class="photo-card">
           <img src="assets/photos/next-1.jpg" alt="Next chapter" onerror="this.style.display='none'" />
         </div>
@@ -935,7 +1037,7 @@
     <div class="photos-header reveal">
       <p class="section-label">Us, Through the Years</p>
       <h2 class="section-title">A few of our favourite frames</h2>
-      <div class="section-divider"></div>
+      <div class="section-divider center"></div>
     </div>
     <div class="photo-mosaic reveal reveal-delay-1">
       <div class="mosaic-item p1"><img src="assets/photos/gallery-1.jpg" alt="" onerror="this.parentElement.style.background='#d5cec4'" /></div>
@@ -1146,45 +1248,99 @@
   </footer>
 
   <script>
-    // ── NAV scroll behaviour
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 60);
-    });
+    // ── Progress bar
+    const progressBar = document.getElementById('progress-bar');
+    function updateProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+    }
 
-    // ── Countdown timer
+    // ── Nav scroll + active link highlight
+    const nav = document.getElementById('nav');
+    const sections = document.querySelectorAll('section[id], div[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    function updateNav() {
+      const scrollY = window.scrollY;
+      nav.classList.toggle('scrolled', scrollY > 60);
+
+      // Active nav link
+      let current = '';
+      sections.forEach(sec => {
+        if (scrollY >= sec.offsetTop - 120) current = sec.id;
+      });
+      navLinks.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+      });
+
+      // Parallax on hero photo
+      const heroPhoto = document.querySelector('.hero-photo');
+      if (heroPhoto && scrollY < window.innerHeight) {
+        heroPhoto.style.transform = `translateY(${scrollY * 0.35}px) scale(1)`;
+      }
+
+      updateProgress();
+    }
+
+    window.addEventListener('scroll', updateNav, { passive: true });
+
+    // ── Countdown with count-up on load
     const wedding = new Date('2027-07-11T17:00:00+08:00');
-    function updateCountdown() {
+
+    function animateCountTo(el, target, duration) {
+      const start = performance.now();
+      function step(now) {
+        const t = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - t, 3);
+        el.textContent = String(Math.round(ease * target)).padStart(2, '0');
+        if (t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    let countUpDone = false;
+    function updateCountdown(initial) {
       const now = new Date();
       const diff = wedding - now;
       if (diff <= 0) {
         document.getElementById('countdown').innerHTML =
-          '<p style="font-family:var(--serif);font-size:1.5rem;font-style:italic;color:var(--sand-dark)">Today is the day! 🎉</p>';
+          '<p style="font-family:var(--serif);font-size:1.5rem;font-style:italic;color:rgba(255,255,255,0.9)">Today is the day! 🎉</p>';
         return;
       }
       const d = Math.floor(diff / 86400000);
       const h = Math.floor((diff % 86400000) / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
       const s = Math.floor((diff % 60000) / 1000);
-      document.getElementById('cd-days').textContent  = String(d).padStart(2,'0');
-      document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
-      document.getElementById('cd-mins').textContent  = String(m).padStart(2,'0');
-      document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
-    }
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
 
-    // ── Scroll reveal
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
+      if (initial && !countUpDone) {
+        countUpDone = true;
+        setTimeout(() => animateCountTo(document.getElementById('cd-days'),  d, 1200), 1600);
+        setTimeout(() => animateCountTo(document.getElementById('cd-hours'), h, 1000), 1750);
+        setTimeout(() => animateCountTo(document.getElementById('cd-mins'),  m, 900),  1900);
+        setTimeout(() => animateCountTo(document.getElementById('cd-secs'),  s, 800),  2050);
+      } else if (!initial) {
+        document.getElementById('cd-days').textContent  = String(d).padStart(2,'0');
+        document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+        document.getElementById('cd-mins').textContent  = String(m).padStart(2,'0');
+        document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
+      }
+    }
+    updateCountdown(true);
+    setInterval(() => updateCountdown(false), 1000);
+
+    // ── Scroll reveal (fade-up, slide-left, slide-right, dividers)
+    const allReveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .section-divider');
+    const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
           e.target.classList.add('visible');
-          observer.unobserve(e.target);
+          revealObserver.unobserve(e.target);
         }
       });
-    }, { threshold: 0.12 });
-    reveals.forEach(el => observer.observe(el));
+    }, { threshold: 0.1 });
+    allReveals.forEach(el => revealObserver.observe(el));
 
     // ── Tabs
     document.querySelectorAll('.tab-btn').forEach(btn => {
