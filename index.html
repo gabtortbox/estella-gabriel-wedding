@@ -4,481 +4,1211 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Estella & Gabriel | 11 July 2027</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    :root {
+      --sand: #c8b99a;
+      --sand-light: #e8ddd0;
+      --sand-pale: #f7f3ee;
+      --sand-dark: #8a7660;
+      --ink: #2a2520;
+      --ink-soft: #5a5248;
+      --white: #fdfaf7;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Jost', sans-serif;
+    }
 
-  <link rel="stylesheet" href="css/style.css" />
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 3rem;
+      transition: background 0.4s, backdrop-filter 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(253, 250, 247, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 0.5px solid var(--sand-light);
+    }
+    .nav-logo {
+      display: block;
+      text-decoration: none;
+    }
+    .nav-logo img {
+      height: 48px;
+      width: auto;
+      filter: brightness(0) invert(1);
+      opacity: 0.92;
+      transition: opacity 0.3s;
+    }
+    nav.scrolled .nav-logo img {
+      filter: none;
+      opacity: 1;
+    }
+    .nav-logo img:hover { opacity: 1; }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    nav.scrolled .nav-links a { color: var(--ink-soft); }
+    .nav-links a:hover { color: white; }
+    nav.scrolled .nav-links a:hover { color: var(--sand-dark); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background: #1a1612;
+      padding: 6rem 2rem 4rem;
+    }
+
+    .hero-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      opacity: 0;
+      animation: heroReveal 1.8s cubic-bezier(0.22,1,0.36,1) 0.1s forwards;
+    }
+
+    @keyframes heroReveal {
+      from { opacity: 0; transform: scale(1.04); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(20,16,12,0.25) 0%,
+        rgba(20,16,12,0.1) 40%,
+        rgba(20,16,12,0.45) 80%,
+        rgba(20,16,12,0.65) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-logo {
+      width: clamp(160px, 25vw, 280px);
+      margin-bottom: 2rem;
+      opacity: 0;
+      filter: brightness(0) invert(1);
+      animation: fadeUp 1.2s cubic-bezier(0.22,1,0.36,1) 0.6s forwards;
+    }
+
+    .hero-names {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: #fff;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.25);
+      opacity: 0;
+      animation: fadeUp 1s cubic-bezier(0.22,1,0.36,1) 0.9s forwards;
+    }
+
+    .hero-meta {
+      margin-top: 1rem;
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      font-weight: 300;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      opacity: 0;
+      animation: fadeUp 1s cubic-bezier(0.22,1,0.36,1) 1.1s forwards;
+    }
+
+    .hero-divider {
+      width: 48px;
+      height: 0.5px;
+      background: rgba(255,255,255,0.45);
+      margin: 1.8rem auto;
+      opacity: 0;
+      animation: fadeUp 1s ease 1.2s forwards;
+    }
+
+    /* ── COUNTDOWN ── */
+    .countdown {
+      display: flex;
+      gap: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 1s cubic-bezier(0.22,1,0.36,1) 1.3s forwards;
+    }
+    .countdown-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .countdown-num {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: #fff;
+      line-height: 1;
+      min-width: 2.5ch;
+      text-align: center;
+    }
+    .countdown-label {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .hero-cta {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 1s ease 1.5s forwards;
+    }
+    .btn {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.85rem 2rem;
+      border: 0.5px solid rgba(255,255,255,0.6);
+      color: rgba(255,255,255,0.9);
+      transition: all 0.3s;
+      background: transparent;
+    }
+    .btn:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: white;
+      color: white;
+    }
+    .btn.filled {
+      background: rgba(255,255,255,0.15);
+      color: white;
+      border-color: rgba(255,255,255,0.8);
+      backdrop-filter: blur(4px);
+    }
+    .btn.filled:hover {
+      background: white;
+      color: var(--ink);
+    }
+    /* non-hero buttons (used outside of hero) */
+    .btn-dark {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.85rem 2rem;
+      border: 0.5px solid var(--sand);
+      color: var(--ink-soft);
+      transition: all 0.3s;
+      background: transparent;
+      display: inline-block;
+    }
+    .btn-dark:hover {
+      background: var(--ink);
+      color: white;
+      border-color: var(--ink);
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      padding: 7rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--sand-dark);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.15;
+    }
+    .section-divider {
+      width: 40px;
+      height: 0.5px;
+      background: var(--sand);
+      margin: 1.5rem 0 2.5rem;
+    }
+
+    /* ── REVEAL ANIMATION ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── STORY SECTION ── */
+    #story {
+      padding: 7rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .story-header {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+
+    .story-spread {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin-bottom: 6rem;
+    }
+    .story-spread.reverse { direction: rtl; }
+    .story-spread.reverse > * { direction: ltr; }
+
+    .story-spread-text .spread-num {
+      font-family: var(--serif);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--sand);
+      margin-bottom: 0.75rem;
+    }
+    .story-spread-text h3 {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--ink);
+      margin-bottom: 1.25rem;
+      line-height: 1.2;
+    }
+    .story-spread-text p {
+      font-size: 0.92rem;
+      line-height: 1.9;
+      color: var(--ink-soft);
+      margin-bottom: 1rem;
+    }
+    .story-tags {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1.25rem;
+    }
+    .story-tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sand-dark);
+      border: 0.5px solid var(--sand-light);
+      padding: 0.35rem 0.85rem;
+    }
+
+    .story-spread-photos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .story-spread-photos .photo-card {
+      background: var(--sand-light);
+      aspect-ratio: 3/4;
+      overflow: hidden;
+    }
+    .story-spread-photos .photo-card:first-child {
+      grid-column: 1 / -1;
+      aspect-ratio: 16/9;
+    }
+    .story-spread-photos img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: sepia(0.1);
+      transition: transform 0.6s ease;
+    }
+    .story-spread-photos .photo-card:hover img { transform: scale(1.04); }
+
+    /* ── VISION ── */
+    #vision {
+      background: var(--ink);
+      max-width: 100%;
+      padding: 7rem 2rem;
+    }
+    #vision .inner {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    #vision .section-label { color: var(--sand); }
+    #vision .section-title { color: var(--white); }
+    #vision .section-divider { background: var(--sand); margin: 1.5rem auto 2.5rem; }
+    #vision p {
+      font-family: var(--serif);
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--sand-light);
+      line-height: 1.8;
+    }
+    #vision .vision-words {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 2.5rem;
+    }
+    #vision .vision-word {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--sand);
+    }
+
+    /* ── WHAT TO EXPECT ── */
+    #expect {
+      padding: 7rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    #expect .expect-header { text-align: center; margin-bottom: 4rem; }
+    .expect-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5px;
+      background: var(--sand-light);
+      border: 0.5px solid var(--sand-light);
+    }
+    .expect-card {
+      background: var(--white);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: background 0.3s;
+      cursor: default;
+    }
+    .expect-card:hover { background: var(--sand-pale); }
+    .expect-icon {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      display: block;
+      filter: grayscale(0.3);
+    }
+    .expect-card h4 {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 0.6rem;
+    }
+    .expect-card p {
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      line-height: 1.7;
+    }
+
+    /* ── SCHEDULE ── */
+    #schedule {
+      background: var(--sand-pale);
+      max-width: 100%;
+      padding: 7rem 2rem;
+    }
+    #schedule .inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    #schedule .schedule-header { margin-bottom: 3rem; }
+    .schedule-venue {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sand-dark);
+      margin-bottom: 2.5rem;
+    }
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      bottom: 0.5rem;
+      width: 0.5px;
+      background: var(--sand);
+    }
+    .timeline-item {
+      position: relative;
+      padding-bottom: 2rem;
+      padding-left: 1.5rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.5rem;
+      top: 0.4rem;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--sand);
+      border: 1.5px solid var(--sand-pale);
+      outline: 1px solid var(--sand);
+    }
+    .timeline-time {
+      font-family: var(--serif);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      color: var(--sand-dark);
+      margin-bottom: 0.25rem;
+    }
+    .timeline-event {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    /* ── PHOTOS SECTION ── */
+    #photos {
+      padding: 7rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    #photos .photos-header { margin-bottom: 3rem; }
+    .photo-mosaic {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(3, 200px);
+      gap: 6px;
+    }
+    .photo-mosaic .p1 { grid-column: 1/6; grid-row: 1/3; }
+    .photo-mosaic .p2 { grid-column: 6/10; grid-row: 1/2; }
+    .photo-mosaic .p3 { grid-column: 10/13; grid-row: 1/2; }
+    .photo-mosaic .p4 { grid-column: 6/8; grid-row: 2/3; }
+    .photo-mosaic .p5 { grid-column: 8/13; grid-row: 2/3; }
+    .photo-mosaic .p6 { grid-column: 1/5; grid-row: 3/4; }
+    .photo-mosaic .p7 { grid-column: 5/9; grid-row: 3/4; }
+    .photo-mosaic .p8 { grid-column: 9/13; grid-row: 3/4; }
+    .mosaic-item {
+      background: var(--sand-light);
+      overflow: hidden;
+    }
+    .mosaic-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: sepia(0.08) brightness(0.97);
+      transition: transform 0.7s ease, filter 0.4s ease;
+    }
+    .mosaic-item:hover img {
+      transform: scale(1.04);
+      filter: sepia(0) brightness(1);
+    }
+
+    /* ── GUEST INFO (TABBED) ── */
+    #guests {
+      padding: 7rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .guests-header { margin-bottom: 3rem; }
+    .tab-nav {
+      display: flex;
+      gap: 0;
+      border-bottom: 0.5px solid var(--sand-light);
+      margin-bottom: 3rem;
+    }
+    .tab-btn {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      background: none;
+      border: none;
+      border-bottom: 1.5px solid transparent;
+      padding: 0.85rem 1.75rem;
+      cursor: pointer;
+      margin-bottom: -0.5px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .tab-btn:hover { color: var(--ink); }
+    .tab-btn.active {
+      color: var(--ink);
+      border-bottom-color: var(--sand-dark);
+    }
+    .tab-panel { display: none; animation: fadeIn 0.4s ease; }
+    .tab-panel.active { display: block; }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    .info-block h4 {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 0.85rem;
+    }
+    .info-block p, .info-block li {
+      font-size: 0.88rem;
+      line-height: 1.85;
+      color: var(--ink-soft);
+    }
+    .info-block ul { padding-left: 1rem; }
+    .info-block strong { color: var(--ink); font-weight: 400; }
+
+    .helper-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      padding: 1.25rem 0;
+      border-bottom: 0.5px solid var(--sand-light);
+    }
+    .helper-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--sand-light);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .helper-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .helper-name {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--ink);
+    }
+    .helper-role {
+      font-size: 0.78rem;
+      color: var(--sand-dark);
+      letter-spacing: 0.08em;
+      margin-top: 0.2rem;
+    }
+
+    .faq-item {
+      border-bottom: 0.5px solid var(--sand-light);
+      padding: 1.25rem 0;
+    }
+    .faq-question {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      user-select: none;
+    }
+    .faq-question::after {
+      content: '+';
+      font-family: var(--sans);
+      font-weight: 200;
+      font-size: 1.2rem;
+      color: var(--sand);
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+    .faq-item.open .faq-question::after { transform: rotate(45deg); }
+    .faq-answer {
+      font-size: 0.88rem;
+      line-height: 1.85;
+      color: var(--ink-soft);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 200px;
+      padding-top: 0.85rem;
+    }
+
+    /* ── RSVP CTA ── */
+    #rsvp-cta {
+      background: var(--sand-pale);
+      max-width: 100%;
+      padding: 7rem 2rem;
+      text-align: center;
+    }
+    #rsvp-cta .inner { max-width: 600px; margin: 0 auto; }
+    #rsvp-cta .section-title { margin-bottom: 1rem; }
+    #rsvp-cta p {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      line-height: 1.85;
+      margin-bottom: 2.5rem;
+    }
+    #rsvp-cta .section-divider { margin: 1.5rem auto 2rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2.5rem 2rem;
+      text-align: center;
+      border-top: 0.5px solid var(--sand-light);
+    }
+    footer p {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sand-dark);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .story-spread { grid-template-columns: 1fr; gap: 2rem; }
+      .story-spread.reverse { direction: ltr; }
+      .info-grid { grid-template-columns: 1fr; }
+      .photo-mosaic {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+      }
+      .photo-mosaic .p1,
+      .photo-mosaic .p2,
+      .photo-mosaic .p3,
+      .photo-mosaic .p4,
+      .photo-mosaic .p5,
+      .photo-mosaic .p6,
+      .photo-mosaic .p7,
+      .photo-mosaic .p8 {
+        grid-column: auto;
+        grid-row: auto;
+        height: 180px;
+      }
+      .hero-photo-strip { height: 18vh; }
+      .countdown { gap: 1.5rem; }
+    }
+  </style>
 </head>
-<body class="editorial-site">
-  <header class="site-header" id="siteHeader">
-  <div class="header-left">
-    <a href="index.html#cover" class="brand brand-lockup">
-      <span class="brand-names">Estella & Gabriel</span>
-      <span class="brand-meta">11 July 2027 • Sentosa</span>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#hero" class="nav-logo">
+      <img src="assets/logo.png" alt="E&G" onerror="this.style.display='none'" />
     </a>
-  </div>
-
-  <nav class="site-nav" aria-label="Primary">
-    <a href="#journey">Our Journey</a>
-    <a href="#celebration">The Celebration</a>
-    <a href="#guests">For Our Guests</a>
-    <a href="rsvp.html" class="nav-rsvp-link">RSVP</a>
+    <ul class="nav-links">
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#expect">The Day</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#guests">Guests</a></li>
+      <li><a href="rsvp.html">RSVP</a></li>
+    </ul>
   </nav>
-</header>
 
-  <main>
-    <!-- SECTION 1: COVER -->
-    <section class="cover-spread" id="cover">
-  <div class="cover-atmosphere"></div>
-  <div class="cover-grain"></div>
+  <!-- HERO -->
+  <div id="hero">
+    <img
+      src="assets/photos/hero.jpg"
+      alt="Estella and Gabriel at Lake Tekapo, New Zealand"
+      class="hero-photo"
+    />
+    <div class="hero-overlay"></div>
 
-  <div class="cover-paper-layer cover-paper-back"></div>
-  <div class="cover-paper-layer cover-paper-middle"></div>
-  <div class="cover-paper-layer cover-paper-front"></div>
+    <div class="hero-content">
+      <img
+        src="assets/logo.png"
+        alt="Estella and Gabriel monogram"
+        class="hero-logo"
+        onerror="this.style.display='none'"
+      />
 
-  <div class="cover-photo-wrap">
-    <img src="assets/photos/hero.jpg" alt="Estella and Gabriel" class="cover-photo" />
-    <div class="cover-photo-overlay"></div>
-    <div class="cover-photo-vignette"></div>
+      <h1 class="hero-names">Estella &amp; Gabriel</h1>
+      <p class="hero-meta">11 July 2027 &nbsp;·&nbsp; Oasia Hotel Sentosa &nbsp;·&nbsp; Singapore</p>
+      <div class="hero-divider"></div>
+
+      <div class="countdown" id="countdown" aria-label="Countdown to wedding">
+        <div class="countdown-unit">
+          <span class="countdown-num" id="cd-days">—</span>
+          <span class="countdown-label">Days</span>
+        </div>
+        <div class="countdown-unit">
+          <span class="countdown-num" id="cd-hours">—</span>
+          <span class="countdown-label">Hours</span>
+        </div>
+        <div class="countdown-unit">
+          <span class="countdown-num" id="cd-mins">—</span>
+          <span class="countdown-label">Minutes</span>
+        </div>
+        <div class="countdown-unit">
+          <span class="countdown-num" id="cd-secs">—</span>
+          <span class="countdown-label">Seconds</span>
+        </div>
+      </div>
+
+      <div class="hero-cta">
+        <a href="#story" class="btn">Our Story</a>
+        <a href="rsvp.html" class="btn filled">RSVP</a>
+      </div>
+    </div>
   </div>
 
-  <div class="cover-route-line" aria-hidden="true">
-    <span class="route-dot route-dot-start"></span>
-    <span class="route-dot route-dot-end"></span>
-  </div>
+  <!-- OUR STORY -->
+  <section id="story">
+    <div class="story-header reveal">
+      <p class="section-label">Our Story</p>
+      <h2 class="section-title">A few pages from the journey</h2>
+      <div class="section-divider" style="margin: 1.5rem auto 0;"></div>
+    </div>
 
-  <div class="cover-content">
-    <div class="cover-top-details reveal">
-      <div class="cover-meta-chip">
-        <span class="micro-label">Singapore</span>
+    <!-- Spread 01 -->
+    <div class="story-spread reveal">
+      <div class="story-spread-text">
+        <p class="spread-num">Spread 01</p>
+        <h3>Before We Knew</h3>
+        <p>We first met in 2018, when we enrolled in the same course at NTU's Asian School of the Environment, studying Environmental Earth Systems Science.</p>
+        <p>What began as friendship grew quietly and naturally over time. Alongside two others from the same course, we became a close group of four — spending years studying, laughing, and moving through life together. Long before this became a love story, it was already built on comfort, familiarity, and a friendship that felt easy from the start.</p>
+        <div class="story-tags">
+          <span class="story-tag">NTU</span>
+          <span class="story-tag">2018</span>
+          <span class="story-tag">Friends First</span>
+        </div>
       </div>
-      <div class="cover-meta-chip">
-        <span class="micro-label">11 July 2027</span>
-      </div>
-      <div class="cover-meta-chip">
-        <span class="micro-label">Aloes Ballroom</span>
+      <div class="story-spread-photos">
+        <div class="photo-card">
+          <img src="assets/photos/journey-1.jpg" alt="University memories" onerror="this.style.display='none'" />
+        </div>
+        <div class="photo-card">
+          <img src="assets/photos/journey-2.jpg" alt="Early memories" onerror="this.style.display='none'" />
+        </div>
+        <div class="photo-card">
+          <img src="assets/photos/journey-3.jpg" alt="NTU days" onerror="this.style.display='none'" />
+        </div>
       </div>
     </div>
 
-    <div class="cover-editorial-panel reveal">
-      <p class="cover-kicker">A Travel Editorial Keepsake</p>
-      <h1>Estella <span>&</span> Gabriel</h1>
-      <p class="cover-subtitle">
-        A story shaped by friendship, adventure, and the journeys that brought us here.
+    <!-- Spread 02 -->
+    <div class="story-spread reverse reveal reveal-delay-1">
+      <div class="story-spread-text">
+        <p class="spread-num">Spread 02</p>
+        <h3>The Routes We Shared</h3>
+        <p>As the years went on, our friendship grew through shared experiences and travel. Korea after graduation. Cebu for an outdoor adventure. Japan for snowboarding.</p>
+        <p>These journeys were not just holidays, but memories that deepened our closeness, shaped our friendship, and quietly became part of the story that led us here.</p>
+        <div class="story-tags">
+          <span class="story-tag">Korea</span>
+          <span class="story-tag">Cebu</span>
+          <span class="story-tag">Japan</span>
+        </div>
+      </div>
+      <div class="story-spread-photos">
+        <div class="photo-card">
+          <img src="assets/photos/travel-korea.jpg" alt="Korea" onerror="this.style.display='none'" />
+        </div>
+        <div class="photo-card">
+          <img src="assets/photos/travel-cebu.jpg" alt="Cebu" onerror="this.style.display='none'" />
+        </div>
+        <div class="photo-card">
+          <img src="assets/photos/travel-japan.jpg" alt="Japan" onerror="this.style.display='none'" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Spread 03 -->
+    <div class="story-spread reveal reveal-delay-2">
+      <div class="story-spread-text">
+        <p class="spread-num">Spread 03</p>
+        <h3>Then It Became Us</h3>
+        <p>What brought us closer was not one single moment, but a series of shared interests, choices, and experiences that slowly made the story feel different.</p>
+        <p>From a baking course to a barista course at Bettr Academy, and from Tioman to Taiwan to Okinawa — we kept finding joy in learning, exploring, and discovering new things side by side. Diving, especially, became part of that journey, bringing trust, calm, and a deeper closeness that stayed with us.</p>
+        <div class="story-tags">
+          <span class="story-tag">Tioman</span>
+          <span class="story-tag">Taiwan</span>
+          <span class="story-tag">Okinawa</span>
+          <span class="story-tag">Diving</span>
+        </div>
+      </div>
+      <div class="story-spread-photos">
+        <div class="photo-card">
+          <img src="assets/photos/together-1.jpg" alt="Adventures together" onerror="this.style.display='none'" />
+        </div>
+        <div class="photo-card">
+          <img src="assets/photos/together-2.jpg" alt="Closer moments" onerror="this.style.display='none'" />
+        </div>
+        <div class="photo-card">
+          <img src="assets/photos/together-3.jpg" alt="Diving" onerror="this.style.display='none'" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Spread 04 -->
+    <div class="story-spread reverse reveal reveal-delay-3">
+      <div class="story-spread-text">
+        <p class="spread-num">Spread 04</p>
+        <h3>The Next Chapter</h3>
+        <p>What began as friendship became partnership, and what grew through years of shared experiences, places, and quiet turns now brings us here.</p>
+        <p>This celebration is not only about a day, but about the life we have been building together — shaped by the people we love and the journey that brought us here. We are so happy to share this page with you.</p>
+        <div class="story-tags">
+          <span class="story-tag">Partnership</span>
+          <span class="story-tag">Celebration</span>
+          <span class="story-tag">11 July 2027</span>
+        </div>
+      </div>
+      <div class="story-spread-photos">
+        <div class="photo-card">
+          <img src="assets/photos/next-1.jpg" alt="Next chapter" onerror="this.style.display='none'" />
+        </div>
+        <div class="photo-card">
+          <img src="assets/photos/next-2.jpg" alt="Together" onerror="this.style.display='none'" />
+        </div>
+        <div class="photo-card">
+          <img src="assets/photos/closing.jpg" alt="The celebration ahead" onerror="this.style.display='none'" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHOTOS MOSAIC -->
+  <section id="photos">
+    <div class="photos-header reveal">
+      <p class="section-label">Us, Through the Years</p>
+      <h2 class="section-title">A few of our favourite frames</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="photo-mosaic reveal reveal-delay-1">
+      <div class="mosaic-item p1"><img src="assets/photos/gallery-1.jpg" alt="" onerror="this.parentElement.style.background='#d5cec4'" /></div>
+      <div class="mosaic-item p2"><img src="assets/photos/gallery-2.jpg" alt="" onerror="this.parentElement.style.background='#cdc6bb'" /></div>
+      <div class="mosaic-item p3"><img src="assets/photos/gallery-3.jpg" alt="" onerror="this.parentElement.style.background='#ddd7ce'" /></div>
+      <div class="mosaic-item p4"><img src="assets/photos/gallery-4.jpg" alt="" onerror="this.parentElement.style.background='#c8c0b5'" /></div>
+      <div class="mosaic-item p5"><img src="assets/photos/gallery-5.jpg" alt="" onerror="this.parentElement.style.background='#d0c9bf'" /></div>
+      <div class="mosaic-item p6"><img src="assets/photos/gallery-6.jpg" alt="" onerror="this.parentElement.style.background='#d8d1c7'" /></div>
+      <div class="mosaic-item p7"><img src="assets/photos/gallery-7.jpg" alt="" onerror="this.parentElement.style.background='#c5bdb2'" /></div>
+      <div class="mosaic-item p8"><img src="assets/photos/gallery-8.jpg" alt="" onerror="this.parentElement.style.background='#dbd4ca'" /></div>
+    </div>
+  </section>
+
+  <!-- VISION -->
+  <div id="vision">
+    <div class="inner">
+      <p class="section-label reveal">Our Vision</p>
+      <h2 class="section-title reveal reveal-delay-1">A simple wish for the day</h2>
+      <div class="section-divider reveal reveal-delay-1"></div>
+      <p class="reveal reveal-delay-2">
+        We want this evening to feel warm and unhurried — a room full of the people we love most, sharing good food, real conversation, and the kind of joy that stays with you long after the night is over.
       </p>
-
-      <div class="cover-panel-footer">
-        <div class="cover-location-block">
-          <span class="cover-location-label">Celebration</span>
-          <strong>Oasia Hotel Sentosa, Singapore</strong>
-        </div>
-
-        <div class="cover-panel-line"></div>
-
-        <div class="cover-actions">
-          <a class="btn btn-primary" href="rsvp.html">RSVP</a>
-          <a class="btn btn-secondary-dark" href="#journey">Begin the Journey</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="cover-bottom-row reveal">
-      <div class="stamp-mark stamp-mark-large">
-        <span>11.07.2027</span>
-      </div>
-
-      <div class="cover-bottom-note">
-        <span class="micro-label">Editorial Edition</span>
-        <p>
-          For our family and friends, with love.
-        </p>
+      <div class="vision-words reveal reveal-delay-3">
+        <span class="vision-word">Warmth</span>
+        <span class="vision-word">·</span>
+        <span class="vision-word">Joy</span>
+        <span class="vision-word">·</span>
+        <span class="vision-word">Togetherness</span>
+        <span class="vision-word">·</span>
+        <span class="vision-word">Good Food</span>
+        <span class="vision-word">·</span>
+        <span class="vision-word">Dancing</span>
       </div>
     </div>
   </div>
-</section>
 
-    <!-- SECTION 2: OUR JOURNEY -->
-    <section class="journey-timeline-section" id="journey">
-      <div class="journey-timeline-sticky">
-        <div class="journey-bg-layer journey-bg-1 is-active"></div>
-        <div class="journey-bg-layer journey-bg-2"></div>
-        <div class="journey-bg-layer journey-bg-3"></div>
-        <div class="journey-bg-layer journey-bg-4"></div>
-
-        <div class="journey-topbar reveal is-visible">
-          <div class="journey-topbar-left">
-            <p class="section-tag">Our Journey</p>
-            <h2>A few pages from the story</h2>
-          </div>
-
-          <div class="journey-milestones" aria-label="Journey milestones">
-            <button class="journey-dot is-active" data-index="0" aria-label="Before We Knew"></button>
-            <button class="journey-dot" data-index="1" aria-label="The Routes We Shared"></button>
-            <button class="journey-dot" data-index="2" aria-label="Then It Became Us"></button>
-            <button class="journey-dot" data-index="3" aria-label="The Next Chapter"></button>
-          </div>
-        </div>
-
-        <div class="journey-track-wrap">
-          <div class="journey-track" id="journeyTrack">
-            <!-- Spread 1 -->
-            <article class="journey-panel">
-              <div class="journey-panel-inner">
-                <div class="journey-panel-copy">
-                  <p class="section-tag">Spread 01</p>
-                  <h3>Before We Knew</h3>
-                  <p class="journey-lead">
-                    We first met in 2018, when we enrolled in the same course at NTU’s Asian School of the Environment, studying Environmental Earth Systems Science.
-                  </p>
-                  <p class="journey-body">
-                    What began as friendship grew quietly and naturally over time. Alongside two others from the same course, we became a close group of four, spending years studying, laughing, and moving through life together. Long before this became a love story, it was already built on comfort, familiarity, and a friendship that felt easy from the start.
-                  </p>
-                  <div class="journey-tag-row">
-                    <span>NTU</span>
-                    <span>2018</span>
-                    <span>Friends First</span>
-                  </div>
-                </div>
-
-                <div class="journey-panel-visual">
-                  <div class="journey-photo-stack photo-stack-foundation">
-                    <figure class="journey-polaroid jp-large">
-                      <img src="assets/photos/journey-1.jpg" alt="University memories" />
-                    </figure>
-                    <figure class="journey-polaroid jp-small jp-offset-a">
-                      <img src="assets/photos/journey-2.jpg" alt="Shared early memories" />
-                    </figure>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <!-- Spread 2 -->
-            <article class="journey-panel">
-              <div class="journey-panel-inner">
-                <div class="journey-panel-copy">
-                  <p class="section-tag">Spread 02</p>
-                  <h3>The Routes We Shared</h3>
-                  <p class="journey-lead">
-                    As the years went on, our friendship grew through shared experiences and travel.
-                  </p>
-                  <p class="journey-body">
-                    Korea after graduation. Cebu for an outdoor adventure. Japan for snowboarding. These journeys were not just holidays, but memories that deepened our closeness, shaped our friendship, and quietly became part of the story that led us here.
-                  </p>
-                  <div class="journey-tag-row">
-                    <span>Korea</span>
-                    <span>Cebu</span>
-                    <span>Japan</span>
-                  </div>
-                </div>
-
-                <div class="journey-panel-visual">
-                  <div class="journey-photo-grid postcard-grid">
-                    <figure class="journey-postcard">
-                      <img src="assets/photos/journey-1.jpg" alt="Shared travel memory in Korea" />
-                      <figcaption>Korea</figcaption>
-                    </figure>
-                    <figure class="journey-postcard">
-                      <img src="assets/photos/journey-2.jpg" alt="Shared travel memory in Cebu" />
-                      <figcaption>Cebu</figcaption>
-                    </figure>
-                    <figure class="journey-postcard">
-                      <img src="assets/photos/journey-3.jpg" alt="Shared travel memory in Japan" />
-                      <figcaption>Japan</figcaption>
-                    </figure>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <!-- Spread 3 -->
-            <article class="journey-panel">
-              <div class="journey-panel-inner">
-                <div class="journey-panel-copy">
-                  <p class="section-tag">Spread 03</p>
-                  <h3>Then It Became Us</h3>
-                  <p class="journey-lead">
-                    What brought us closer was not one single moment, but a series of shared interests, choices, and experiences that slowly made the story feel different.
-                  </p>
-                  <p class="journey-body">
-                    From a baking course to a barista course at Bettr Academy, and from Tioman to Taiwan to Okinawa, we kept finding joy in learning, exploring, and discovering new things side by side. Diving, especially, became part of that journey, bringing trust, calm, and a deeper closeness that stayed with us.
-                  </p>
-                  <div class="journey-tag-row">
-                    <span>Tioman</span>
-                    <span>Taiwan</span>
-                    <span>Okinawa</span>
-                  </div>
-                </div>
-
-                <div class="journey-panel-visual">
-                  <div class="journey-depth-layout">
-                    <figure class="journey-depth-main">
-                      <img src="assets/photos/celebration.jpg" alt="A closer shared journey together" />
-                    </figure>
-                    <figure class="journey-depth-inset">
-                      <img src="assets/photos/closing.jpg" alt="A quiet memory together" />
-                    </figure>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <!-- Spread 4 -->
-            <article class="journey-panel">
-              <div class="journey-panel-inner">
-                <div class="journey-panel-copy">
-                  <p class="section-tag">Spread 04</p>
-                  <h3>The Next Chapter</h3>
-                  <p class="journey-lead">
-                    What began as friendship became partnership, and what grew through years of shared experiences, places, and quiet turns now brings us here.
-                  </p>
-                  <p class="journey-body">
-                    This celebration is not only about a day, but about the life we have been building together, shaped by the people we love and the journey that brought us here. We are so happy to share this page with you.
-                  </p>
-                  <div class="journey-tag-row">
-                    <span>Partnership</span>
-                    <span>Celebration</span>
-                    <span>11 July 2027</span>
-                  </div>
-                </div>
-
-                <div class="journey-panel-visual">
-                  <div class="journey-photo-stack photo-stack-finale">
-                    <figure class="journey-polaroid jp-large">
-                      <img src="assets/photos/closing.jpg" alt="The next chapter together" />
-                    </figure>
-                    <div class="journey-final-note">
-                      <span class="micro-label">The chapter ahead</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 3: THE CELEBRATION -->
-    <section class="celebration-section" id="celebration">
-      <div class="celebration-media reveal">
-        <img src="assets/photos/celebration.jpg" alt="Celebration setting" />
-      </div>
-
-      <div class="celebration-copy reveal">
-        <p class="section-tag">The Celebration</p>
-        <h2>For the evening ahead</h2>
-
-        <div class="detail-list">
-          <div class="detail-item">
-            <span>Venue</span>
-            <strong>Oasia Hotel Sentosa<br>Aloes Ballroom</strong>
-          </div>
-          <div class="detail-item">
-            <span>Dress Code</span>
-            <strong>To be shared soon</strong>
-          </div>
-          <div class="detail-item">
-            <span>Vision for the Day</span>
-            <strong>Warm, joyful, and full of conversation</strong>
-          </div>
-          <div class="detail-item">
-            <span>5:00 PM</span>
-            <strong>Arrival</strong>
-          </div>
-          <div class="detail-item">
-            <span>6:00 PM</span>
-            <strong>Ceremony / Opening</strong>
-          </div>
-          <div class="detail-item">
-            <span>7:00 PM</span>
-            <strong>Dinner Begins</strong>
-          </div>
-          <div class="detail-item">
-            <span>8:00 PM</span>
-            <strong>Celebration Continues</strong>
-          </div>
-          <div class="detail-item">
-            <span>9:00 PM</span>
-            <strong>Cake Buffet / Evening Programme</strong>
-          </div>
-        </div>
-
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="rsvp.html">RSVP</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 4: FOR OUR GUESTS -->
-<section class="guest-section" id="guests">
-  <div class="section-heading reveal">
-    <p class="section-tag">For Our Guests</p>
-    <h2>Everything you may need</h2>
-  </div>
-
-  <div class="guest-tabs-shell reveal">
-    <div class="guest-tab-buttons" role="tablist" aria-label="Guest information tabs">
-      <button class="guest-tab-btn is-active" data-guest-tab="directions" role="tab" aria-selected="true">
-        Directions
-      </button>
-      <button class="guest-tab-btn" data-guest-tab="helpers" role="tab" aria-selected="false">
-        Helpers
-      </button>
-      <button class="guest-tab-btn" data-guest-tab="faq" role="tab" aria-selected="false">
-        FAQ
-      </button>
+  <!-- WHAT TO EXPECT -->
+  <section id="expect">
+    <div class="expect-header reveal">
+      <p class="section-label">The Evening</p>
+      <h2 class="section-title">What to expect</h2>
+      <div class="section-divider" style="margin: 1.5rem auto 0;"></div>
     </div>
-
-    <div class="guest-tab-panels">
-      <!-- Directions -->
-      <div class="guest-tab-panel is-active" id="guest-tab-directions" data-guest-panel="directions" role="tabpanel">
-        <div class="guest-panel-grid">
-          <div class="guest-panel-main">
-            <p class="section-tag">Directions</p>
-            <h3>Getting to Oasia Hotel Sentosa</h3>
-            <p>
-              We’ll share the best routes, arrival notes, and drop-off details here so your journey to the celebration feels smooth and easy.
-            </p>
-
-            <div class="guest-info-list">
-              <div>
-                <strong>Venue</strong>
-                <span>Oasia Hotel Sentosa, Aloes Ballroom</span>
-              </div>
-              <div>
-                <strong>By Car / Taxi</strong>
-                <span>Drop-off and parking details will be updated closer to the day.</span>
-              </div>
-              <div>
-                <strong>By Public Transport</strong>
-                <span>Nearest station and walking guidance will be added here.</span>
-              </div>
-              <div>
-                <strong>Arrival Tip</strong>
-                <span>We recommend arriving a little before the stated start time.</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="guest-panel-side">
-            <div class="guest-mini-card">
-              <h4>Parking</h4>
-              <p>Closest lots and walking path to the ballroom.</p>
-            </div>
-            <div class="guest-mini-card">
-              <h4>Drop-off</h4>
-              <p>Best arrival point for taxis and ride-hailing.</p>
-            </div>
-          </div>
-        </div>
+    <div class="expect-grid">
+      <div class="expect-card reveal">
+        <span class="expect-icon">🍽️</span>
+        <h4>A Feast</h4>
+        <p>A carefully curated dinner with dishes chosen to bring people together and keep the table lively all night.</p>
       </div>
-
-      <!-- Helpers -->
-      <div class="guest-tab-panel" id="guest-tab-helpers" data-guest-panel="helpers" role="tabpanel">
-        <div class="guest-panel-grid">
-          <div class="guest-panel-main">
-            <p class="section-tag">Helpers</p>
-            <h3>Friendly faces on the day</h3>
-            <p>
-              If you need help finding your way, have a question, or are unsure where to go, these are the familiar faces who will be around to assist.
-            </p>
-
-            <div class="helper-list">
-              <div class="helper-row">
-                <strong>Name Placeholder</strong>
-                <span>Guest support / reception flow</span>
-              </div>
-              <div class="helper-row">
-                <strong>Name Placeholder</strong>
-                <span>Family coordination / logistics</span>
-              </div>
-              <div class="helper-row">
-                <strong>Name Placeholder</strong>
-                <span>Directions / venue assistance</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="guest-panel-side">
-            <div class="guest-mini-card">
-              <h4>Need Help?</h4>
-              <p>We’ll add day-of contact details here later if needed.</p>
-            </div>
-            <div class="guest-mini-card">
-              <h4>Easy to Spot</h4>
-              <p>Helpers can later be marked with a small icon or colour cue.</p>
-            </div>
-          </div>
-        </div>
+      <div class="expect-card reveal reveal-delay-1">
+        <span class="expect-icon">🎂</span>
+        <h4>The Cake Buffet</h4>
+        <p>An indulgent cake spread towards the end of the evening — because two people who met over a baking course had to have this.</p>
       </div>
+      <div class="expect-card reveal reveal-delay-2">
+        <span class="expect-icon">💃</span>
+        <h4>Dancing</h4>
+        <p>Music that moves — from quiet background notes during dinner to a proper floor-filling celebration later in the night.</p>
+      </div>
+      <div class="expect-card reveal reveal-delay-3">
+        <span class="expect-icon">🥂</span>
+        <h4>Good Company</h4>
+        <p>The best ingredient of all. An evening shaped by the people in the room, the conversations shared, and the memories made.</p>
+      </div>
+    </div>
+  </section>
 
-      <!-- FAQ -->
-      <div class="guest-tab-panel" id="guest-tab-faq" data-guest-panel="faq" role="tabpanel">
-        <div class="guest-panel-grid">
-          <div class="guest-panel-main">
-            <p class="section-tag">FAQ</p>
-            <h3>Some helpful answers</h3>
-
-            <div class="faq-list">
-              <div class="faq-item">
-                <strong>When should I arrive?</strong>
-                <p>We recommend arriving a little before the programme begins so you can settle in comfortably.</p>
-              </div>
-
-              <div class="faq-item">
-                <strong>Can I bring additional guests?</strong>
-                <p>Please follow the details stated in your invitation. If you are unsure, feel free to check with us.</p>
-              </div>
-
-              <div class="faq-item">
-                <strong>What if I have dietary restrictions?</strong>
-                <p>Please include them in your RSVP so we can make the necessary arrangements.</p>
-              </div>
-
-              <div class="faq-item">
-                <strong>How do I update my RSVP?</strong>
-                <p>We’ll be adding an RSVP update flow later, or you may contact us directly in the meantime.</p>
-              </div>
-
-              <div class="faq-item">
-                <strong>What should I wear?</strong>
-                <p>Dress code details will be shared here once finalised.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="guest-panel-side">
-            <div class="guest-mini-card">
-              <h4>More Details Later</h4>
-              <p>We’ll continue updating this section as plans are finalised.</p>
-            </div>
-          </div>
+  <!-- SCHEDULE -->
+  <div id="schedule">
+    <div class="inner">
+      <div class="schedule-header reveal">
+        <p class="section-label">The Celebration</p>
+        <h2 class="section-title">For the evening ahead</h2>
+        <div class="section-divider"></div>
+        <p class="schedule-venue">Oasia Hotel Sentosa &nbsp;·&nbsp; Aloes Ballroom</p>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item reveal">
+          <p class="timeline-time">5:00 PM</p>
+          <p class="timeline-event">Arrival & Welcome</p>
+        </div>
+        <div class="timeline-item reveal reveal-delay-1">
+          <p class="timeline-time">6:00 PM</p>
+          <p class="timeline-event">Ceremony & Opening</p>
+        </div>
+        <div class="timeline-item reveal reveal-delay-2">
+          <p class="timeline-time">7:00 PM</p>
+          <p class="timeline-event">Dinner Begins</p>
+        </div>
+        <div class="timeline-item reveal reveal-delay-3">
+          <p class="timeline-time">8:00 PM</p>
+          <p class="timeline-event">Celebration Continues</p>
+        </div>
+        <div class="timeline-item reveal reveal-delay-4">
+          <p class="timeline-time">9:00 PM</p>
+          <p class="timeline-event">Cake Buffet & Evening Programme</p>
         </div>
       </div>
     </div>
   </div>
-</section>
 
-    <!-- SECTION 5: RSVP PROMPT -->
-    <section class="rsvp-promo-section reveal">
-      <div class="rsvp-promo-card">
-        <p class="section-tag">RSVP</p>
-        <h2>We would be so happy to celebrate with you.</h2>
-        <p>
-          Please let us know if you’ll be joining us, and share any details we should know before the day.
-        </p>
-        <a class="btn btn-primary" href="rsvp.html">Respond Here</a>
+  <!-- GUEST INFO — TABBED -->
+  <section id="guests">
+    <div class="guests-header reveal">
+      <p class="section-label">For Our Guests</p>
+      <h2 class="section-title">Everything you may need</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="tab-nav" role="tablist">
+      <button class="tab-btn active" role="tab" aria-selected="true" data-tab="directions">Directions</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="helpers">Helpers</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="faq">FAQ</button>
+    </div>
+
+    <!-- Directions -->
+    <div class="tab-panel active" id="tab-directions">
+      <div class="info-grid">
+        <div class="info-block">
+          <h4>Getting to Oasia Hotel Sentosa</h4>
+          <p>We'll share the best routes, arrival notes, and drop-off details here so your journey to the celebration feels smooth and easy.</p>
+          <br />
+          <p><strong>Venue</strong><br />Oasia Hotel Sentosa, Aloes Ballroom</p>
+          <br />
+          <p><strong>By Car / Taxi</strong><br />Drop-off and parking details will be updated closer to the day.</p>
+          <br />
+          <p><strong>By Public Transport</strong><br />Nearest station and walking guidance will be added here.</p>
+        </div>
+        <div class="info-block">
+          <h4>Parking</h4>
+          <p>Closest lots and walking path to the ballroom — details to be added.</p>
+          <br />
+          <h4>Arrival Tip</h4>
+          <p>We recommend arriving a little before the stated start time so you can settle in comfortably and catch up with familiar faces before the programme begins.</p>
+        </div>
       </div>
-    </section>
-  </main>
+    </div>
 
-  <footer class="site-footer">
-    <p>Estella & Gabriel • 11 July 2027 • Sentosa, Singapore</p>
+    <!-- Helpers -->
+    <div class="tab-panel" id="tab-helpers">
+      <p style="font-size:0.88rem; color:var(--ink-soft); margin-bottom:2rem; line-height:1.8;">
+        If you need help finding your way, have a question, or are unsure where to go — these are the friendly faces to look for on the day.
+      </p>
+      <div>
+        <div class="helper-card">
+          <div class="helper-avatar"></div>
+          <div>
+            <p class="helper-name">Name Placeholder</p>
+            <p class="helper-role">Guest support & reception flow</p>
+          </div>
+        </div>
+        <div class="helper-card">
+          <div class="helper-avatar"></div>
+          <div>
+            <p class="helper-name">Name Placeholder</p>
+            <p class="helper-role">Family coordination & logistics</p>
+          </div>
+        </div>
+        <div class="helper-card">
+          <div class="helper-avatar"></div>
+          <div>
+            <p class="helper-name">Name Placeholder</p>
+            <p class="helper-role">Directions & venue assistance</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="tab-panel" id="tab-faq">
+      <div class="faq-item">
+        <div class="faq-question">When should I arrive?</div>
+        <div class="faq-answer">We recommend arriving a little before the programme begins so you can settle in comfortably.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Can I bring additional guests?</div>
+        <div class="faq-answer">Please follow the details stated in your invitation. If you are unsure, feel free to check with us directly.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">What if I have dietary restrictions?</div>
+        <div class="faq-answer">Please include them in your RSVP so we can make the necessary arrangements for you.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">How do I update my RSVP?</div>
+        <div class="faq-answer">You can return to the RSVP page and re-submit with your phone number — it will update your existing response.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">What should I wear?</div>
+        <div class="faq-answer">Dress code details will be shared here once finalised. Watch this space!</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP CTA -->
+  <div id="rsvp-cta">
+    <div class="inner">
+      <p class="section-label reveal">RSVP</p>
+      <h2 class="section-title reveal reveal-delay-1">We would be so happy<br />to celebrate with you.</h2>
+      <div class="section-divider reveal reveal-delay-1"></div>
+      <p class="reveal reveal-delay-2">Please let us know if you'll be joining us, and share any details we should know before the day. We can't wait to see you.</p>
+      <a href="rsvp.html" class="btn filled reveal reveal-delay-3">Respond Here</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Estella &amp; Gabriel &nbsp;·&nbsp; 11 July 2027 &nbsp;·&nbsp; Sentosa, Singapore</p>
   </footer>
 
-  <script src="js/script.js"></script>
+  <script>
+    // ── NAV scroll behaviour
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // ── Countdown timer
+    const wedding = new Date('2027-07-11T17:00:00+08:00');
+    function updateCountdown() {
+      const now = new Date();
+      const diff = wedding - now;
+      if (diff <= 0) {
+        document.getElementById('countdown').innerHTML =
+          '<p style="font-family:var(--serif);font-size:1.5rem;font-style:italic;color:var(--sand-dark)">Today is the day! 🎉</p>';
+        return;
+      }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      document.getElementById('cd-days').textContent  = String(d).padStart(2,'0');
+      document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+      document.getElementById('cd-mins').textContent  = String(m).padStart(2,'0');
+      document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // ── Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // ── Tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    // ── FAQ accordion
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  </script>
 </body>
 </html>
