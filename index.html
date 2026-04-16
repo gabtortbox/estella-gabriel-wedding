@@ -109,12 +109,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       text-align: center;
       position: relative;
       overflow: hidden;
       background: #1a1612;
-      padding: 6rem 2rem 4rem;
+      padding: 0;
     }
 
     .hero-photo {
@@ -180,24 +180,40 @@
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(20,16,12,0.25) 0%,
-        rgba(20,16,12,0.1) 40%,
-        rgba(20,16,12,0.45) 80%,
-        rgba(20,16,12,0.65) 100%
+        rgba(20,16,12,0.45) 0%,
+        rgba(20,16,12,0.0) 25%,
+        rgba(20,16,12,0.0) 55%,
+        rgba(20,16,12,0.55) 78%,
+        rgba(20,16,12,0.75) 100%
       );
     }
 
-    .hero-content {
+    /* Top block: logo + names */
+    .hero-top {
       position: relative;
       z-index: 2;
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
+      padding: 5rem 2rem 0;
+    }
+
+    /* Bottom block: date, countdown, buttons */
+    .hero-bottom {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 2rem 5rem;
+      gap: 0;
     }
 
     .hero-logo {
-      width: clamp(160px, 25vw, 280px);
-      margin-bottom: 2rem;
+      width: clamp(120px, 18vw, 200px);
+      margin-bottom: 1.5rem;
       opacity: 0;
       filter: brightness(0) invert(1);
       animation: fadeUp 1.2s cubic-bezier(0.22,1,0.36,1) 0.6s forwards;
@@ -205,11 +221,12 @@
 
     .hero-names {
       font-family: var(--serif);
-      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-size: clamp(3rem, 7vw, 6rem);
       font-weight: 300;
       letter-spacing: 0.08em;
       color: #fff;
-      text-shadow: 0 2px 24px rgba(0,0,0,0.25);
+      text-shadow: 0 2px 32px rgba(0,0,0,0.3);
+      line-height: 1;
     }
     .hero-names .word {
       display: inline-block;
@@ -219,7 +236,8 @@
     }
 
     .hero-meta {
-      margin-top: 1rem;
+      margin-top: 0;
+      margin-bottom: 1.25rem;
       font-family: var(--sans);
       font-size: 0.7rem;
       font-weight: 300;
@@ -231,10 +249,10 @@
     }
 
     .hero-divider {
-      width: 48px;
+      width: 40px;
       height: 0.5px;
-      background: rgba(255,255,255,0.45);
-      margin: 1.8rem auto;
+      background: rgba(255,255,255,0.35);
+      margin: 0 auto 1.5rem;
       opacity: 0;
       animation: fadeUp 1s ease 1.2s forwards;
     }
@@ -243,6 +261,7 @@
     .countdown {
       display: flex;
       gap: 2.5rem;
+      margin-bottom: 1.5rem;
       opacity: 0;
       animation: fadeUp 1s cubic-bezier(0.22,1,0.36,1) 1.3s forwards;
     }
@@ -517,107 +536,166 @@
       color: var(--sand);
     }
 
-    /* ── WHAT TO EXPECT ── */
-    #expect {
-      padding: 7rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    #expect .expect-header { text-align: center; margin-bottom: 4rem; }
-    .expect-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5px;
-      background: var(--sand-light);
-      border: 0.5px solid var(--sand-light);
-    }
-    .expect-card {
-      background: var(--white);
-      padding: 2.5rem 2rem;
-      text-align: center;
-      transition: background 0.3s;
-      cursor: default;
-    }
-    .expect-card:hover { background: var(--sand-pale); }
-    .expect-icon {
-      font-size: 2.2rem;
-      margin-bottom: 1rem;
-      display: block;
-      filter: grayscale(0.3);
-    }
-    .expect-card h4 {
-      font-family: var(--serif);
-      font-size: 1.2rem;
-      font-weight: 400;
-      color: var(--ink);
-      margin-bottom: 0.6rem;
-    }
-    .expect-card p {
-      font-size: 0.82rem;
-      color: var(--ink-soft);
-      line-height: 1.7;
+    /* ── EVENING SECTION ── */
+    #evening {
+      max-width: 100%;
+      padding: 0;
     }
 
-    /* ── SCHEDULE ── */
-    #schedule {
-      background: var(--sand-pale);
-      max-width: 100%;
-      padding: 7rem 2rem;
+    /* Ballroom sketch panel */
+    .ballroom-panel {
+      padding: 7rem 2rem 5rem;
+      text-align: center;
+      background: var(--white);
     }
-    #schedule .inner {
+    .ballroom-panel .inner { max-width: 900px; margin: 0 auto; }
+    .ballroom-sketch {
+      width: 100%;
       max-width: 700px;
-      margin: 0 auto;
+      margin: 3rem auto 0;
+      display: block;
+      opacity: 0.85;
     }
-    #schedule .schedule-header { margin-bottom: 3rem; }
-    .schedule-venue {
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
+    .ballroom-label {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--sand-dark);
-      margin-bottom: 2.5rem;
+      margin-top: 1.5rem;
     }
-    .timeline {
-      position: relative;
-      padding-left: 2rem;
+
+    /* Dress code panel */
+    .dresscode-panel {
+      background: var(--ink);
+      padding: 6rem 2rem;
+      text-align: center;
     }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0.5rem;
-      bottom: 0.5rem;
-      width: 0.5px;
-      background: var(--sand);
+    .dresscode-panel .inner { max-width: 600px; margin: 0 auto; }
+    .dresscode-panel .section-label { color: var(--sand); }
+    .dresscode-panel .section-title { color: var(--white); }
+    .dresscode-panel .section-divider { background: var(--sand); margin: 1.5rem auto 2.5rem; }
+    .dresscode-swatches {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 2.5rem 0 1.5rem;
+      flex-wrap: wrap;
     }
-    .timeline-item {
-      position: relative;
-      padding-bottom: 2rem;
-      padding-left: 1.5rem;
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
     }
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: -2.5rem;
-      top: 0.4rem;
-      width: 6px;
-      height: 6px;
+    .swatch-circle {
+      width: 48px; height: 48px;
       border-radius: 50%;
-      background: var(--sand);
-      border: 1.5px solid var(--sand-pale);
-      outline: 1px solid var(--sand);
+      border: 0.5px solid rgba(255,255,255,0.15);
     }
-    .timeline-time {
+    .swatch-name {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+    .dresscode-note {
       font-family: var(--serif);
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
+      font-size: 1.1rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--sand-light);
+      line-height: 1.8;
+    }
+
+    /* Horizontal illustrated timeline */
+    .timeline-panel {
+      background: var(--sand-pale);
+      padding: 7rem 2rem;
+      overflow-x: auto;
+    }
+    .timeline-panel .inner { max-width: 1100px; margin: 0 auto; }
+    .timeline-panel .panel-header { text-align: center; margin-bottom: 4rem; }
+    .timeline-panel .schedule-venue {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
       color: var(--sand-dark);
-      margin-bottom: 0.25rem;
+      margin-top: 0.5rem;
     }
-    .timeline-event {
+
+    .h-timeline {
+      display: flex;
+      align-items: flex-start;
+      position: relative;
+      min-width: 600px;
+      padding: 0 1rem;
+    }
+    .h-timeline::before {
+      content: '';
+      position: absolute;
+      top: 52px;
+      left: 4%;
+      right: 4%;
+      height: 0.5px;
+      background: var(--sand);
+    }
+    .h-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      padding: 0 0.5rem;
+    }
+    .h-item-icon {
+      width: 56px; height: 56px;
+      background: var(--white);
+      border: 0.5px solid var(--sand-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      position: relative;
+      z-index: 1;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .h-item:hover .h-item-icon {
+      border-color: var(--sand-dark);
+      transform: translateY(-3px);
+    }
+    .h-item-icon svg {
+      width: 26px; height: 26px;
+      stroke: var(--sand-dark);
+      fill: none;
+      stroke-width: 1.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .h-item-time {
       font-family: var(--serif);
-      font-size: 1.25rem;
+      font-size: 0.95rem;
       font-weight: 400;
       color: var(--ink);
+      margin-bottom: 0.3rem;
+    }
+    .h-item-event {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sand-dark);
+      margin-bottom: 0.5rem;
+    }
+    .h-item-desc {
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+      max-width: 120px;
     }
 
     /* ── PHOTOS SECTION ── */
@@ -654,6 +732,202 @@
     .mosaic-item:hover img {
       transform: scale(1.04);
       filter: sepia(0) brightness(1);
+    }
+
+    /* ── DIRECTION MAPS ── */
+    .dir-layout {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 0;
+      border: 0.5px solid var(--sand-light);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    /* Vertical sidebar tabs */
+    .dir-transport-tabs {
+      display: flex;
+      flex-direction: column;
+      border-right: 0.5px solid var(--sand-light);
+      background: var(--sand-pale);
+    }
+    .dir-btn {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      background: none;
+      border: none;
+      border-left: 2px solid transparent;
+      padding: 1.25rem 1.2rem;
+      cursor: pointer;
+      text-align: left;
+      transition: color 0.2s, background 0.2s, border-color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      line-height: 1.4;
+    }
+    .dir-btn + .dir-btn { border-top: 0.5px solid var(--sand-light); }
+    .dir-btn svg { width: 15px; height: 15px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .dir-btn:hover { color: var(--ink); background: rgba(200,185,154,0.12); }
+    .dir-btn.active {
+      color: var(--ink);
+      background: var(--white);
+      border-left-color: var(--sand-dark);
+      font-weight: 400;
+    }
+
+    /* Content panels */
+    .dir-panel { display: none; }
+    .dir-panel.active {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+
+    /* Map area */
+    .dir-map-wrap {
+      position: relative;
+      overflow: hidden;
+      min-height: 340px;
+      background: #e8f0e0;
+    }
+    .dir-map-wrap iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 340px;
+      border: 0;
+      display: block;
+    }
+
+    /* Animated route path */
+    .route-path {
+      stroke-dasharray: 800;
+      stroke-dashoffset: 800;
+    }
+    .dir-panel.active .route-path {
+      animation: drawRoute 2s cubic-bezier(0.4,0,0.2,1) 0.4s forwards;
+    }
+    @keyframes drawRoute { to { stroke-dashoffset: 0; } }
+
+    /* Secondary route (dashed alternate) */
+    .route-path-alt {
+      stroke-dasharray: 600;
+      stroke-dashoffset: 600;
+    }
+    .dir-panel.active .route-path-alt {
+      animation: drawRoute 1.6s cubic-bezier(0.4,0,0.2,1) 0.9s forwards;
+    }
+
+    /* Destination pin drop */
+    .dest-pin {
+      opacity: 0;
+      transform-origin: center bottom;
+    }
+    .dir-panel.active .dest-pin {
+      animation: pinDrop 0.5s cubic-bezier(0.34,1.56,0.64,1) 2.1s forwards;
+    }
+    @keyframes pinDrop {
+      from { opacity: 0; transform: translateY(-14px) scale(0.5); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Pulse ring on pin */
+    .pin-pulse {
+      opacity: 0;
+      transform-origin: center center;
+    }
+    .dir-panel.active .pin-pulse {
+      animation: pinPulse 1.2s ease-out 2.6s infinite;
+    }
+    @keyframes pinPulse {
+      0%   { opacity: 0.6; transform: scale(1); }
+      100% { opacity: 0;   transform: scale(2.2); }
+    }
+
+    /* Travel dot */
+    .travel-dot { opacity: 0; }
+    .dir-panel.active .travel-dot {
+      animation: dotAppear 0.01s ease 0.4s forwards;
+    }
+    @keyframes dotAppear { to { opacity: 1; } }
+
+    /* Map caption strip */
+    .dir-map-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(4px);
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      padding: 0.5rem 0.85rem;
+      border-top: 0.5px solid rgba(0,0,0,0.08);
+    }
+    .dir-map-caption .gm-credit {
+      float: right;
+      color: #aaa;
+      font-size: 0.55rem;
+    }
+
+    /* Directions text panel */
+    .dir-info {
+      padding: 2rem 2rem 2rem 1.75rem;
+      border-left: 0.5px solid var(--sand-light);
+    }
+    .dir-info h4 {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 1.25rem;
+    }
+    .dir-info strong { color: var(--ink); font-weight: 400; }
+    .dir-step {
+      display: flex;
+      gap: 0.85rem;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .dir-step-num {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--sand-light);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 0.75rem;
+      color: var(--sand-dark);
+      margin-top: 0.1rem;
+    }
+    .dir-step p { margin: 0; font-size: 0.86rem; line-height: 1.8; color: var(--ink-soft); }
+    .dir-qr-note {
+      margin-top: 1.5rem;
+      padding: 0.9rem 1.1rem;
+      background: var(--sand-pale);
+      border-left: 2px solid var(--sand);
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      line-height: 1.75;
+    }
+    .dir-qr-note strong { color: var(--ink); font-weight: 400; }
+
+    @media (max-width: 768px) {
+      .dir-layout { grid-template-columns: 1fr; }
+      .dir-transport-tabs { flex-direction: row; border-right: none; border-bottom: 0.5px solid var(--sand-light); }
+      .dir-btn { border-left: none; border-bottom: 2px solid transparent; padding: 0.85rem 1rem; }
+      .dir-btn.active { border-left-color: transparent; border-bottom-color: var(--sand-dark); background: var(--sand-pale); }
+      .dir-btn + .dir-btn { border-top: none; border-left: 0.5px solid var(--sand-light); }
+      .dir-panel.active { grid-template-columns: 1fr; }
+      .dir-map-wrap { min-height: 240px; }
     }
 
     /* ── GUEST INFO (TABBED) ── */
@@ -859,7 +1133,7 @@
     </a>
     <ul class="nav-links">
       <li><a href="#story">Our Story</a></li>
-      <li><a href="#expect">The Day</a></li>
+      <li><a href="#evening">The Day</a></li>
       <li><a href="#schedule">Schedule</a></li>
       <li><a href="#guests">Guests</a></li>
       <li><a href="rsvp.html">RSVP</a></li>
@@ -875,19 +1149,23 @@
     />
     <div class="hero-overlay"></div>
 
-    <div class="hero-content">
+    <!-- TOP: logo + names high above the subjects -->
+    <div class="hero-top">
       <img
         src="assets/logo.png"
         alt="Estella and Gabriel monogram"
         class="hero-logo"
         onerror="this.style.display='none'"
       />
-
       <h1 class="hero-names">
         <span class="word" style="animation-delay:0.85s">Estella</span>
         <span class="word" style="animation-delay:1.05s">&nbsp;&amp;&nbsp;</span>
         <span class="word" style="animation-delay:1.25s">Gabriel</span>
       </h1>
+    </div>
+
+    <!-- BOTTOM: date · venue, countdown, buttons — below feet -->
+    <div class="hero-bottom">
       <p class="hero-meta">11 July 2027 &nbsp;·&nbsp; Oasia Hotel Sentosa &nbsp;·&nbsp; Singapore</p>
       <div class="hero-divider"></div>
 
@@ -1074,69 +1352,223 @@
     </div>
   </div>
 
-  <!-- WHAT TO EXPECT -->
-  <section id="expect">
-    <div class="expect-header reveal">
-      <p class="section-label">The Evening</p>
-      <h2 class="section-title">What to expect</h2>
-      <div class="section-divider" style="margin: 1.5rem auto 0;"></div>
-    </div>
-    <div class="expect-grid">
-      <div class="expect-card reveal">
-        <span class="expect-icon">🍽️</span>
-        <h4>A Feast</h4>
-        <p>A carefully curated dinner with dishes chosen to bring people together and keep the table lively all night.</p>
-      </div>
-      <div class="expect-card reveal reveal-delay-1">
-        <span class="expect-icon">🎂</span>
-        <h4>The Cake Buffet</h4>
-        <p>An indulgent cake spread towards the end of the evening — because two people who met over a baking course had to have this.</p>
-      </div>
-      <div class="expect-card reveal reveal-delay-2">
-        <span class="expect-icon">💃</span>
-        <h4>Dancing</h4>
-        <p>Music that moves — from quiet background notes during dinner to a proper floor-filling celebration later in the night.</p>
-      </div>
-      <div class="expect-card reveal reveal-delay-3">
-        <span class="expect-icon">🥂</span>
-        <h4>Good Company</h4>
-        <p>The best ingredient of all. An evening shaped by the people in the room, the conversations shared, and the memories made.</p>
-      </div>
-    </div>
-  </section>
+  <!-- EVENING: BALLROOM + DRESS CODE + ILLUSTRATED TIMELINE -->
+  <div id="evening">
 
-  <!-- SCHEDULE -->
-  <div id="schedule">
-    <div class="inner">
-      <div class="schedule-header reveal">
-        <p class="section-label">The Celebration</p>
-        <h2 class="section-title">For the evening ahead</h2>
-        <div class="section-divider"></div>
-        <p class="schedule-venue">Oasia Hotel Sentosa &nbsp;·&nbsp; Aloes Ballroom</p>
+    <!-- Ballroom sketch -->
+    <div class="ballroom-panel">
+      <div class="inner">
+        <p class="section-label reveal">The Venue</p>
+        <h2 class="section-title reveal reveal-delay-1">Oasia Hotel Sentosa</h2>
+        <div class="section-divider center reveal reveal-delay-1"></div>
+        <p class="reveal reveal-delay-2" style="font-size:0.9rem; color:var(--ink-soft); line-height:1.85; max-width:520px; margin:0 auto;">
+          The Aloes Ballroom — an elegant setting for an evening we hope you'll remember long after the night is over.
+        </p>
+
+        <!-- SVG Ballroom Sketch -->
+        <svg class="ballroom-sketch reveal reveal-delay-2" viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg"
+          aria-label="Hand-drawn sketch of a ballroom interior">
+          <g stroke="#9a8c7a" fill="none" stroke-linecap="round" stroke-linejoin="round">
+
+            <!-- Floor perspective lines -->
+            <line x1="80" y1="280" x2="350" y2="200" stroke-width="0.8" opacity="0.4"/>
+            <line x1="620" y1="280" x2="350" y2="200" stroke-width="0.8" opacity="0.4"/>
+            <line x1="80" y1="280" x2="620" y2="280" stroke-width="0.8" opacity="0.4"/>
+            <line x1="160" y1="265" x2="540" y2="265" stroke-width="0.5" opacity="0.25"/>
+            <line x1="220" y1="250" x2="480" y2="250" stroke-width="0.5" opacity="0.2"/>
+
+            <!-- Back wall -->
+            <line x1="130" y1="80" x2="570" y2="80" stroke-width="1" opacity="0.5"/>
+            <line x1="130" y1="80" x2="80" y2="280" stroke-width="0.8" opacity="0.4"/>
+            <line x1="570" y1="80" x2="620" y2="280" stroke-width="0.8" opacity="0.4"/>
+
+            <!-- Ceiling details / beams -->
+            <path d="M130,80 Q350,60 570,80" stroke-width="0.8" opacity="0.4"/>
+            <line x1="200" y1="80" x2="230" y2="70" stroke-width="0.5" opacity="0.3"/>
+            <line x1="350" y1="80" x2="350" y2="65" stroke-width="0.5" opacity="0.3"/>
+            <line x1="500" y1="80" x2="470" y2="70" stroke-width="0.5" opacity="0.3"/>
+
+            <!-- Chandelier -->
+            <ellipse cx="350" cy="68" rx="28" ry="8" stroke-width="1" opacity="0.6"/>
+            <line x1="350" y1="60" x2="350" y2="45" stroke-width="1" opacity="0.5"/>
+            <line x1="330" y1="68" x2="322" y2="82" stroke-width="0.8" opacity="0.5"/>
+            <line x1="340" y1="70" x2="334" y2="86" stroke-width="0.8" opacity="0.5"/>
+            <line x1="350" y1="70" x2="350" y2="88" stroke-width="0.8" opacity="0.5"/>
+            <line x1="360" y1="70" x2="366" y2="86" stroke-width="0.8" opacity="0.5"/>
+            <line x1="370" y1="68" x2="378" y2="82" stroke-width="0.8" opacity="0.5"/>
+            <!-- teardrop crystals -->
+            <circle cx="322" cy="84" r="2" opacity="0.4"/>
+            <circle cx="334" cy="88" r="2" opacity="0.4"/>
+            <circle cx="350" cy="90" r="2.5" opacity="0.5"/>
+            <circle cx="366" cy="88" r="2" opacity="0.4"/>
+            <circle cx="378" cy="84" r="2" opacity="0.4"/>
+
+            <!-- Wall panels left -->
+            <rect x="145" y="95" width="55" height="100" rx="2" stroke-width="0.8" opacity="0.4"/>
+            <rect x="152" y="102" width="41" height="86" rx="1" stroke-width="0.5" opacity="0.3"/>
+            <line x1="172" y1="102" x2="172" y2="188" stroke-width="0.4" opacity="0.25"/>
+
+            <!-- Wall panels right -->
+            <rect x="500" y="95" width="55" height="100" rx="2" stroke-width="0.8" opacity="0.4"/>
+            <rect x="507" y="102" width="41" height="86" rx="1" stroke-width="0.5" opacity="0.3"/>
+            <line x1="527" y1="102" x2="527" y2="188" stroke-width="0.4" opacity="0.25"/>
+
+            <!-- Arch doorway centre back -->
+            <path d="M295,195 L295,130 Q350,105 405,130 L405,195" stroke-width="1.2" opacity="0.55"/>
+            <line x1="295" y1="195" x2="405" y2="195" stroke-width="0.8" opacity="0.4"/>
+
+            <!-- Round table centre -->
+            <ellipse cx="350" cy="248" rx="52" ry="18" stroke-width="1.2" opacity="0.6"/>
+            <ellipse cx="350" cy="244" rx="52" ry="16" stroke-width="0.5" opacity="0.2"/>
+            <!-- tablecloth drape -->
+            <path d="M298,248 Q310,262 350,265 Q390,262 402,248" stroke-width="0.8" opacity="0.35"/>
+
+            <!-- Table settings (top view simplified) -->
+            <circle cx="350" cy="236" r="5" stroke-width="0.8" opacity="0.4"/>
+            <circle cx="332" cy="240" r="4" stroke-width="0.8" opacity="0.35"/>
+            <circle cx="368" cy="240" r="4" stroke-width="0.8" opacity="0.35"/>
+            <line x1="322" y1="242" x2="318" y2="250" stroke-width="0.6" opacity="0.3"/>
+            <line x1="378" y1="242" x2="382" y2="250" stroke-width="0.6" opacity="0.3"/>
+
+            <!-- Chairs around table -->
+            <path d="M310,260 Q298,268 296,278" stroke-width="1" opacity="0.45"/>
+            <path d="M390,260 Q402,268 404,278" stroke-width="1" opacity="0.45"/>
+            <path d="M330,264 Q325,275 322,284" stroke-width="1" opacity="0.4"/>
+            <path d="M370,264 Q375,275 378,284" stroke-width="1" opacity="0.4"/>
+            <path d="M350,265 Q350,276 350,285" stroke-width="1" opacity="0.4"/>
+
+            <!-- Side tables left -->
+            <ellipse cx="190" cy="235" rx="28" ry="10" stroke-width="0.9" opacity="0.45"/>
+            <path d="M162,235 Q170,245 190,248 Q210,245 218,235" stroke-width="0.6" opacity="0.3"/>
+            <circle cx="190" cy="228" r="3.5" stroke-width="0.7" opacity="0.35"/>
+
+            <!-- Side table right -->
+            <ellipse cx="510" cy="235" rx="28" ry="10" stroke-width="0.9" opacity="0.45"/>
+            <path d="M482,235 Q490,245 510,248 Q530,245 538,235" stroke-width="0.6" opacity="0.3"/>
+            <circle cx="510" cy="228" r="3.5" stroke-width="0.7" opacity="0.35"/>
+
+            <!-- Floral centrepiece centre table -->
+            <circle cx="350" cy="228" r="7" stroke-width="0.8" opacity="0.4"/>
+            <path d="M350,221 Q354,218 350,215 Q346,218 350,221" stroke-width="0.7" opacity="0.4"/>
+            <path d="M357,225 Q361,221 359,217 Q355,220 357,225" stroke-width="0.7" opacity="0.35"/>
+            <path d="M343,225 Q339,221 341,217 Q345,220 343,225" stroke-width="0.7" opacity="0.35"/>
+
+            <!-- Candles side tables -->
+            <rect x="188" y="218" width="4" height="9" rx="1" stroke-width="0.7" opacity="0.4"/>
+            <path d="M190,218 Q192,214 190,211 Q188,214 190,218" stroke-width="0.7" opacity="0.4" fill="#9a8c7a" opacity="0.2"/>
+            <rect x="508" y="218" width="4" height="9" rx="1" stroke-width="0.7" opacity="0.4"/>
+            <path d="M510,218 Q512,214 510,211 Q508,214 510,218" stroke-width="0.7" opacity="0.4"/>
+
+            <!-- Floor -->
+            <line x1="80" y1="280" x2="620" y2="280" stroke-width="1.2" opacity="0.35"/>
+
+          </g>
+        </svg>
+
+        <p class="ballroom-label reveal reveal-delay-3">Aloes Ballroom &nbsp;·&nbsp; Oasia Hotel Sentosa</p>
       </div>
-      <div class="timeline">
-        <div class="timeline-item reveal">
-          <p class="timeline-time">5:00 PM</p>
-          <p class="timeline-event">Arrival & Welcome</p>
-        </div>
-        <div class="timeline-item reveal reveal-delay-1">
-          <p class="timeline-time">6:00 PM</p>
-          <p class="timeline-event">Ceremony & Opening</p>
-        </div>
-        <div class="timeline-item reveal reveal-delay-2">
-          <p class="timeline-time">7:00 PM</p>
-          <p class="timeline-event">Dinner Begins</p>
-        </div>
-        <div class="timeline-item reveal reveal-delay-3">
-          <p class="timeline-time">8:00 PM</p>
-          <p class="timeline-event">Celebration Continues</p>
-        </div>
-        <div class="timeline-item reveal reveal-delay-4">
-          <p class="timeline-time">9:00 PM</p>
-          <p class="timeline-event">Cake Buffet & Evening Programme</p>
+    </div>
+
+    <!-- Dress code -->
+    <div class="dresscode-panel">
+      <div class="inner">
+        <p class="section-label reveal">Dress Code</p>
+        <h2 class="section-title reveal reveal-delay-1">To be confirmed</h2>
+        <div class="section-divider reveal reveal-delay-1"></div>
+        <p class="dresscode-note reveal reveal-delay-2">
+          Details on what to wear will be shared here closer to the day.<br/>Watch this space — we promise it'll be worth dressing up for.
+        </p>
+        <div class="dresscode-swatches reveal reveal-delay-3">
+          <div class="swatch">
+            <div class="swatch-circle" style="background:#d4cfc8;"></div>
+            <span class="swatch-name">Stone</span>
+          </div>
+          <div class="swatch">
+            <div class="swatch-circle" style="background:#c8b99a;"></div>
+            <span class="swatch-name">Sand</span>
+          </div>
+          <div class="swatch">
+            <div class="swatch-circle" style="background:#8a7660;"></div>
+            <span class="swatch-name">Warm Taupe</span>
+          </div>
+          <div class="swatch">
+            <div class="swatch-circle" style="background:#3a3028;"></div>
+            <span class="swatch-name">Deep Ink</span>
+          </div>
+          <div class="swatch">
+            <div class="swatch-circle" style="background:#f7f3ee;"></div>
+            <span class="swatch-name">Ivory</span>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Illustrated horizontal timeline -->
+    <div class="timeline-panel">
+      <div class="inner">
+        <div class="panel-header reveal">
+          <p class="section-label">The Evening</p>
+          <h2 class="section-title">For the night ahead</h2>
+          <div class="section-divider center"></div>
+          <p class="schedule-venue">11 July 2027 &nbsp;·&nbsp; Oasia Hotel Sentosa</p>
+        </div>
+
+        <div class="h-timeline reveal reveal-delay-1">
+
+          <!-- 5pm Arrival -->
+          <div class="h-item">
+            <div class="h-item-icon">
+              <svg viewBox="0 0 26 26"><path d="M13 3C9.1 3 6 6.1 6 10c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7z"/><circle cx="13" cy="10" r="2.5"/></svg>
+            </div>
+            <p class="h-item-time">5 pm</p>
+            <p class="h-item-event">Arrival</p>
+            <p class="h-item-desc">Settle in, find your seats, and catch up with familiar faces.</p>
+          </div>
+
+          <!-- 6pm Ceremony -->
+          <div class="h-item">
+            <div class="h-item-icon">
+              <svg viewBox="0 0 26 26"><circle cx="9" cy="7" r="2.5"/><circle cx="17" cy="7" r="2.5"/><path d="M5 22v-5a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v5"/><path d="M11 13v3l2 2 2-2v-3"/></svg>
+            </div>
+            <p class="h-item-time">6 pm</p>
+            <p class="h-item-event">Ceremony</p>
+            <p class="h-item-desc">The moment we've been waiting for — with you beside us.</p>
+          </div>
+
+          <!-- 7pm Dinner -->
+          <div class="h-item">
+            <div class="h-item-icon">
+              <svg viewBox="0 0 26 26"><line x1="8" y1="4" x2="8" y2="22"/><path d="M5 4v7a3 3 0 0 0 6 0V4"/><line x1="18" y1="4" x2="18" y2="9"/><path d="M15 9a3 3 0 0 0 6 0"/><line x1="18" y1="9" x2="18" y2="22"/></svg>
+            </div>
+            <p class="h-item-time">7 pm</p>
+            <p class="h-item-event">Dinner</p>
+            <p class="h-item-desc">Good food, great conversation, and a table full of warmth.</p>
+          </div>
+
+          <!-- 8pm Dancing -->
+          <div class="h-item">
+            <div class="h-item-icon">
+              <svg viewBox="0 0 26 26"><circle cx="15" cy="5" r="2"/><path d="M13 8l-2 5h6l-1 4"/><path d="M11 13l-3 4"/><path d="M15 17l2 5"/><path d="M10 7l-3 2"/></svg>
+            </div>
+            <p class="h-item-time">8 pm</p>
+            <p class="h-item-event">Dancing</p>
+            <p class="h-item-desc">The floor is yours — music that moves and a night that lifts.</p>
+          </div>
+
+          <!-- 9pm Cake -->
+          <div class="h-item">
+            <div class="h-item-icon">
+              <svg viewBox="0 0 26 26"><rect x="4" y="13" width="18" height="9" rx="1.5"/><path d="M4 13v-1a9 9 0 0 1 18 0v1"/><line x1="13" y1="4" x2="13" y2="9"/><path d="M11 4 Q13 2 15 4"/><line x1="8" y1="17" x2="8" y2="22"/><line x1="13" y1="17" x2="13" y2="22"/><line x1="18" y1="17" x2="18" y2="22"/></svg>
+            </div>
+            <p class="h-item-time">9 pm</p>
+            <p class="h-item-event">Cake Buffet</p>
+            <p class="h-item-desc">An indulgent spread of cakes — a nod to how this all began.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- GUEST INFO — TABBED -->
@@ -1155,27 +1587,84 @@
 
     <!-- Directions -->
     <div class="tab-panel active" id="tab-directions">
-      <div class="info-grid">
-        <div class="info-block">
-          <h4>Getting to Oasia Hotel Sentosa</h4>
-          <p>We'll share the best routes, arrival notes, and drop-off details here so your journey to the celebration feels smooth and easy.</p>
-          <br />
-          <p><strong>Venue</strong><br />Oasia Hotel Sentosa, Aloes Ballroom</p>
-          <br />
-          <p><strong>By Car / Taxi</strong><br />Drop-off and parking details will be updated closer to the day.</p>
-          <br />
-          <p><strong>By Public Transport</strong><br />Nearest station and walking guidance will be added here.</p>
+      <div class="dir-layout">
+
+        <!-- Vertical sidebar -->
+        <div class="dir-transport-tabs">
+          <button class="dir-btn active" data-dir="car">
+            <svg viewBox="0 0 24 24"><path d="M5 17H3v-5l2-5h14l2 5v5h-2"/><rect x="1" y="12" width="22" height="5" rx="1"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+            By Car
+          </button>
+          <button class="dir-btn" data-dir="taxi">
+            <svg viewBox="0 0 24 24"><rect x="2" y="10" width="20" height="8" rx="2"/><path d="M6 10V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><line x1="12" y1="6" x2="12" y2="2"/></svg>
+            By Taxi / PHV
+          </button>
+          <button class="dir-btn" data-dir="mrt">
+            <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="18" rx="3"/><line x1="9" y1="20" x2="7" y2="23"/><line x1="15" y1="20" x2="17" y2="23"/><circle cx="9" cy="16" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="16" r="1.2" fill="currentColor" stroke="none"/></svg>
+            By MRT &amp; Monorail
+          </button>
         </div>
-        <div class="info-block">
-          <h4>Parking</h4>
-          <p>Closest lots and walking path to the ballroom — details to be added.</p>
-          <br />
-          <h4>Arrival Tip</h4>
-          <p>We recommend arriving a little before the stated start time so you can settle in comfortably and catch up with familiar faces before the programme begins.</p>
+
+        <!-- BY CAR -->
+        <div class="dir-panel active" id="dir-car">
+          <div class="dir-map-wrap">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d1994.2331317840832!2d103.81733537227773!3d1.2530091!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x31da1b2e9eafffff%3A0xed2cbdb9e4f7fa7a!2sSentosa+Gateway%2C+Singapore!3m2!1d1.260697!2d103.8208937!4m5!1s0x31da1b1800000001%3A0x1!2sOasia+Resort+Sentosa%2C+Bch+Vw+Rd%2C+Singapore+098935!3m2!1d1.2532119!2d103.8195066!5e0!3m2!1sen!2ssg!4v1713268800000!5m2!1sen!2ssg"
+              width="100%" height="100%" style="border:0; display:block; min-height:340px;"
+              allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+              title="Driving directions to Oasia Hotel Sentosa">
+            </iframe>
+          </div>
+          <div class="dir-info">
+            <h4>By Car</h4>
+            <div class="dir-step"><div class="dir-step-num">1</div><p>Drive into Sentosa via <strong>Sentosa Gateway</strong>. Use our QR code for complimentary island entry.</p></div>
+            <div class="dir-step"><div class="dir-step-num">2a</div><p>Head to <strong>Oasia Hotel Sentosa</strong> — valet parking is available at the entrance. QR code covers valet entry.</p></div>
+            <div class="dir-step"><div class="dir-step-num">2b</div><p>Prefer to self-park? Head to <strong>Village Hotel Sentosa</strong> car park and walk over. Note: parking charges apply — QR code does not cover self-parking.</p></div>
+            <div class="dir-qr-note">🎟️ <strong>Free Sentosa entry + valet</strong> — obtain the QR code from us in advance. We'll send it closer to the date.</div>
+          </div>
         </div>
+
+        <!-- BY TAXI / PHV -->
+        <div class="dir-panel" id="dir-taxi">
+          <div class="dir-map-wrap">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1244.4!2d103.81880!3d1.25310!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da1b1800000001%3A0x1!2sOasia+Resort+Sentosa%2C+Bch+Vw+Rd%2C+Singapore+098935!5e0!3m2!1sen!2ssg!4v1713268800001!5m2!1sen!2ssg"
+              width="100%" height="100%" style="border:0; display:block; min-height:340px;"
+              allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+              title="Oasia Hotel Sentosa location map">
+            </iframe>
+          </div>
+          <div class="dir-info">
+            <h4>By Taxi or Private Hire</h4>
+            <div class="dir-step"><div class="dir-step-num">1</div><p>Book your ride as usual. Tell your driver: <strong>"Oasia Hotel Sentosa"</strong>.</p></div>
+            <div class="dir-step"><div class="dir-step-num">2</div><p>Ask to be dropped off at the <strong>hotel entrance</strong> — a smooth ride straight from the mainland.</p></div>
+            <div class="dir-step"><div class="dir-step-num">3</div><p>Head inside and make your way to the <strong>Aloes Ballroom</strong>. We'll be there to welcome you.</p></div>
+            <div class="dir-qr-note">🎟️ <strong>Free Sentosa entry</strong> — obtain the QR code from us in advance. We'll send it closer to the date.</div>
+          </div>
+        </div>
+
+        <!-- BY MRT / MONORAIL -->
+        <div class="dir-panel" id="dir-mrt">
+          <div class="dir-map-wrap">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2488.7!2d103.81880!3d1.25800!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x31da1af3f1bd8eab%3A0xab1f9a4fb8a97af3!2sHarbourFront+MRT+Station%2C+Singapore!3m2!1d1.2651737!2d103.8201917!4m5!1s0x31da1b1800000001%3A0x1!2sOasia+Resort+Sentosa%2C+Bch+Vw+Rd%2C+Singapore+098935!3m2!1d1.2532119!2d103.8195066!5e0!3m2!1sen!2ssg!4v1713268800002!5m2!1sen!2ssg"
+              width="100%" height="100%" style="border:0; display:block; min-height:340px;"
+              allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+              title="Transit directions HarbourFront to Oasia Hotel Sentosa">
+            </iframe>
+          </div>
+          <div class="dir-info">
+            <h4>By MRT &amp; Sentosa Express</h4>
+            <div class="dir-step"><div class="dir-step-num">1</div><p>Take the MRT to <strong>HarbourFront Station</strong> (Circle Line or North-East Line).</p></div>
+            <div class="dir-step"><div class="dir-step-num">2</div><p>Follow signs to the <strong>Sentosa Express monorail</strong> and board towards Sentosa Island.</p></div>
+            <div class="dir-step"><div class="dir-step-num">3</div><p>Alight at <strong>Imbiah Station</strong> — it's just a 1-minute, 100m walk to Oasia Hotel from there.</p></div>
+            <div class="dir-step"><div class="dir-step-num">4</div><p>Make your way to the <strong>Aloes Ballroom</strong> and we'll be there to welcome you.</p></div>
+            <div class="dir-qr-note">🎟️ <strong>Free Sentosa Express entry</strong> — the QR code covers monorail entry too. We'll send it closer to the date.</div>
+          </div>
+        </div>
+
       </div>
     </div>
-
     <!-- Helpers -->
     <div class="tab-panel" id="tab-helpers">
       <p style="font-size:0.88rem; color:var(--ink-soft); margin-bottom:2rem; line-height:1.8;">
@@ -1353,6 +1842,25 @@
         btn.classList.add('active');
         btn.setAttribute('aria-selected', 'true');
         document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    // ── Direction sub-tabs (car / taxi / mrt)
+    function resetMapAnimations(panel) {
+      panel.querySelectorAll('.route-path, .dest-pin, .travel-dot').forEach(el => {
+        el.style.animation = 'none';
+        el.getBoundingClientRect(); // reflow
+        el.style.animation = '';
+      });
+    }
+    document.querySelectorAll('.dir-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.dir-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.dir-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        const panel = document.getElementById('dir-' + btn.dataset.dir);
+        panel.classList.add('active');
+        resetMapAnimations(panel);
       });
     });
 
