@@ -733,6 +733,7 @@
       filter: sepia(0) brightness(1);
     }
 
+
     /* ── DIRECTION MAPS ── */
     .dir-layout {
       display: grid;
@@ -741,9 +742,9 @@
       border: 0.5px solid var(--sand-light);
       border-radius: 8px;
       overflow: hidden;
+      height: 520px;
     }
 
-    /* Vertical sidebar tabs */
     .dir-transport-tabs {
       display: flex;
       flex-direction: column;
@@ -772,57 +773,82 @@
     .dir-btn + .dir-btn { border-top: 0.5px solid var(--sand-light); }
     .dir-btn svg { width: 15px; height: 15px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
     .dir-btn:hover { color: var(--ink); background: rgba(200,185,154,0.12); }
-    .dir-btn.active {
-      color: var(--ink);
-      background: var(--white);
-      border-left-color: var(--sand-dark);
-      font-weight: 400;
-    }
+    .dir-btn.active { color: var(--ink); background: var(--white); border-left-color: var(--sand-dark); font-weight: 400; }
 
-    /* Content panels */
+    /* All panels fill the right column fully */
     .dir-panel { display: none; }
-    .dir-panel.active {
+    .dir-panel.active { display: flex; flex-direction: column; height: 100%; }
+
+    /* Taxi + MRT: side-by-side grid */
+    #dir-taxi.dir-panel.active,
+    #dir-mrt.dir-panel.active {
       display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 0;
-      align-items: stretch;
+      grid-template-columns: 1.15fr 1fr;
+      height: 100%;
     }
 
-    /* Content panels — full width, stacked layout */
-    .dir-panel { display: none; }
-    .dir-panel.active { display: block; }
-
-    /* Map area */
+    /* Map fills available space with iframe absolutely inside */
     .dir-map-wrap {
       position: relative;
       overflow: hidden;
-      min-height: 440px;
-      background: #e8f0e0;
+      flex: 1;
+      min-height: 0;
+      background: #e8efe0;
     }
     .dir-map-wrap iframe {
+      position: absolute;
+      inset: 0;
       width: 100%;
-      height: 440px;
+      height: 100%;
       border: 0;
       display: block;
     }
 
-    /* Car subpanel — map + text side by side */
+    /* SVG overlay for animated line + pin on top of iframe */
+    .dir-map-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .map-arrow-line {
+      stroke-dasharray: 260;
+      stroke-dashoffset: 260;
+      animation: drawArrow 1s cubic-bezier(0.4,0,0.2,1) 0.6s forwards;
+    }
+    @keyframes drawArrow { to { stroke-dashoffset: 0; } }
+    .map-pin-pulse {
+      transform-origin: 50% 50%;
+      animation: mapPinPulse 1.6s ease-out 1.8s infinite;
+    }
+    @keyframes mapPinPulse {
+      0%   { opacity: 0.65; transform: scale(0.5); }
+      100% { opacity: 0;    transform: scale(2.2); }
+    }
+    .map-pin-dot {
+      animation: mapPinAppear 0.4s cubic-bezier(0.34,1.56,0.64,1) 1.5s both;
+    }
+    @keyframes mapPinAppear {
+      from { opacity: 0; transform: scale(0); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    /* Car panel: toggle row + subpanel */
     .car-toggle-row {
-      padding: 1rem 1.5rem 0.75rem;
+      padding: 0.9rem 1.4rem 0.75rem;
       border-bottom: 0.5px solid var(--sand-light);
+      background: var(--white);
+      flex-shrink: 0;
     }
     .car-subpanel { display: none; }
     .car-subpanel.active {
       display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      align-items: stretch;
+      grid-template-columns: 1.15fr 1fr;
+      flex: 1;
+      min-height: 0;
     }
-
-    /* Car parking toggle — compact pill */
     .car-toggle {
       display: flex;
-      align-items: center;
-      gap: 0;
       background: var(--sand-pale);
       border: 0.5px solid var(--sand-light);
       border-radius: 20px;
@@ -850,144 +876,52 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
 
-    /* Taxi and MRT panels — map + text side by side */
-    #dir-taxi.dir-panel.active,
-    #dir-mrt.dir-panel.active {
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      align-items: stretch;
-    }
-
-    @media (max-width: 768px) {
-      .car-subpanel.active { grid-template-columns: 1fr; }
-      #dir-taxi.dir-panel.active,
-      #dir-mrt.dir-panel.active { grid-template-columns: 1fr; }
-    }
-
-    /* Animated route path */
-    .route-path {
-      stroke-dasharray: 800;
-      stroke-dashoffset: 800;
-    }
-    .dir-panel.active .route-path {
-      animation: drawRoute 2s cubic-bezier(0.4,0,0.2,1) 0.4s forwards;
-    }
-    @keyframes drawRoute { to { stroke-dashoffset: 0; } }
-
-    /* Secondary route (dashed alternate) */
-    .route-path-alt {
-      stroke-dasharray: 600;
-      stroke-dashoffset: 600;
-    }
-    .dir-panel.active .route-path-alt {
-      animation: drawRoute 1.6s cubic-bezier(0.4,0,0.2,1) 0.9s forwards;
-    }
-
-    /* Destination pin drop */
-    .dest-pin {
-      opacity: 0;
-      transform-origin: center bottom;
-    }
-    .dir-panel.active .dest-pin {
-      animation: pinDrop 0.5s cubic-bezier(0.34,1.56,0.64,1) 2.1s forwards;
-    }
-    @keyframes pinDrop {
-      from { opacity: 0; transform: translateY(-14px) scale(0.5); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    /* Pulse ring on pin */
-    .pin-pulse {
-      opacity: 0;
-      transform-origin: center center;
-    }
-    .dir-panel.active .pin-pulse {
-      animation: pinPulse 1.2s ease-out 2.6s infinite;
-    }
-    @keyframes pinPulse {
-      0%   { opacity: 0.6; transform: scale(1); }
-      100% { opacity: 0;   transform: scale(2.2); }
-    }
-
-    /* Travel dot */
-    .travel-dot { opacity: 0; }
-    .dir-panel.active .travel-dot {
-      animation: dotAppear 0.01s ease 0.4s forwards;
-    }
-    @keyframes dotAppear { to { opacity: 1; } }
-
-    /* Map caption strip */
-    .dir-map-caption {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      background: rgba(255,255,255,0.88);
-      backdrop-filter: blur(4px);
-      font-family: var(--sans);
-      font-size: 0.6rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink-soft);
-      padding: 0.5rem 0.85rem;
-      border-top: 0.5px solid rgba(0,0,0,0.08);
-    }
-    .dir-map-caption .gm-credit {
-      float: right;
-      color: #aaa;
-      font-size: 0.55rem;
-    }
-
-    /* Directions text panel */
+    /* Directions text */
     .dir-info {
-      padding: 2rem 2rem 2rem 1.75rem;
+      padding: 1.75rem;
       border-left: 0.5px solid var(--sand-light);
+      overflow-y: auto;
     }
     .dir-info h4 {
       font-family: var(--serif);
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 400;
       color: var(--ink);
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.1rem;
     }
     .dir-info strong { color: var(--ink); font-weight: 400; }
-    .dir-step {
-      display: flex;
-      gap: 0.85rem;
-      align-items: flex-start;
-      margin-bottom: 1rem;
-    }
+    .dir-step { display: flex; gap: 0.8rem; align-items: flex-start; margin-bottom: 0.9rem; }
     .dir-step-num {
-      width: 22px; height: 22px;
+      width: 21px; height: 21px;
       border-radius: 50%;
       background: var(--sand-light);
       flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--serif);
-      font-size: 0.75rem;
-      color: var(--sand-dark);
-      margin-top: 0.1rem;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-size: 0.72rem; color: var(--sand-dark);
+      margin-top: 0.15rem;
     }
-    .dir-step p { margin: 0; font-size: 0.86rem; line-height: 1.8; color: var(--ink-soft); }
+    .dir-step p { margin: 0; font-size: 0.84rem; line-height: 1.75; color: var(--ink-soft); }
     .dir-qr-note {
-      margin-top: 1.5rem;
-      padding: 0.9rem 1.1rem;
+      margin-top: 1.25rem;
+      padding: 0.85rem 1rem;
       background: var(--sand-pale);
       border-left: 2px solid var(--sand);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--ink-soft);
-      line-height: 1.75;
+      line-height: 1.7;
     }
     .dir-qr-note strong { color: var(--ink); font-weight: 400; }
 
     @media (max-width: 768px) {
-      .dir-layout { grid-template-columns: 1fr; }
+      .dir-layout { grid-template-columns: 1fr; height: auto; }
       .dir-transport-tabs { flex-direction: row; border-right: none; border-bottom: 0.5px solid var(--sand-light); }
       .dir-btn { border-left: none; border-bottom: 2px solid transparent; padding: 0.85rem 1rem; }
-      .dir-btn.active { border-left-color: transparent; border-bottom-color: var(--sand-dark); background: var(--sand-pale); }
-      .dir-btn + .dir-btn { border-top: none; border-left: 0.5px solid var(--sand-light); }
-      .dir-panel.active { grid-template-columns: 1fr; }
-      .dir-map-wrap { min-height: 240px; }
+      .dir-btn.active { border-left-color: transparent; border-bottom-color: var(--sand-dark); }
+      .car-subpanel.active,
+      #dir-taxi.dir-panel.active,
+      #dir-mrt.dir-panel.active { grid-template-columns: 1fr; }
+      .dir-map-wrap { min-height: 260px; }
+      .dir-map-wrap iframe { position: static; height: 260px; }
     }
 
     /* ── GUEST INFO (TABBED) ── */
@@ -1686,6 +1620,17 @@
                 loading="lazy" referrerpolicy="no-referrer-when-downgrade"
                 title="Oasia Resort Sentosa — Valet Drop-off">
               </iframe>
+              <svg class="dir-map-overlay" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <line class="map-arrow-line" x1="8" y1="88" x2="50" y2="50"
+                  stroke="#ea4335" stroke-width="0.8" stroke-linecap="round"
+                  stroke-dasharray="4,2.5" opacity="0.85"/>
+                <circle class="map-pin-pulse" cx="50" cy="50" r="4"
+                  fill="none" stroke="#ea4335" stroke-width="0.8" opacity="0"/>
+                <g class="map-pin-dot">
+                  <circle cx="50" cy="50" r="2.2" fill="#ea4335" opacity="0.9"/>
+                  <circle cx="50" cy="50" r="1" fill="white"/>
+                </g>
+              </svg>
             </div>
             <div class="dir-info">
               <h4>Valet Drop-off</h4>
@@ -1705,6 +1650,17 @@
                 loading="lazy" referrerpolicy="no-referrer-when-downgrade"
                 title="Village Hotel Sentosa — Self-Park">
               </iframe>
+              <svg class="dir-map-overlay" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <line class="map-arrow-line" x1="8" y1="88" x2="50" y2="50"
+                  stroke="#ea4335" stroke-width="0.8" stroke-linecap="round"
+                  stroke-dasharray="4,2.5" opacity="0.85"/>
+                <circle class="map-pin-pulse" cx="50" cy="50" r="4"
+                  fill="none" stroke="#ea4335" stroke-width="0.8" opacity="0"/>
+                <g class="map-pin-dot">
+                  <circle cx="50" cy="50" r="2.2" fill="#ea4335" opacity="0.9"/>
+                  <circle cx="50" cy="50" r="1" fill="white"/>
+                </g>
+              </svg>
             </div>
             <div class="dir-info">
               <h4>Self-Park at Village Hotel</h4>
@@ -1727,6 +1683,17 @@
               loading="lazy" referrerpolicy="no-referrer-when-downgrade"
               title="Oasia Resort Sentosa — drop-off point">
             </iframe>
+            <svg class="dir-map-overlay" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <line class="map-arrow-line" x1="8" y1="88" x2="50" y2="50"
+                  stroke="#ea4335" stroke-width="0.8" stroke-linecap="round"
+                  stroke-dasharray="4,2.5" opacity="0.85"/>
+                <circle class="map-pin-pulse" cx="50" cy="50" r="4"
+                  fill="none" stroke="#ea4335" stroke-width="0.8" opacity="0"/>
+                <g class="map-pin-dot">
+                  <circle cx="50" cy="50" r="2.2" fill="#ea4335" opacity="0.9"/>
+                  <circle cx="50" cy="50" r="1" fill="white"/>
+                </g>
+              </svg>
           </div>
           <div class="dir-info">
             <h4>By Taxi or Private Hire</h4>
@@ -1746,6 +1713,17 @@
               loading="lazy" referrerpolicy="no-referrer-when-downgrade"
               title="Oasia Resort Sentosa — MRT and Sentosa Express route">
             </iframe>
+            <svg class="dir-map-overlay" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <line class="map-arrow-line" x1="8" y1="88" x2="50" y2="50"
+                  stroke="#ea4335" stroke-width="0.8" stroke-linecap="round"
+                  stroke-dasharray="4,2.5" opacity="0.85"/>
+                <circle class="map-pin-pulse" cx="50" cy="50" r="4"
+                  fill="none" stroke="#ea4335" stroke-width="0.8" opacity="0"/>
+                <g class="map-pin-dot">
+                  <circle cx="50" cy="50" r="2.2" fill="#ea4335" opacity="0.9"/>
+                  <circle cx="50" cy="50" r="1" fill="white"/>
+                </g>
+              </svg>
           </div>
           <div class="dir-info">
             <h4>By MRT &amp; Sentosa Express</h4>
