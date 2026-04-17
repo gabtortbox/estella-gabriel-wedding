@@ -142,10 +142,7 @@
 
     /* Scroll indicator */
     .scroll-indicator {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
+      position: relative;
       z-index: 2;
       display: flex;
       flex-direction: column;
@@ -153,6 +150,8 @@
       gap: 0.5rem;
       opacity: 0;
       animation: fadeIn 1s ease 2.2s forwards;
+      padding-bottom: 1.5rem;
+      margin-top: 1.5rem;
     }
     .scroll-indicator span {
       font-family: var(--sans);
@@ -199,7 +198,7 @@
       padding: 8rem 2rem 0;
     }
 
-    /* Bottom block: date, countdown, buttons */
+    /* Bottom block: date, countdown, buttons, scroll */
     .hero-bottom {
       position: relative;
       z-index: 2;
@@ -207,7 +206,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 2rem 5rem;
+      padding: 0 2rem 1rem;
       gap: 0;
     }
 
@@ -1253,12 +1252,13 @@
         <a href="#story" class="btn">Our Story</a>
         <a href="rsvp.html" class="btn filled">RSVP</a>
       </div>
+
+      <div class="scroll-indicator" aria-hidden="true">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+      </div>
     </div>
 
-    <div class="scroll-indicator" aria-hidden="true">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
-    </div>
   </div>
 
   <!-- OUR STORY -->
@@ -1681,10 +1681,10 @@
           <div class="car-subpanel active" id="car-valet">
             <div class="dir-map-wrap">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d374!2d103.81913!3d1.25292!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da1b28a5a44ca1%3A0xd12ff88e83a99a21!2sOasia%20Resort%20Sentosa!5e0!3m2!1sen!2ssg!4v1713440000000!5m2!1sen!2ssg"
+                src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d1994!2d103.81750!3d1.25400!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e0!4m3!3m2!1d1.2607!2d103.8209!4m3!3m2!1d1.25292!2d103.81913!5e0!3m2!1sen!2ssg!4v1713500000000!5m2!1sen!2ssg"
                 width="100%" height="320" style="border:0;display:block;" allowfullscreen
                 loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                title="Oasia Resort Sentosa — Valet Drop-off">
+                title="Driving directions from Sentosa Gateway to Oasia Resort Sentosa valet">
               </iframe>
             </div>
             <div class="dir-info">
@@ -1700,10 +1700,10 @@
           <div class="car-subpanel" id="car-selfpark">
             <div class="dir-map-wrap">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d374!2d103.81981!3d1.25270!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da1b289c21d2a7%3A0x9f6e123456789abc!2sVillage%20Hotel%20Sentosa!5e0!3m2!1sen!2ssg!4v1713440000001!5m2!1sen!2ssg"
+                src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d1994!2d103.81850!3d1.25350!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e0!4m3!3m2!1d1.2607!2d103.8209!4m3!3m2!1d1.25270!2d103.81981!5e0!3m2!1sen!2ssg!4v1713500000001!5m2!1sen!2ssg"
                 width="100%" height="320" style="border:0;display:block;" allowfullscreen
                 loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                title="Village Hotel Sentosa — Self-Park">
+                title="Driving directions from Sentosa Gateway to Village Hotel Sentosa">
               </iframe>
             </div>
             <div class="dir-info">
@@ -1721,10 +1721,10 @@
         <div class="dir-panel" id="dir-taxi">
           <div class="dir-map-wrap">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d374!2d103.81913!3d1.25292!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da1b28a5a44ca1%3A0xd12ff88e83a99a21!2sOasia%20Resort%20Sentosa!5e0!3m2!1sen!2ssg!4v1713440000002!5m2!1sen!2ssg"
+              src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d1994!2d103.81750!3d1.25400!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e0!4m3!3m2!1d1.2607!2d103.8209!4m3!3m2!1d1.25292!2d103.81913!5e0!3m2!1sen!2ssg!4v1713500000002!5m2!1sen!2ssg"
               width="100%" height="320" style="border:0;display:block;" allowfullscreen
               loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-              title="Oasia Resort Sentosa — drop off point">
+              title="Directions from Sentosa Gateway to Oasia Resort Sentosa">
             </iframe>
           </div>
           <div class="dir-info">
@@ -1740,10 +1740,10 @@
         <div class="dir-panel" id="dir-mrt">
           <div class="dir-map-wrap">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d1244!2d103.81688!3d1.25580!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x31da1af3f1bd8eab%3A0xab1f9a4fb8a97af3!2sHarbourFront%20MRT%20Station!3m2!1d1.2651737!2d103.8201917!4m5!1s0x31da1b28a5a44ca1%3A0xd12ff88e83a99a21!2sOasia%20Resort%20Sentosa!3m2!1d1.2532119!2d103.8195066!5e0!3m2!1sen!2ssg!4v1713440000003!5m2!1sen!2ssg"
+              src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d2490!2d103.81500!3d1.25800!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e3!4m3!3m2!1d1.26517!2d103.82019!4m3!3m2!1d1.25321!2d103.81951!5e0!3m2!1sen!2ssg!4v1713500000003!5m2!1sen!2ssg"
               width="100%" height="320" style="border:0;display:block;" allowfullscreen
               loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-              title="Transit directions HarbourFront MRT to Oasia Resort Sentosa">
+              title="Transit directions from HarbourFront MRT to Oasia Resort Sentosa">
             </iframe>
           </div>
           <div class="dir-info">
