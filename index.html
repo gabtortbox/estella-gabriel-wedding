@@ -697,40 +697,314 @@
       max-width: 120px;
     }
 
-    /* ── PHOTOS SECTION ── */
-    #photos {
-      padding: 7rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    #photos .photos-header { margin-bottom: 3rem; }
-    .photo-mosaic {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      grid-template-rows: repeat(3, 200px);
-      gap: 6px;
-    }
-    .photo-mosaic .p1 { grid-column: 1/6; grid-row: 1/3; }
-    .photo-mosaic .p2 { grid-column: 6/10; grid-row: 1/2; }
-    .photo-mosaic .p3 { grid-column: 10/13; grid-row: 1/2; }
-    .photo-mosaic .p4 { grid-column: 6/8; grid-row: 2/3; }
-    .photo-mosaic .p5 { grid-column: 8/13; grid-row: 2/3; }
-    .photo-mosaic .p6 { grid-column: 1/5; grid-row: 3/4; }
-    .photo-mosaic .p7 { grid-column: 5/9; grid-row: 3/4; }
-    .photo-mosaic .p8 { grid-column: 9/13; grid-row: 3/4; }
-    .mosaic-item {
-      background: var(--sand-light);
+    /* ── YEARS TIMELINE (horizontal) ── */
+    #years {
+      position: relative;
+      padding: 5rem 0 5.5rem;
+      max-width: 100%;
+      margin: 0;
       overflow: hidden;
+      background: var(--sand-pale);
+      isolation: isolate;
     }
-    .mosaic-item img {
+
+    /* Silk-like animated gradient background — flowing, wave-like */
+    .years-silk {
+      position: absolute;
+      inset: -20%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0.6;
+    }
+    .years-silk::before,
+    .years-silk::after {
+      content: '';
+      position: absolute;
+      width: 140%;
+      height: 140%;
+      top: -20%; left: -20%;
+      background:
+        radial-gradient(ellipse 55% 35% at 25% 40%, rgba(200,185,154,0.6), transparent 60%),
+        radial-gradient(ellipse 45% 30% at 75% 60%, rgba(138,118,96,0.38), transparent 65%),
+        radial-gradient(ellipse 40% 25% at 50% 85%, rgba(232,221,208,0.75), transparent 60%),
+        radial-gradient(ellipse 35% 25% at 90% 15%, rgba(213,206,196,0.5), transparent 60%);
+      filter: blur(50px);
+      animation: silkFlow 32s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    .years-silk::after {
+      animation-duration: 46s;
+      animation-delay: -18s;
+      animation-direction: alternate-reverse;
+      mix-blend-mode: soft-light;
+      transform: rotate(15deg) scale(1.1);
+    }
+    @keyframes silkFlow {
+      0%   { transform: translate(0, 0) rotate(0deg) scale(1); }
+      25%  { transform: translate(2%, -1.5%) rotate(3deg) scale(1.05); }
+      50%  { transform: translate(-1.5%, 2%) rotate(-2deg) scale(1.08); }
+      75%  { transform: translate(1.5%, 1.5%) rotate(4deg) scale(1.04); }
+      100% { transform: translate(-1%, -1%) rotate(-3deg) scale(1.06); }
+    }
+
+    .years-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .years-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 0 1.5rem;
+    }
+    .years-intro {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--ink-soft);
+      max-width: 540px;
+      margin: 1rem auto 0;
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    /* Horizontal timeline strip */
+    .years-timeline {
+      position: relative;
+      display: flex;
+      gap: 2rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding: 3.5rem clamp(1.5rem, 10vw, 8rem) 2rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--sand) transparent;
+    }
+    .years-timeline::-webkit-scrollbar { height: 4px; }
+    .years-timeline::-webkit-scrollbar-track { background: transparent; }
+    .years-timeline::-webkit-scrollbar-thumb {
+      background: var(--sand);
+      border-radius: 2px;
+    }
+
+    /* Central horizontal line through the dots */
+    .years-timeline::before {
+      content: '';
+      position: absolute;
+      top: calc(3.5rem + 110px);  /* align with center of dots */
+      left: clamp(1.5rem, 10vw, 8rem);
+      right: clamp(1.5rem, 10vw, 8rem);
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--sand) 4%, var(--sand) 96%, transparent);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .year-entry {
+      flex: 0 0 auto;
+      width: clamp(180px, 22vw, 230px);
+      scroll-snap-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      text-align: center;
+    }
+
+    /* Dot marker on the center line (sits between photo and year number) */
+    .year-dot {
+      position: relative;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--sand-pale);
+      border: 1.5px solid var(--sand-dark);
+      margin: 1.1rem 0 1.1rem;
+      z-index: 2;
+      flex: 0 0 auto;
+    }
+    .year-dot::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 0.5px solid var(--sand);
+      opacity: 0;
+      animation: dotPulse 2.4s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%   { transform: scale(0.7); opacity: 0; }
+      50%  { opacity: 0.65; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+
+    /* Photo card — compact vertical */
+    .year-photo-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    .year-photo {
+      position: relative;
+      aspect-ratio: 4/5;
+      width: 100%;
+      max-width: 220px;
+      overflow: hidden;
+      background: var(--sand-light);
+      box-shadow:
+        0 2px 6px rgba(42,37,32,0.05),
+        0 14px 32px rgba(42,37,32,0.12);
+      transition: transform 0.6s cubic-bezier(0.22,1,0.36,1),
+                  box-shadow 0.6s ease;
+      transform-origin: center bottom;
+    }
+    .year-photo img {
       width: 100%; height: 100%;
       object-fit: cover;
-      filter: sepia(0.08) brightness(0.97);
-      transition: transform 0.7s ease, filter 0.4s ease;
+      filter: sepia(0.08) brightness(0.98);
+      transition: transform 1.4s cubic-bezier(0.22,1,0.36,1),
+                  filter 0.6s ease;
     }
-    .mosaic-item:hover img {
-      transform: scale(1.04);
+    .year-entry:hover .year-photo {
+      transform: translateY(-8px) rotate(-1deg) scale(1.04);
+      box-shadow:
+        0 4px 12px rgba(42,37,32,0.08),
+        0 24px 50px rgba(42,37,32,0.2);
+    }
+    .year-entry:hover .year-photo img {
+      transform: scale(1.06);
       filter: sepia(0) brightness(1);
+    }
+
+    /* Meta — just the year number */
+    .year-meta {
+      position: relative;
+      width: 100%;
+    }
+    .year-num {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 2.4vw, 2rem);
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      line-height: 1;
+      display: block;
+    }
+
+    /* Ghost year watermark behind photo */
+    .year-ghost {
+      position: absolute;
+      top: -1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--serif);
+      font-size: clamp(5rem, 9vw, 7rem);
+      font-weight: 300;
+      color: var(--sand);
+      opacity: 0;
+      line-height: 0.85;
+      letter-spacing: -0.02em;
+      pointer-events: none;
+      user-select: none;
+      z-index: -1;
+      white-space: nowrap;
+      transition: opacity 0.5s ease;
+    }
+    .year-entry:hover .year-ghost { opacity: 0.22; }
+
+    /* Scroll reveal — stagger fade-up */
+    .year-entry .year-photo,
+    .year-entry .year-dot,
+    .year-entry .year-meta {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .year-entry .year-dot { transition-delay: 0.15s; transform: scale(0.4) translateY(0); }
+    .year-entry .year-meta { transition-delay: 0.25s; }
+    .year-entry.in-view .year-photo,
+    .year-entry.in-view .year-meta {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .year-entry.in-view .year-dot {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Edge fade hint — suggests horizontal scrollability */
+    .years-timeline-wrap {
+      position: relative;
+    }
+    .years-timeline-wrap::before,
+    .years-timeline-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: clamp(2rem, 6vw, 5rem);
+      z-index: 3;
+      pointer-events: none;
+    }
+    .years-timeline-wrap::before {
+      left: 0;
+      background: linear-gradient(to right, var(--sand-pale), transparent);
+    }
+    .years-timeline-wrap::after {
+      right: 0;
+      background: linear-gradient(to left, var(--sand-pale), transparent);
+    }
+
+    /* Scroll nav arrows (desktop) */
+    .years-nav {
+      position: absolute;
+      top: calc(3.5rem + 110px);
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1px solid var(--sand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 4;
+      color: var(--ink-soft);
+      transition: all 0.3s ease;
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1;
+      box-shadow: 0 4px 14px rgba(42,37,32,0.08);
+    }
+    .years-nav:hover {
+      background: var(--sand-light);
+      color: var(--ink);
+      transform: translateY(-50%) scale(1.05);
+    }
+    .years-nav.prev { left: clamp(0.5rem, 3vw, 2rem); }
+    .years-nav.next { right: clamp(0.5rem, 3vw, 2rem); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 820px) {
+      #years { padding: 4rem 0 4.5rem; }
+      .years-header { margin-bottom: 2rem; }
+      .years-timeline {
+        gap: 1.25rem;
+        padding: 3rem 1.25rem 1.5rem;
+      }
+      .years-timeline::before {
+        top: calc(3rem + 95px);
+        left: 1.25rem;
+        right: 1.25rem;
+      }
+      .year-entry { width: 170px; }
+      .year-photo { max-width: 170px; }
+      .year-num { font-size: 1.4rem; }
+      .years-nav { display: none; }
     }
 
 
@@ -1354,22 +1628,128 @@
     </div>
   </section>
 
-  <!-- PHOTOS MOSAIC -->
-  <section id="photos">
-    <div class="photos-header reveal">
-      <p class="section-label">Us, Through the Years</p>
-      <h2 class="section-title">A few of our favourite frames</h2>
-      <div class="section-divider center"></div>
-    </div>
-    <div class="photo-mosaic reveal reveal-delay-1">
-      <div class="mosaic-item p1"><img src="assets/photos/gallery-1.jpg" alt="" onerror="this.parentElement.style.background='#d5cec4'" /></div>
-      <div class="mosaic-item p2"><img src="assets/photos/gallery-2.jpg" alt="" onerror="this.parentElement.style.background='#cdc6bb'" /></div>
-      <div class="mosaic-item p3"><img src="assets/photos/gallery-3.jpg" alt="" onerror="this.parentElement.style.background='#ddd7ce'" /></div>
-      <div class="mosaic-item p4"><img src="assets/photos/gallery-4.jpg" alt="" onerror="this.parentElement.style.background='#c8c0b5'" /></div>
-      <div class="mosaic-item p5"><img src="assets/photos/gallery-5.jpg" alt="" onerror="this.parentElement.style.background='#d0c9bf'" /></div>
-      <div class="mosaic-item p6"><img src="assets/photos/gallery-6.jpg" alt="" onerror="this.parentElement.style.background='#d8d1c7'" /></div>
-      <div class="mosaic-item p7"><img src="assets/photos/gallery-7.jpg" alt="" onerror="this.parentElement.style.background='#c5bdb2'" /></div>
-      <div class="mosaic-item p8"><img src="assets/photos/gallery-8.jpg" alt="" onerror="this.parentElement.style.background='#dbd4ca'" /></div>
+  <!-- YEARS TIMELINE -->
+  <section id="years">
+    <div class="years-silk" aria-hidden="true"></div>
+    <div class="years-inner">
+      <div class="years-header reveal">
+        <p class="section-label">Us, Through the Years</p>
+        <h2 class="section-title">Eight years, one long story</h2>
+        <div class="section-divider center"></div>
+      </div>
+
+      <div class="years-timeline-wrap">
+        <button class="years-nav prev" type="button" aria-label="Scroll back">&lsaquo;</button>
+        <button class="years-nav next" type="button" aria-label="Scroll forward">&rsaquo;</button>
+
+        <div class="years-timeline" id="yearsTimeline">
+
+          <div class="year-entry" data-year="2019">
+            <div class="year-photo-wrap">
+              <div class="year-photo">
+                <img src="assets/photos/2019.jpg" alt="Us in 2019" onerror="this.parentElement.style.background='#d5cec4'" />
+              </div>
+            </div>
+            <div class="year-dot" aria-hidden="true"></div>
+            <div class="year-meta">
+              <span class="year-ghost" aria-hidden="true">2019</span>
+              <span class="year-num">2019</span>
+            </div>
+          </div>
+
+          <div class="year-entry" data-year="2020">
+            <div class="year-photo-wrap">
+              <div class="year-photo">
+                <img src="assets/photos/2020.jpg" alt="Us in 2020" onerror="this.parentElement.style.background='#cdc6bb'" />
+              </div>
+            </div>
+            <div class="year-dot" aria-hidden="true"></div>
+            <div class="year-meta">
+              <span class="year-ghost" aria-hidden="true">2020</span>
+              <span class="year-num">2020</span>
+            </div>
+          </div>
+
+          <div class="year-entry" data-year="2021">
+            <div class="year-photo-wrap">
+              <div class="year-photo">
+                <img src="assets/photos/2021.jpg" alt="Us in 2021" onerror="this.parentElement.style.background='#ddd7ce'" />
+              </div>
+            </div>
+            <div class="year-dot" aria-hidden="true"></div>
+            <div class="year-meta">
+              <span class="year-ghost" aria-hidden="true">2021</span>
+              <span class="year-num">2021</span>
+            </div>
+          </div>
+
+          <div class="year-entry" data-year="2022">
+            <div class="year-photo-wrap">
+              <div class="year-photo">
+                <img src="assets/photos/2022.jpg" alt="Us in 2022" onerror="this.parentElement.style.background='#c8c0b5'" />
+              </div>
+            </div>
+            <div class="year-dot" aria-hidden="true"></div>
+            <div class="year-meta">
+              <span class="year-ghost" aria-hidden="true">2022</span>
+              <span class="year-num">2022</span>
+            </div>
+          </div>
+
+          <div class="year-entry" data-year="2023">
+            <div class="year-photo-wrap">
+              <div class="year-photo">
+                <img src="assets/photos/2023.jpg" alt="Us in 2023" onerror="this.parentElement.style.background='#d0c9bf'" />
+              </div>
+            </div>
+            <div class="year-dot" aria-hidden="true"></div>
+            <div class="year-meta">
+              <span class="year-ghost" aria-hidden="true">2023</span>
+              <span class="year-num">2023</span>
+            </div>
+          </div>
+
+          <div class="year-entry" data-year="2024">
+            <div class="year-photo-wrap">
+              <div class="year-photo">
+                <img src="assets/photos/2024.jpg" alt="Us in 2024" onerror="this.parentElement.style.background='#d8d1c7'" />
+              </div>
+            </div>
+            <div class="year-dot" aria-hidden="true"></div>
+            <div class="year-meta">
+              <span class="year-ghost" aria-hidden="true">2024</span>
+              <span class="year-num">2024</span>
+            </div>
+          </div>
+
+          <div class="year-entry" data-year="2025">
+            <div class="year-photo-wrap">
+              <div class="year-photo">
+                <img src="assets/photos/2025.jpg" alt="Us in 2025" onerror="this.parentElement.style.background='#c5bdb2'" />
+              </div>
+            </div>
+            <div class="year-dot" aria-hidden="true"></div>
+            <div class="year-meta">
+              <span class="year-ghost" aria-hidden="true">2025</span>
+              <span class="year-num">2025</span>
+            </div>
+          </div>
+
+          <div class="year-entry" data-year="2026">
+            <div class="year-photo-wrap">
+              <div class="year-photo">
+                <img src="assets/photos/2026.jpg" alt="Us in 2026" onerror="this.parentElement.style.background='#dbd4ca'" />
+              </div>
+            </div>
+            <div class="year-dot" aria-hidden="true"></div>
+            <div class="year-meta">
+              <span class="year-ghost" aria-hidden="true">2026</span>
+              <span class="year-num">2026</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1932,6 +2312,36 @@
       });
     }, { threshold: 0.1 });
     allReveals.forEach(el => revealObserver.observe(el));
+
+    // ── Years timeline: staggered reveal as each photo scrolls into the strip
+    const yearsTimeline = document.getElementById('yearsTimeline');
+    const yearEntries = document.querySelectorAll('.year-entry');
+    if (yearEntries.length) {
+      // Stagger in when the whole strip enters the viewport (vertical)
+      const stripObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            yearEntries.forEach((el, i) => {
+              setTimeout(() => el.classList.add('in-view'), i * 110);
+            });
+            stripObserver.disconnect();
+          }
+        });
+      }, { threshold: 0.25 });
+      if (yearsTimeline) stripObserver.observe(yearsTimeline);
+
+      // Horizontal scroll nav arrows
+      const prev = document.querySelector('.years-nav.prev');
+      const next = document.querySelector('.years-nav.next');
+      const step = () => {
+        const first = yearsTimeline.querySelector('.year-entry');
+        if (!first) return 250;
+        const gap = parseFloat(getComputedStyle(yearsTimeline).columnGap || '32');
+        return first.getBoundingClientRect().width + gap;
+      };
+      if (prev) prev.addEventListener('click', () => yearsTimeline.scrollBy({ left: -step() * 2, behavior: 'smooth' }));
+      if (next) next.addEventListener('click', () => yearsTimeline.scrollBy({ left:  step() * 2, behavior: 'smooth' }));
+    }
 
     // ── Direction sub-tabs (car / taxi / mrt)
     document.querySelectorAll('.dir-btn').forEach(btn => {
