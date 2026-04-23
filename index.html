@@ -211,8 +211,8 @@
     }
 
     .hero-logo {
-      width: clamp(120px, 18vw, 200px);
-      margin-bottom: 1.5rem;
+      width: clamp(200px, 32vw, 380px);
+      margin-bottom: 0;
       opacity: 0;
       filter: brightness(0) invert(1);
       animation: fadeUp 1.2s cubic-bezier(0.22,1,0.36,1) 0.6s forwards;
@@ -908,6 +908,59 @@
       .dir-map-wrap iframe { position: static; height: 260px; }
     }
 
+    /* ── QR CODE PANEL ── */
+    .qr-panel {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      padding: 1.75rem 2rem;
+      margin-bottom: 2rem;
+      background: var(--sand-pale);
+      border: 0.5px solid var(--sand-light);
+      border-radius: 8px;
+    }
+    .qr-box {
+      width: 180px;
+      height: 180px;
+      flex-shrink: 0;
+      background: var(--white);
+      border: 0.5px solid var(--sand-light);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 10px;
+    }
+    .qr-box img { width: 100%; height: 100%; object-fit: contain; }
+    .qr-box .qr-placeholder {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sand-dark);
+      text-align: center;
+      line-height: 1.6;
+      padding: 1rem;
+    }
+    .qr-text h4 {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 0.6rem;
+    }
+    .qr-text p {
+      font-size: 0.86rem;
+      line-height: 1.8;
+      color: var(--ink-soft);
+      margin-bottom: 0.5rem;
+    }
+    @media (max-width: 768px) {
+      .qr-panel { flex-direction: column; text-align: center; padding: 1.5rem; }
+      .qr-box { width: 160px; height: 160px; }
+    }
+
     /* ── GUEST INFO (TABBED) ── */
     #guests {
       padding: 7rem 2rem;
@@ -1027,9 +1080,27 @@
       transition: max-height 0.4s ease, padding 0.3s ease;
     }
     .faq-item.open .faq-answer {
-      max-height: 200px;
+      max-height: 800px;
       padding-top: 0.85rem;
     }
+    .faq-answer a {
+      color: var(--sand-dark);
+      text-decoration: none;
+      border-bottom: 0.5px solid var(--sand);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .faq-answer a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+    .faq-contact-note {
+      margin-top: 2.5rem;
+      padding: 1.5rem 1.75rem;
+      background: var(--sand-pale);
+      border-left: 2px solid var(--sand);
+      font-size: 0.88rem;
+      line-height: 1.8;
+      color: var(--ink-soft);
+    }
+    .faq-contact-note strong { color: var(--ink); font-weight: 400; }
+    .faq-contact-note a { color: var(--ink); font-weight: 400; text-decoration: none; border-bottom: 0.5px dotted var(--sand-dark); }
 
     /* ── RSVP CTA ── */
     #rsvp-cta {
@@ -1111,10 +1182,9 @@
     </a>
     <ul class="nav-links">
       <li><a href="#story">Our Story</a></li>
-      <li><a href="#evening">The Day</a></li>
-      <li><a href="#schedule">Schedule</a></li>
-      <li><a href="#guests">Guests</a></li>
+      <li><a href="#schedule">The Schedule</a></li>
       <li><a href="rsvp.html">RSVP</a></li>
+      <li><a href="#faq">FAQ</a></li>
     </ul>
   </nav>
 
@@ -1135,16 +1205,11 @@
         class="hero-logo"
         onerror="this.style.display='none'"
       />
-      <h1 class="hero-names">
-        <span class="word" style="animation-delay:0.85s">Estella</span>
-        <span class="word" style="animation-delay:1.05s">&nbsp;&amp;&nbsp;</span>
-        <span class="word" style="animation-delay:1.25s">Gabriel</span>
-      </h1>
     </div>
 
     <!-- BOTTOM: date · venue, countdown, buttons — below feet -->
     <div class="hero-bottom">
-      <p class="hero-meta">11 July 2027 &nbsp;·&nbsp; Oasia Hotel Sentosa &nbsp;·&nbsp; Singapore</p>
+      <p class="hero-meta">11 July 2027 &nbsp;·&nbsp; Oasia Resort Sentosa &nbsp;·&nbsp; Singapore</p>
       <div class="hero-divider"></div>
 
       <div class="countdown" id="countdown" aria-label="Countdown to wedding">
@@ -1192,10 +1257,10 @@
       <div class="story-spread-text reveal-left">
         <h3>Before We Knew</h3>
         <p>We first met in 2018, when we enrolled in the same course at NTU's Asian School of the Environment, studying Environmental Earth Systems Science.</p>
-        <p>What began as friendship grew quietly and naturally over time. Alongside two others from the same course, we became a close group of four — spending years studying, laughing, and moving through life together. Long before this became a love story, it was already built on comfort, familiarity, and a friendship that felt easy from the start.</p>
+        <p>Alongside Wanqi &amp; Xavier, we became a close group of friends (s/o to babies!) where we spent the four years in university together — late nights in the computer lab working on GIS maps, camping at each other's hall doing our coding assignments, going on morning runs. Long before this became a love story, it was built on comfort, familiarity, and a quiet sense of steadiness.</p>
         <div class="story-tags">
           <span class="story-tag">NTU</span>
-          <span class="story-tag">2018</span>
+          <span class="story-tag">Babies</span>
           <span class="story-tag">Friends First</span>
         </div>
       </div>
@@ -1268,7 +1333,7 @@
       <div class="story-spread-text reveal-right">
         <h3>The Next Chapter</h3>
         <p>What began as friendship became partnership, and what grew through years of shared experiences, places, and quiet turns now brings us here.</p>
-        <p>This celebration is not only about a day, but about the life we have been building together — shaped by the people we love and the journey that brought us here. We are so happy to share this page with you.</p>
+        <p>This celebration is not only about a day, but about the life we have been building together — shaped by the people we love and the journey that brought us here. We are so happy to share this joy with you.</p>
         <div class="story-tags">
           <span class="story-tag">Partnership</span>
           <span class="story-tag">Celebration</span>
@@ -1315,19 +1380,8 @@
       <h2 class="section-title reveal reveal-delay-1">A simple wish for the day</h2>
       <div class="section-divider reveal reveal-delay-1"></div>
       <p class="reveal reveal-delay-2">
-        We want this evening to feel warm and unhurried — a room full of the people we love most, sharing good food, real conversation, and the kind of joy that stays with you long after the night is over.
+        We just want this evening to feel warm and unhurried — just good vibes, yummy food, endless conversations. Nothing fancy, nothing rushed. Just everyone being present and enjoying it together.
       </p>
-      <div class="vision-words reveal reveal-delay-3">
-        <span class="vision-word">Warmth</span>
-        <span class="vision-word">·</span>
-        <span class="vision-word">Joy</span>
-        <span class="vision-word">·</span>
-        <span class="vision-word">Togetherness</span>
-        <span class="vision-word">·</span>
-        <span class="vision-word">Good Food</span>
-        <span class="vision-word">·</span>
-        <span class="vision-word">Dancing</span>
-      </div>
     </div>
   </div>
 
@@ -1338,7 +1392,7 @@
     <div class="ballroom-panel">
       <div class="inner">
         <p class="section-label reveal">The Venue</p>
-        <h2 class="section-title reveal reveal-delay-1">Oasia Hotel Sentosa</h2>
+        <h2 class="section-title reveal reveal-delay-1">Oasia Resort Sentosa</h2>
         <div class="section-divider center reveal reveal-delay-1"></div>
         <p class="reveal reveal-delay-2" style="font-size:0.9rem; color:var(--ink-soft); line-height:1.85; max-width:520px; margin:0 auto;">
           The Aloes Ballroom — an elegant setting for an evening we hope you'll remember long after the night is over.
@@ -1444,104 +1498,99 @@
           </g>
         </svg>
 
-        <p class="ballroom-label reveal reveal-delay-3">Aloes Ballroom &nbsp;·&nbsp; Oasia Hotel Sentosa</p>
       </div>
     </div>
 
     <!-- Dress code -->
-    <div class="dresscode-panel">
+    <div class="dresscode-panel" id="dresscode">
       <div class="inner">
         <p class="section-label reveal">Dress Code</p>
-        <h2 class="section-title reveal reveal-delay-1">To be confirmed</h2>
+        <h2 class="section-title reveal reveal-delay-1">Formal but Funky</h2>
         <div class="section-divider reveal reveal-delay-1"></div>
         <p class="dresscode-note reveal reveal-delay-2">
-          Details on what to wear will be shared here closer to the day.<br/>Watch this space — we promise it'll be worth dressing up for.
+          Loud <em>or</em> pastel colours — we'll confirm the exact palette closer to the day, depending on our florals. Pick whichever end of the spectrum you love.
         </p>
         <div class="dresscode-swatches reveal reveal-delay-3">
           <div class="swatch">
-            <div class="swatch-circle" style="background:#d4cfc8;"></div>
-            <span class="swatch-name">Stone</span>
+            <div class="swatch-circle" style="background:#e8446b;"></div>
+            <span class="swatch-name">Bold</span>
           </div>
           <div class="swatch">
-            <div class="swatch-circle" style="background:#c8b99a;"></div>
-            <span class="swatch-name">Sand</span>
+            <div class="swatch-circle" style="background:#f2a93b;"></div>
+            <span class="swatch-name">Bright</span>
           </div>
           <div class="swatch">
-            <div class="swatch-circle" style="background:#8a7660;"></div>
-            <span class="swatch-name">Warm Taupe</span>
+            <div class="swatch-circle" style="background:#4a8fc9;"></div>
+            <span class="swatch-name">Vivid</span>
           </div>
           <div class="swatch">
-            <div class="swatch-circle" style="background:#3a3028;"></div>
-            <span class="swatch-name">Deep Ink</span>
+            <div class="swatch-circle" style="background:#f4c2c2;"></div>
+            <span class="swatch-name">Blush</span>
           </div>
           <div class="swatch">
-            <div class="swatch-circle" style="background:#f7f3ee;"></div>
-            <span class="swatch-name">Ivory</span>
+            <div class="swatch-circle" style="background:#c4d5b0;"></div>
+            <span class="swatch-name">Sage</span>
+          </div>
+          <div class="swatch">
+            <div class="swatch-circle" style="background:#d4c5e8;"></div>
+            <span class="swatch-name">Lavender</span>
           </div>
         </div>
+        <p class="dresscode-note reveal reveal-delay-3" style="margin-top:2rem; font-size:0.95rem;">
+          <strong style="color:var(--sand);">P.S.</strong> The venue can get cold — we'd recommend bringing a jacket along.
+        </p>
       </div>
     </div>
 
     <!-- Illustrated horizontal timeline -->
-    <div class="timeline-panel">
+    <div class="timeline-panel" id="schedule">
       <div class="inner">
         <div class="panel-header reveal">
           <p class="section-label">The Evening</p>
           <h2 class="section-title">For the night ahead</h2>
           <div class="section-divider center"></div>
-          <p class="schedule-venue">11 July 2027 &nbsp;·&nbsp; Oasia Hotel Sentosa</p>
         </div>
 
         <div class="h-timeline reveal reveal-delay-1">
 
-          <!-- 5pm Arrival -->
+          <!-- 6pm Arrival -->
           <div class="h-item">
             <div class="h-item-icon">
-              <svg viewBox="0 0 26 26"><path d="M13 3C9.1 3 6 6.1 6 10c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7z"/><circle cx="13" cy="10" r="2.5"/></svg>
+              <svg viewBox="0 0 26 26"><path d="M8 12h10M14 8l4 4-4 4"/><path d="M4 20V6"/></svg>
             </div>
-            <p class="h-item-time">5 pm</p>
+            <p class="h-item-time">6 pm</p>
             <p class="h-item-event">Arrival</p>
-            <p class="h-item-desc">Settle in, find your seats, and catch up with familiar faces.</p>
+            <p class="h-item-desc">Grab a drink and mingle with the rest of the guests.</p>
           </div>
 
-          <!-- 6pm Ceremony -->
+          <!-- 6.45pm Ceremony -->
           <div class="h-item">
             <div class="h-item-icon">
               <svg viewBox="0 0 26 26"><circle cx="9" cy="7" r="2.5"/><circle cx="17" cy="7" r="2.5"/><path d="M5 22v-5a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v5"/><path d="M11 13v3l2 2 2-2v-3"/></svg>
             </div>
-            <p class="h-item-time">6 pm</p>
-            <p class="h-item-event">Ceremony</p>
-            <p class="h-item-desc">The moment we've been waiting for — with you beside us.</p>
+            <p class="h-item-time">6.45 pm</p>
+            <p class="h-item-event">Ceremony Begins</p>
+            <p class="h-item-desc">Walk in and the moment we've been waiting for, with you beside us.</p>
           </div>
 
-          <!-- 7pm Dinner -->
-          <div class="h-item">
-            <div class="h-item-icon">
-              <svg viewBox="0 0 26 26"><line x1="8" y1="4" x2="8" y2="22"/><path d="M5 4v7a3 3 0 0 0 6 0V4"/><line x1="18" y1="4" x2="18" y2="9"/><path d="M15 9a3 3 0 0 0 6 0"/><line x1="18" y1="9" x2="18" y2="22"/></svg>
-            </div>
-            <p class="h-item-time">7 pm</p>
-            <p class="h-item-event">Dinner</p>
-            <p class="h-item-desc">Good food, great conversation, and a table full of warmth.</p>
-          </div>
-
-          <!-- 8pm Dancing -->
+          <!-- 8.30pm Fun begins -->
           <div class="h-item">
             <div class="h-item-icon">
               <svg viewBox="0 0 26 26"><circle cx="15" cy="5" r="2"/><path d="M13 8l-2 5h6l-1 4"/><path d="M11 13l-3 4"/><path d="M15 17l2 5"/><path d="M10 7l-3 2"/></svg>
             </div>
-            <p class="h-item-time">8 pm</p>
-            <p class="h-item-event">Dancing</p>
-            <p class="h-item-desc">The floor is yours — music that moves and a night that lifts.</p>
+            <p class="h-item-time">8.30 pm</p>
+            <p class="h-item-event">The Fun Begins</p>
+            <p class="h-item-desc">Good music, drinks, desserts, conversations.</p>
           </div>
 
-          <!-- 9pm Cake -->
+          <!-- 10.30pm End -->
           <div class="h-item">
             <div class="h-item-icon">
-              <svg viewBox="0 0 26 26"><rect x="4" y="13" width="18" height="9" rx="1.5"/><path d="M4 13v-1a9 9 0 0 1 18 0v1"/><line x1="13" y1="4" x2="13" y2="9"/><path d="M11 4 Q13 2 15 4"/><line x1="8" y1="17" x2="8" y2="22"/><line x1="13" y1="17" x2="13" y2="22"/><line x1="18" y1="17" x2="18" y2="22"/></svg>
+              <svg viewBox="0 0 26 26"><path d="M4 13l9-8 9 8"/><path d="M6 11v10h12V11"/><path d="M11 21v-5h4v5"/></svg>
             </div>
-            <p class="h-item-time">9 pm</p>
-            <p class="h-item-event">Cake Buffet</p>
-            <p class="h-item-desc">An indulgent spread of cakes — a nod to how this all began.</p>
+            <p class="h-item-time">10.30 pm</p>
+            <p class="h-item-event">End of Wedding</p>
+            <p class="h-item-desc">That's a wrap. Thank you for making our night, drive safe and rest well.</p>
           </div>
 
         </div>
@@ -1550,22 +1599,30 @@
 
   </div>
 
-  <!-- GUEST INFO — TABBED -->
-  <section id="guests">
+  <!-- DIRECTIONS -->
+  <section id="directions">
     <div class="guests-header reveal">
-      <p class="section-label">For Our Guests</p>
-      <h2 class="section-title">Everything you may need</h2>
+      <p class="section-label">Getting There</p>
+      <h2 class="section-title">Directions</h2>
       <div class="section-divider"></div>
     </div>
 
-    <div class="tab-nav" role="tablist">
-      <button class="tab-btn active" role="tab" aria-selected="true" data-tab="directions">Directions</button>
-      <button class="tab-btn" role="tab" aria-selected="false" data-tab="helpers">Helpers</button>
-      <button class="tab-btn" role="tab" aria-selected="false" data-tab="faq">FAQ</button>
-    </div>
+    <div>
 
-    <!-- Directions -->
-    <div class="tab-panel active" id="tab-directions">
+      <!-- QR code for Sentosa entry -->
+      <div class="qr-panel">
+        <div class="qr-box">
+          <!-- Replace the src below with your QR code image (assets/photos/sentosa-qr.png) when ready -->
+          <img src="assets/photos/sentosa-qr.png" alt="Sentosa entry QR code"
+               onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=&quot;qr-placeholder&quot;>QR code<br/>coming soon</div>'" />
+        </div>
+        <div class="qr-text">
+          <h4>Sentosa Entry QR Code</h4>
+          <p>Scan or save this QR code to enter Sentosa for free on the day, no need to message us individually.</p>
+          <p style="font-size:0.78rem; color:var(--sand-dark); margin-top:0.4rem;">Tip: screenshot it in advance so you have it ready at the gantry.</p>
+        </div>
+      </div>
+
       <div class="dir-layout">
 
         <!-- Vertical transport sidebar -->
@@ -1607,10 +1664,10 @@
             </div>
             <div class="dir-info">
               <h4>Valet Drop-off</h4>
-              <div class="dir-step"><div class="dir-step-num">1</div><p>Drive into Sentosa via <strong>Sentosa Gateway</strong>. Use our QR code for complimentary island entry.</p></div>
-              <div class="dir-step"><div class="dir-step-num">2</div><p>Follow signs to <strong>Oasia Hotel Sentosa</strong>. Drive up to the hotel entrance and hand your keys to the valet team.</p></div>
-              <div class="dir-step"><div class="dir-step-num">3</div><p>Head inside and take the lift or escalator down. The wedding will be at the <strong>Aloes Ballroom</strong>.</p></div>
-              <div class="dir-qr-note">🎟️ <strong>QR code covers</strong> Sentosa entry &amp; valet parking. We'll send it to you closer to the date.</div>
+              <div class="dir-step"><div class="dir-step-num">1</div><p>Drive into Sentosa via <strong>Sentosa Gateway</strong>. Use our QR code above for complimentary island entry.</p></div>
+              <div class="dir-step"><div class="dir-step-num">2</div><p>Follow signs to <strong>Oasia Resort Sentosa</strong>. Drive up to the hotel entrance and hand your keys to the valet team.</p></div>
+              <div class="dir-step"><div class="dir-step-num">3</div><p>Head inside and take the <strong>lift or escalator down to Level 1</strong>. The wedding will be at the <strong>Aloes Ballroom</strong>.</p></div>
+              <div class="dir-qr-note">⚠️ <strong>Heads up — valet is limited.</strong> Complimentary valet covers only about <strong>20% of our guaranteed attendance</strong>, so it's <strong>first come, first served</strong>. If valet is full, please head over to Village Hotel Sentosa to self-park.</div>
             </div>
           </div>
 
@@ -1626,10 +1683,10 @@
             </div>
             <div class="dir-info">
               <h4>Self-Park at Village Hotel</h4>
-              <div class="dir-step"><div class="dir-step-num">1</div><p>Drive into Sentosa via <strong>Sentosa Gateway</strong>. Use our QR code for complimentary island entry.</p></div>
-              <div class="dir-step"><div class="dir-step-num">2</div><p>Park at <strong>Village Hotel Sentosa</strong> car park. Standard parking charges apply — parking coupons are not provided for Village Hotel Sentosa.</p></div>
-              <div class="dir-step"><div class="dir-step-num">3</div><p>Follow signs to <strong>Oasia Hotel Sentosa</strong>. It's a short walk from Village Hotel for the celebration.</p></div>
-              <div class="dir-step"><div class="dir-step-num">4</div><p>Head inside and take the lift or escalator down. The wedding will be at the <strong>Aloes Ballroom</strong>.</p></div>
+              <div class="dir-step"><div class="dir-step-num">1</div><p>Drive into Sentosa via <strong>Sentosa Gateway</strong>. Use our QR code above for complimentary island entry.</p></div>
+              <div class="dir-step"><div class="dir-step-num">2</div><p>Park at <strong>Village Hotel Sentosa</strong> car park. Standard parking charges apply. Parking coupons are <strong>not</strong> provided for Village Hotel Sentosa.</p></div>
+              <div class="dir-step"><div class="dir-step-num">3</div><p>Follow signs to <strong>Oasia Resort Sentosa</strong>. It's a short walk from Village Hotel for the celebration.</p></div>
+              <div class="dir-step"><div class="dir-step-num">4</div><p>Head inside and take the <strong>lift or escalator down to Level 1</strong>. The wedding will be at the <strong>Aloes Ballroom</strong>.</p></div>
               <div class="dir-qr-note">🎟️ <strong>QR code covers Sentosa entry only.</strong> Village Hotel parking charges apply separately.</div>
             </div>
           </div>
@@ -1648,10 +1705,10 @@
           </div>
           <div class="dir-info">
             <h4>By Taxi or Private Hire</h4>
-            <div class="dir-step"><div class="dir-step-num">1</div><p>Book your ride as usual. The destination is <strong>"Oasia Hotel Sentosa"</strong>.</p></div>
-            <div class="dir-step"><div class="dir-step-num">2</div><p>Ask to be dropped off at the <strong>hotel entrance</strong> of Oasia Hotel Sentosa.</p></div>
-            <div class="dir-step"><div class="dir-step-num">3</div><p>Head inside and take the lift or escalator down. The wedding will be at the <strong>Aloes Ballroom</strong>.</p></div>
-            <div class="dir-qr-note">🎟️ <strong>Free Sentosa entry</strong> — obtain the QR code from us in advance. We'll send it to you closer to the date.</div>
+            <div class="dir-step"><div class="dir-step-num">1</div><p>Book your ride as usual. The destination is <strong>"Oasia Resort Sentosa"</strong>.</p></div>
+            <div class="dir-step"><div class="dir-step-num">2</div><p>Ask to be dropped off at the <strong>hotel entrance</strong> of Oasia Resort Sentosa.</p></div>
+            <div class="dir-step"><div class="dir-step-num">3</div><p>Head inside and take the <strong>lift or escalator down to Level 1</strong>. The wedding will be at the <strong>Aloes Ballroom</strong>.</p></div>
+            <div class="dir-qr-note">🎟️ <strong>Free Sentosa entry</strong> — show the QR code above to your driver at the Sentosa gantry.</div>
           </div>
         </div>
 
@@ -1670,68 +1727,100 @@
             <div class="dir-step"><div class="dir-step-num">1</div><p>Take the MRT to <strong>HarbourFront Station</strong> (Circle Line or North-East Line).</p></div>
             <div class="dir-step"><div class="dir-step-num">2</div><p>Follow signs to the <strong>Sentosa Express monorail</strong> and board towards Sentosa Island.</p></div>
             <div class="dir-step"><div class="dir-step-num">3</div><p>Alight at <strong>Imbiah Station</strong>.</p></div>
-            <div class="dir-step"><div class="dir-step-num">4</div><p>Follow signs to <strong>Oasia Hotel Sentosa</strong>. It's a short walk from Imbiah Station.</p></div>
-            <div class="dir-step"><div class="dir-step-num">5</div><p>Head inside and take the lift or escalator down. The wedding will be at the <strong>Aloes Ballroom</strong>.</p></div>
-            <div class="dir-qr-note">🎟️ <strong>Free Sentosa Express entry</strong> — the QR code covers monorail entry too. We'll send it to you closer to the date.</div>
+            <div class="dir-step"><div class="dir-step-num">4</div><p>Follow signs to <strong>Oasia Resort Sentosa</strong>. It's a short walk from Imbiah Station.</p></div>
+            <div class="dir-step"><div class="dir-step-num">5</div><p>Head inside and take the <strong>lift or escalator down to Level 1</strong>. The wedding will be at the <strong>Aloes Ballroom</strong>.</p></div>
+            <div class="dir-qr-note">🎟️ <strong>Free Sentosa Express entry</strong> — the QR code above covers monorail entry too.</div>
           </div>
         </div>
 
-      </div>
-    </div>
-    <!-- Helpers -->
-    <div class="tab-panel" id="tab-helpers">
-      <p style="font-size:0.88rem; color:var(--ink-soft); margin-bottom:2rem; line-height:1.8;">
-        If you need help finding your way, have a question, or are unsure where to go — these are the friendly faces to look for on the day.
-      </p>
-      <div>
-        <div class="helper-card">
-          <div class="helper-avatar"></div>
-          <div>
-            <p class="helper-name">Name Placeholder</p>
-            <p class="helper-role">Guest support & reception flow</p>
-          </div>
-        </div>
-        <div class="helper-card">
-          <div class="helper-avatar"></div>
-          <div>
-            <p class="helper-name">Name Placeholder</p>
-            <p class="helper-role">Family coordination & logistics</p>
-          </div>
-        </div>
-        <div class="helper-card">
-          <div class="helper-avatar"></div>
-          <div>
-            <p class="helper-name">Name Placeholder</p>
-            <p class="helper-role">Directions & venue assistance</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FAQ -->
-    <div class="tab-panel" id="tab-faq">
-      <div class="faq-item">
-        <div class="faq-question">When should I arrive?</div>
-        <div class="faq-answer">We recommend arriving a little before the programme begins so you can settle in comfortably.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">Can I bring additional guests?</div>
-        <div class="faq-answer">Please follow the details stated in your invitation. If you are unsure, feel free to check with us directly.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">What if I have dietary restrictions?</div>
-        <div class="faq-answer">Please include them in your RSVP so we can make the necessary arrangements for you.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">How do I update my RSVP?</div>
-        <div class="faq-answer">You can return to the RSVP page and re-submit with your phone number — it will update your existing response.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">What should I wear?</div>
-        <div class="faq-answer">Dress code details will be shared here once finalised. Watch this space!</div>
       </div>
     </div>
   </section>
+
+  <!-- HELPERS -->
+  <section id="helpers">
+    <div class="guests-header reveal">
+      <p class="section-label">On The Day</p>
+      <h2 class="section-title">Helpers</h2>
+      <div class="section-divider"></div>
+    </div>
+    <p class="reveal reveal-delay-1" style="font-size:0.92rem; color:var(--ink-soft); margin-bottom:2.5rem; line-height:1.85; max-width:640px;">
+      If you need help finding your way, have a question, or are unsure where to go, these are the friendly faces to look for on the day.
+    </p>
+    <div class="reveal reveal-delay-2">
+      <div class="helper-card">
+        <div class="helper-avatar"></div>
+        <div>
+          <p class="helper-name">Elsie Goh</p>
+          <p class="helper-role">Guest support &amp; reception flow</p>
+        </div>
+      </div>
+      <div class="helper-card">
+        <div class="helper-avatar"></div>
+        <div>
+          <p class="helper-name">Manju</p>
+          <p class="helper-role">Venue Coordinator, Oasia Resort Sentosa</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="guests-header reveal">
+      <p class="section-label">Good To Know</p>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="faq-item">
+        <div class="faq-question">When is the RSVP deadline?</div>
+        <div class="faq-answer">Please RSVP by <strong>31 January 2027</strong>, about two months before the wedding. This helps us finalise numbers with the venue.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">What should I wear?</div>
+        <div class="faq-answer">The vibe is <strong>formal but funky</strong>, loud <em>or</em> pastel colours, depending on our florals (we'll confirm closer to the day). The venue can get cold, so we'd recommend bringing a jacket along. See the full details on the <a href="#dresscode">dress code</a> section.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">How do I get to the venue?</div>
+        <div class="faq-answer">We've got maps and step-by-step instructions for car, taxi/PHV and MRT in the <a href="#directions">directions</a> section above. There's also a QR code for free Sentosa entry, no need to message us separately.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">When should I arrive?</div>
+        <div class="faq-answer">Guests should be seated by <strong>6:30 pm</strong>. You're welcome to arrive as early as <strong>6 pm</strong> for cocktails and canapés, grab a drink and mingle with the rest of the guests.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">What's on the menu?</div>
+        <div class="faq-answer">We'll be having a <strong>6-course Chinese dinner</strong>. If you have any dietary requirements, please note them in your RSVP.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Will there be drinks?</div>
+        <div class="faq-answer">Yes! We're planning to serve <strong>red &amp; white wines, gin, vodka</strong> and a few other options. You're also welcome to <strong>bring your own</strong>, corkage is waived (to be confirmed). If you have a favourite bottle you'd like to share with us, bring it along.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Are children invited?</div>
+        <div class="faq-answer">Yes, we'd be honoured to have your family join us. Alcoholic beverages will be served, but this is a family-friendly event. If you're bringing kids, please let us know in advance (or note it in your RSVP form), and tell us whether you'd like us to cater food for them or if you'll bring your own for the little ones.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Can we park at the venue?</div>
+        <div class="faq-answer"><strong>Valet drop-off at Oasia Resort Sentosa</strong> is complimentary, but covers only about <strong>20% of our guaranteed attendance</strong>. Parking coupons are on a first come, first serve basis.<br/><br/><strong>Self-park at Village Hotel Sentosa</strong> is a paid parking and a short walk to Oasia.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Can I bring a +1?</div>
+        <div class="faq-answer">Yes! Please let us know in advance or indicate it on your RSVP form so we can plan seating and catering.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Where can I find nearby accommodation?</div>
+        <div class="faq-answer">The most convenient hotels are right next door, <strong>Oasia Resort Sentosa</strong> (our venue) and <strong>Village Hotel Sentosa</strong>. Other nearby options on Sentosa include Shangri-La Rasa Sentosa and Capella Singapore, if you fancy making a weekend of it.</div>
+      </div>
+
+      <div class="faq-contact-note">
+        <strong>Still have a question?</strong> Drop us a message anytime.<br/>
+        Estella &nbsp;<a href="tel:+6596602955">9660 2955</a>&nbsp; · &nbsp;Gabriel &nbsp;<a href="tel:+6590855893">9085 5893</a>
+      </div>
+    </div>
+  </section>
+  <!-- END FAQ -->
 
   <!-- RSVP CTA -->
   <div id="rsvp-cta">
@@ -1746,7 +1835,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <p>Estella &amp; Gabriel &nbsp;·&nbsp; 11 July 2027 &nbsp;·&nbsp; Sentosa, Singapore</p>
+    <p>Estella &amp; Gabriel &nbsp;·&nbsp; 11 July 2027 &nbsp;·&nbsp; Oasia Resort Sentosa, Singapore</p>
   </footer>
 
   <script>
@@ -1843,20 +1932,6 @@
       });
     }, { threshold: 0.1 });
     allReveals.forEach(el => revealObserver.observe(el));
-
-    // ── Tabs
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => {
-          b.classList.remove('active');
-          b.setAttribute('aria-selected', 'false');
-        });
-        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-        btn.classList.add('active');
-        btn.setAttribute('aria-selected', 'true');
-        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-      });
-    });
 
     // ── Direction sub-tabs (car / taxi / mrt)
     document.querySelectorAll('.dir-btn').forEach(btn => {
