@@ -563,7 +563,7 @@
       max-width: 700px;
       margin: 3rem auto 0;
       display: block;
-      opacity: 0.85;
+      height: auto;
     }
     .ballroom-label {
       font-family: var(--sans);
@@ -2849,105 +2849,11 @@
           The Aloes Ballroom — an elegant setting for an evening we hope you'll remember long after the night is over.
         </p>
 
-        <!-- SVG Ballroom Sketch -->
-        <svg class="ballroom-sketch reveal reveal-delay-2" viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg"
-          aria-label="Hand-drawn sketch of a ballroom interior">
-          <g stroke="#9a8c7a" fill="none" stroke-linecap="round" stroke-linejoin="round">
-
-            <!-- Floor perspective lines -->
-            <line x1="80" y1="280" x2="350" y2="200" stroke-width="0.8" opacity="0.4"/>
-            <line x1="620" y1="280" x2="350" y2="200" stroke-width="0.8" opacity="0.4"/>
-            <line x1="80" y1="280" x2="620" y2="280" stroke-width="0.8" opacity="0.4"/>
-            <line x1="160" y1="265" x2="540" y2="265" stroke-width="0.5" opacity="0.25"/>
-            <line x1="220" y1="250" x2="480" y2="250" stroke-width="0.5" opacity="0.2"/>
-
-            <!-- Back wall -->
-            <line x1="130" y1="80" x2="570" y2="80" stroke-width="1" opacity="0.5"/>
-            <line x1="130" y1="80" x2="80" y2="280" stroke-width="0.8" opacity="0.4"/>
-            <line x1="570" y1="80" x2="620" y2="280" stroke-width="0.8" opacity="0.4"/>
-
-            <!-- Ceiling details / beams -->
-            <path d="M130,80 Q350,60 570,80" stroke-width="0.8" opacity="0.4"/>
-            <line x1="200" y1="80" x2="230" y2="70" stroke-width="0.5" opacity="0.3"/>
-            <line x1="350" y1="80" x2="350" y2="65" stroke-width="0.5" opacity="0.3"/>
-            <line x1="500" y1="80" x2="470" y2="70" stroke-width="0.5" opacity="0.3"/>
-
-            <!-- Chandelier -->
-            <ellipse cx="350" cy="68" rx="28" ry="8" stroke-width="1" opacity="0.6"/>
-            <line x1="350" y1="60" x2="350" y2="45" stroke-width="1" opacity="0.5"/>
-            <line x1="330" y1="68" x2="322" y2="82" stroke-width="0.8" opacity="0.5"/>
-            <line x1="340" y1="70" x2="334" y2="86" stroke-width="0.8" opacity="0.5"/>
-            <line x1="350" y1="70" x2="350" y2="88" stroke-width="0.8" opacity="0.5"/>
-            <line x1="360" y1="70" x2="366" y2="86" stroke-width="0.8" opacity="0.5"/>
-            <line x1="370" y1="68" x2="378" y2="82" stroke-width="0.8" opacity="0.5"/>
-            <!-- teardrop crystals -->
-            <circle cx="322" cy="84" r="2" opacity="0.4"/>
-            <circle cx="334" cy="88" r="2" opacity="0.4"/>
-            <circle cx="350" cy="90" r="2.5" opacity="0.5"/>
-            <circle cx="366" cy="88" r="2" opacity="0.4"/>
-            <circle cx="378" cy="84" r="2" opacity="0.4"/>
-
-            <!-- Wall panels left -->
-            <rect x="145" y="95" width="55" height="100" rx="2" stroke-width="0.8" opacity="0.4"/>
-            <rect x="152" y="102" width="41" height="86" rx="1" stroke-width="0.5" opacity="0.3"/>
-            <line x1="172" y1="102" x2="172" y2="188" stroke-width="0.4" opacity="0.25"/>
-
-            <!-- Wall panels right -->
-            <rect x="500" y="95" width="55" height="100" rx="2" stroke-width="0.8" opacity="0.4"/>
-            <rect x="507" y="102" width="41" height="86" rx="1" stroke-width="0.5" opacity="0.3"/>
-            <line x1="527" y1="102" x2="527" y2="188" stroke-width="0.4" opacity="0.25"/>
-
-            <!-- Arch doorway centre back -->
-            <path d="M295,195 L295,130 Q350,105 405,130 L405,195" stroke-width="1.2" opacity="0.55"/>
-            <line x1="295" y1="195" x2="405" y2="195" stroke-width="0.8" opacity="0.4"/>
-
-            <!-- Round table centre -->
-            <ellipse cx="350" cy="248" rx="52" ry="18" stroke-width="1.2" opacity="0.6"/>
-            <ellipse cx="350" cy="244" rx="52" ry="16" stroke-width="0.5" opacity="0.2"/>
-            <!-- tablecloth drape -->
-            <path d="M298,248 Q310,262 350,265 Q390,262 402,248" stroke-width="0.8" opacity="0.35"/>
-
-            <!-- Table settings (top view simplified) -->
-            <circle cx="350" cy="236" r="5" stroke-width="0.8" opacity="0.4"/>
-            <circle cx="332" cy="240" r="4" stroke-width="0.8" opacity="0.35"/>
-            <circle cx="368" cy="240" r="4" stroke-width="0.8" opacity="0.35"/>
-            <line x1="322" y1="242" x2="318" y2="250" stroke-width="0.6" opacity="0.3"/>
-            <line x1="378" y1="242" x2="382" y2="250" stroke-width="0.6" opacity="0.3"/>
-
-            <!-- Chairs around table -->
-            <path d="M310,260 Q298,268 296,278" stroke-width="1" opacity="0.45"/>
-            <path d="M390,260 Q402,268 404,278" stroke-width="1" opacity="0.45"/>
-            <path d="M330,264 Q325,275 322,284" stroke-width="1" opacity="0.4"/>
-            <path d="M370,264 Q375,275 378,284" stroke-width="1" opacity="0.4"/>
-            <path d="M350,265 Q350,276 350,285" stroke-width="1" opacity="0.4"/>
-
-            <!-- Side tables left -->
-            <ellipse cx="190" cy="235" rx="28" ry="10" stroke-width="0.9" opacity="0.45"/>
-            <path d="M162,235 Q170,245 190,248 Q210,245 218,235" stroke-width="0.6" opacity="0.3"/>
-            <circle cx="190" cy="228" r="3.5" stroke-width="0.7" opacity="0.35"/>
-
-            <!-- Side table right -->
-            <ellipse cx="510" cy="235" rx="28" ry="10" stroke-width="0.9" opacity="0.45"/>
-            <path d="M482,235 Q490,245 510,248 Q530,245 538,235" stroke-width="0.6" opacity="0.3"/>
-            <circle cx="510" cy="228" r="3.5" stroke-width="0.7" opacity="0.35"/>
-
-            <!-- Floral centrepiece centre table -->
-            <circle cx="350" cy="228" r="7" stroke-width="0.8" opacity="0.4"/>
-            <path d="M350,221 Q354,218 350,215 Q346,218 350,221" stroke-width="0.7" opacity="0.4"/>
-            <path d="M357,225 Q361,221 359,217 Q355,220 357,225" stroke-width="0.7" opacity="0.35"/>
-            <path d="M343,225 Q339,221 341,217 Q345,220 343,225" stroke-width="0.7" opacity="0.35"/>
-
-            <!-- Candles side tables -->
-            <rect x="188" y="218" width="4" height="9" rx="1" stroke-width="0.7" opacity="0.4"/>
-            <path d="M190,218 Q192,214 190,211 Q188,214 190,218" stroke-width="0.7" opacity="0.4" fill="#9a8c7a" opacity="0.2"/>
-            <rect x="508" y="218" width="4" height="9" rx="1" stroke-width="0.7" opacity="0.4"/>
-            <path d="M510,218 Q512,214 510,211 Q508,214 510,218" stroke-width="0.7" opacity="0.4"/>
-
-            <!-- Floor -->
-            <line x1="80" y1="280" x2="620" y2="280" stroke-width="1.2" opacity="0.35"/>
-
-          </g>
-        </svg>
+        <!-- Venue sketch (uploaded image) -->
+        <img class="ballroom-sketch reveal reveal-delay-2"
+             src="assets/photos/OasiaSketch.jpeg"
+             alt="Sketch of Oasia Resort Sentosa — the Aloes Ballroom"
+             loading="lazy" />
 
       </div>
     </div>
@@ -3510,7 +3416,7 @@
     // from Google Sheet via Apps Script, render & prefill form,
     // upsert on submit so edits replace prior answers
     // ══════════════════════════════════════════════════
-    const RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyLh5eGRXSoLtA5zuCLt1iYcVkqdituew1c35RU-pvo-kj-qVB_tAwqDLd6FxADsmZU/exec'; // ← Paste your Apps Script Web App URL here after deploying
+    const RSVP_ENDPOINT = ''; // ← Paste your Apps Script Web App URL here after deploying
     let CURRENT_HOUSEHOLD = null;
     let CURRENT_PRIOR = null;
 
