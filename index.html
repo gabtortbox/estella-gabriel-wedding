@@ -1613,6 +1613,69 @@
       line-height: 1.7;
     }
 
+    /* Save / kid-free intro notes */
+    .rsvp-notes {
+      margin: 2rem auto 0;
+      max-width: 540px;
+      font-family: var(--serif);
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      text-align: center;
+    }
+    .rsvp-notes p { margin-bottom: 0.85rem; }
+    .rsvp-notes p:last-child { margin-bottom: 0; }
+    .rsvp-notes strong {
+      color: var(--ink);
+      font-weight: 400;
+      font-style: normal;
+      letter-spacing: 0.02em;
+    }
+
+    /* Event block — clear per-event rsvp toggle stack */
+    .event-block {
+      margin: 1rem 0 0.5rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px dashed rgba(200,185,154,0.45);
+    }
+    .event-block:last-of-type { border-bottom: none; }
+    .event-block.primary {
+      margin-top: 1.25rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(200,185,154,0.55);
+    }
+    .event-block-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.55rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .event-block-title {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--ink);
+      font-weight: 400;
+    }
+    .event-block.primary .event-block-title {
+      font-size: 1.15rem;
+      letter-spacing: 0.01em;
+    }
+    .event-block-time {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    .attend-toggle.event-attend label {
+      padding: 0.55rem 1rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+    }
+
     /* The form itself */
     #rsvpForm { display: none; }
     #rsvpForm.show { display: block; }
@@ -3204,7 +3267,11 @@
       </div>
       <div class="faq-item">
         <div class="faq-question">Are children invited?</div>
-        <div class="faq-answer">Yes, we'd be honoured to have your family join us. Alcoholic beverages will be served, but this is a family-friendly event. If you're bringing kids, please let us know in advance (or note it in your RSVP form), and tell us whether you'd like us to cater food for them or if you'll bring your own for the little ones.</div>
+        <div class="faq-answer">We've planned this as an <strong>adults-only celebration</strong>, so we kindly ask that the little ones stay home for the night. We hope this gives you the chance to relax fully and enjoy the evening with us. Thank you so much for understanding.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Can I update my RSVP later?</div>
+        <div class="faq-answer">Yes, anytime. Just <strong>open your personal RSVP link again</strong>, your previous answers will be loaded automatically. Make any changes you need and click <strong>Save</strong> to update your response. We'll always have the latest version.</div>
       </div>
       <div class="faq-item">
         <div class="faq-question">Can we park at the venue?</div>
@@ -3212,7 +3279,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-question">Can I bring a +1?</div>
-        <div class="faq-answer">Yes! Please let us know in advance or indicate it on your RSVP form so we can plan seating and catering.</div>
+        <div class="faq-answer">We've kept the guest list small and intentional, so the names on your invite are the seats we have for you. If you have a special circumstance, please reach out to us directly and we'll do our best.</div>
       </div>
       <div class="faq-item">
         <div class="faq-question">Where can I find nearby accommodation?</div>
@@ -3238,6 +3305,11 @@
           Please let us know if you'll be joining us, and share any details we should know before the day.
         </p>
         <div class="deadline">Kindly respond by 31 January 2027</div>
+
+        <div class="rsvp-notes">
+          <p><strong>Remember to click "Save" once you're done</strong> — that's what locks in your response. You can return to this same link anytime to update your answers; we'll always keep the latest version.</p>
+          <p><strong>An adults-only celebration.</strong> We've planned the evening with our grown-up loved ones in mind, so we kindly ask that little ones stay home for the night. We hope this gives you a chance to relax fully and enjoy the celebration with us.</p>
+        </div>
       </div>
 
       <!-- Public preview (shown when no valid invite code is present) -->
@@ -3259,40 +3331,19 @@
         <div id="memberList"></div>
 
         <div class="household-block">
-          <h3>A few last things</h3>
-
-          <div class="household-row" data-audience-row="family">
-            <!-- Per-event tea/solem are handled per-member above; this row reserved for any household-level family questions -->
-          </div>
+          <h3>One last thing</h3>
 
           <div class="household-row">
             <div>
-              <label class="field-label">Bringing kids not listed above?</label>
+              <label class="field-label">Will you / your group be driving?</label>
               <div class="kids-toggle">
-                <label><input type="radio" name="kids" value="no" checked /><span>No</span></label>
-                <label><input type="radio" name="kids" value="yes" /><span>Yes</span></label>
+                <label><input type="radio" name="driving" value="no" checked /><span>No</span></label>
+                <label><input type="radio" name="driving" value="yes" /><span>Yes</span></label>
               </div>
             </div>
-            <div id="kidsCountWrap">
-              <label class="field-label">How many kids?</label>
-              <input class="field-input" type="number" name="kidsCount" min="0" max="10" placeholder="e.g. 2" />
-            </div>
-          </div>
-
-          <div class="household-row" id="kidsCateringWrap" style="display:none;">
-            <div class="full">
-              <label class="field-label">Should we cater food for the kids?</label>
-              <div class="kids-toggle">
-                <label><input type="radio" name="kidsCatering" value="yes" /><span>Yes please</span></label>
-                <label><input type="radio" name="kidsCatering" value="no" /><span>No, we'll bring our own</span></label>
-              </div>
-            </div>
-          </div>
-
-          <div class="household-row full">
-            <div>
-              <label class="field-label">Anything else we should know?</label>
-              <textarea class="field-textarea" name="householdNotes" placeholder="Allergies, accessibility, songs we must play, anything…"></textarea>
+            <div id="vehiclesWrap">
+              <label class="field-label">How many vehicles?</label>
+              <input class="field-input" type="number" name="vehicles" min="1" max="10" placeholder="e.g. 1" />
             </div>
           </div>
         </div>
@@ -3461,7 +3512,6 @@
         const setField = (sel, val) => {
           const el = card.querySelector(sel); if (el && val) el.value = val;
         };
-        setField('input[name^="phone_"]', m.phone);
         setField('input[name^="diet_"]',  m.dietary);
         setField('textarea[name^="notes_"]', m.notes);
         if (m.tea === 'yes' || m.tea === 'no') {
@@ -3475,21 +3525,13 @@
       });
 
       // Household-level fields
-      if (prior.kids === 'yes' || prior.kids === 'no') {
-        const k = document.querySelector(`input[name="kids"][value="${prior.kids}"]`);
+      if (prior.driving === 'yes' || prior.driving === 'no') {
+        const k = document.querySelector(`input[name="driving"][value="${prior.driving}"]`);
         if (k) { k.checked = true; k.dispatchEvent(new Event('change', { bubbles: true })); }
       }
-      if (prior.kidsCount) {
-        const el = document.querySelector('input[name="kidsCount"]');
-        if (el) el.value = prior.kidsCount;
-      }
-      if (prior.kidsCatering === 'yes' || prior.kidsCatering === 'no') {
-        const c = document.querySelector(`input[name="kidsCatering"][value="${prior.kidsCatering}"]`);
-        if (c) c.checked = true;
-      }
-      if (prior.householdNotes) {
-        const el = document.querySelector('textarea[name="householdNotes"]');
-        if (el) el.value = prior.householdNotes;
+      if (prior.vehicles) {
+        const el = document.querySelector('input[name="vehicles"]');
+        if (el) el.value = prior.vehicles;
       }
     }
 
@@ -3505,42 +3547,53 @@
       memberList.innerHTML = (household.members || []).map((m, i) => `
         <div class="member-card" data-member-index="${i}">
           <div class="member-name">${escapeHtml(m.name)}</div>
-          <div class="attend-toggle" role="radiogroup" aria-label="Attendance for ${escapeHtml(m.name)}">
-            <label><input type="radio" name="attend_${i}" value="yes" /><span>Joining us</span></label>
-            <label><input type="radio" name="attend_${i}" value="no" /><span>Can't make it</span></label>
-          </div>
-          <div class="member-fields">
-            <div>
-              <label class="field-label">Mobile number</label>
-              <input class="field-input" type="tel" name="phone_${i}" placeholder="e.g. 9123 4567" />
+
+          ${showSolem ? `
+            <div class="event-block">
+              <div class="event-block-head">
+                <span class="event-block-title">Solemnisation</span>
+                <span class="event-block-time">5:30 pm – 6:00 pm</span>
+              </div>
+              <div class="attend-toggle event-attend" role="radiogroup">
+                <label><input type="radio" name="solem_${i}" value="yes" /><span>Joining</span></label>
+                <label><input type="radio" name="solem_${i}" value="no"  /><span>Can't make it</span></label>
+              </div>
             </div>
-            <div>
-              <label class="field-label">Dietary needs</label>
-              <input class="field-input" type="text" name="diet_${i}" placeholder="e.g. vegetarian, no shellfish" />
+          ` : ''}
+
+          ${showTea ? `
+            <div class="event-block">
+              <div class="event-block-head">
+                <span class="event-block-title">Tea Ceremony</span>
+                <span class="event-block-time">6:00 pm onwards</span>
+              </div>
+              <div class="attend-toggle event-attend" role="radiogroup">
+                <label><input type="radio" name="tea_${i}" value="yes" /><span>Joining</span></label>
+                <label><input type="radio" name="tea_${i}" value="no"  /><span>Can't make it</span></label>
+              </div>
+            </div>
+          ` : ''}
+
+          <div class="event-block primary">
+            <div class="event-block-head">
+              <span class="event-block-title">Dinner Reception</span>
+              <span class="event-block-time">6:00 pm onwards</span>
+            </div>
+            <div class="attend-toggle" role="radiogroup" aria-label="Dinner attendance for ${escapeHtml(m.name)}">
+              <label><input type="radio" name="attend_${i}" value="yes" /><span>Joining us</span></label>
+              <label><input type="radio" name="attend_${i}" value="no"  /><span>Can't make it</span></label>
+            </div>
+          </div>
+
+          <div class="member-fields">
+            <div class="full">
+              <label class="field-label">Dietary restrictions or allergies</label>
+              <input class="field-input" type="text" name="diet_${i}" placeholder="e.g. vegetarian, no shellfish, peanut allergy" />
             </div>
             <div class="full">
-              <label class="field-label">Anything for us?</label>
+              <label class="field-label">A message for us</label>
               <textarea class="field-textarea" name="notes_${i}" placeholder="A song you'd love to dance to, a story we should know…"></textarea>
             </div>
-            ${(showTea || showSolem) ? `
-              <div class="full event-attendance">
-                ${showTea ? `
-                  <div>
-                    <label class="field-label">Tea Ceremony</label>
-                    <div class="event-toggle">
-                      <label><input type="radio" name="tea_${i}" value="yes" /><span>Yes</span></label>
-                      <label><input type="radio" name="tea_${i}" value="no" /><span>No</span></label>
-                    </div>
-                  </div>` : ''}
-                ${showSolem ? `
-                  <div>
-                    <label class="field-label">Solemnisation</label>
-                    <div class="event-toggle">
-                      <label><input type="radio" name="solem_${i}" value="yes" /><span>Yes</span></label>
-                      <label><input type="radio" name="solem_${i}" value="no" /><span>No</span></label>
-                    </div>
-                  </div>` : ''}
-              </div>` : ''}
           </div>
         </div>
       `).join('');
@@ -3558,14 +3611,12 @@
       form.classList.add('show');
     }
 
-    // Kids toggle → show count + catering question
+    // Driving toggle → show vehicle count if yes
     document.addEventListener('change', (e) => {
-      if (e.target.matches('input[name="kids"]')) {
-        const wrap = document.getElementById('kidsCountWrap');
-        const cat  = document.getElementById('kidsCateringWrap');
+      if (e.target.matches('input[name="driving"]')) {
+        const wrap = document.getElementById('vehiclesWrap');
         const yes  = e.target.value === 'yes' && e.target.checked;
         if (wrap) wrap.classList.toggle('show', yes);
-        if (cat)  cat.style.display  = yes ? 'grid' : 'none';
       }
     });
 
@@ -3578,7 +3629,6 @@
       const members = (CURRENT_HOUSEHOLD.members || []).map((m, i) => ({
         name: m.name,
         attending: formData.get(`attend_${i}`) || 'pending',
-        phone: formData.get(`phone_${i}`) || '',
         dietary: formData.get(`diet_${i}`) || '',
         notes: formData.get(`notes_${i}`) || '',
         tea: formData.get(`tea_${i}`) || '',
@@ -3592,10 +3642,8 @@
         events: CURRENT_HOUSEHOLD.events,
         submittedAt: new Date().toISOString(),
         members,
-        kids: formData.get('kids') || 'no',
-        kidsCount: formData.get('kidsCount') || '',
-        kidsCatering: formData.get('kidsCatering') || '',
-        householdNotes: formData.get('householdNotes') || ''
+        driving: formData.get('driving') || 'no',
+        vehicles: formData.get('vehicles') || ''
       };
 
       const submit = document.getElementById('rsvpSubmit');
