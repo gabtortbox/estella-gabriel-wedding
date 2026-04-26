@@ -50,6 +50,8 @@
       color: var(--ink);
       font-family: var(--sans);
       font-weight: 300;
+      font-size: 1.075rem;        /* bump from 16px → ~17.2px */
+      line-height: 1.7;
       overflow-x: hidden;
     }
 
@@ -1634,46 +1636,46 @@
 
     /* Event block — clear per-event rsvp toggle stack */
     .event-block {
-      margin: 1rem 0 0.5rem;
-      padding-bottom: 0.85rem;
-      border-bottom: 1px dashed rgba(200,185,154,0.45);
+      margin: 0.55rem 0 0;
+      padding-bottom: 0.55rem;
+      border-bottom: 1px dashed rgba(200,185,154,0.4);
     }
-    .event-block:last-of-type { border-bottom: none; }
+    .event-block:last-of-type { border-bottom: none; padding-bottom: 0; }
     .event-block.primary {
-      margin-top: 1.25rem;
-      padding-top: 0.85rem;
+      margin-top: 0.7rem;
+      padding-top: 0.6rem;
       border-top: 1px solid rgba(200,185,154,0.55);
     }
     .event-block-head {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 0.55rem;
+      margin-bottom: 0.35rem;
       flex-wrap: wrap;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
     .event-block-title {
       font-family: var(--serif);
       font-style: italic;
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--ink);
       font-weight: 400;
     }
     .event-block.primary .event-block-title {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       letter-spacing: 0.01em;
     }
     .event-block-time {
       font-family: var(--sans);
-      font-size: 0.62rem;
-      letter-spacing: 0.3em;
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--ink-soft);
     }
     .attend-toggle.event-attend label {
-      padding: 0.55rem 1rem;
-      font-size: 0.65rem;
-      letter-spacing: 0.25em;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
     }
 
     /* The form itself */
@@ -1681,8 +1683,8 @@
     #rsvpForm.show { display: block; }
     .member-card {
       background: var(--white);
-      padding: 1.75rem 1.75rem 1.5rem;
-      margin-bottom: 1rem;
+      padding: 1.1rem 1.25rem 1rem;
+      margin-bottom: 0.75rem;
       border-left: 3px solid var(--sand);
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
@@ -1691,26 +1693,26 @@
     .member-card .member-name {
       font-family: var(--serif);
       font-style: italic;
-      font-size: 1.4rem;
+      font-size: 1.25rem;
       color: var(--ink);
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
       font-weight: 300;
     }
     .attend-toggle {
       display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1.25rem;
+      gap: 0.4rem;
+      margin-bottom: 0;
     }
     .attend-toggle label {
       flex: 1;
       cursor: pointer;
-      padding: 0.7rem 1rem;
+      padding: 0.5rem 0.85rem;
       text-align: center;
       border: 1px solid var(--sand);
       background: var(--sand-pale);
       font-family: var(--sans);
-      font-size: 0.72rem;
-      letter-spacing: 0.3em;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
       color: var(--ink-soft);
       transition: all 0.25s ease;
@@ -1728,13 +1730,13 @@
     .member-fields {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
+      gap: 0.55rem;
       transition: max-height 0.4s ease, opacity 0.3s ease;
       overflow: hidden;
       max-height: 0;
       opacity: 0;
     }
-    .member-card.attending .member-fields { max-height: 600px; opacity: 1; margin-top: 0.25rem; }
+    .member-card.attending .member-fields { max-height: 600px; opacity: 1; margin-top: 0.6rem; }
 
     .member-fields .full { grid-column: 1 / -1; }
 
@@ -2577,11 +2579,6 @@
 
   <div id="progress-bar" aria-hidden="true"></div>
 
-  <!-- Personalised greeting (only renders for valid invite codes) -->
-  <div class="invite-greeting" id="inviteGreeting">
-    <div class="hello">Welcome,</div>
-    <div class="who" id="inviteWho"></div>
-  </div>
 
   <!-- NAV -->
   <nav id="nav">
@@ -2894,7 +2891,7 @@
       <h2 class="section-title reveal reveal-delay-1">A simple wish for the day</h2>
       <div class="section-divider reveal reveal-delay-1"></div>
       <p class="reveal reveal-delay-2">
-        We just want this evening to feel warm and unhurried — just good vibes, yummy food, endless conversations. Nothing fancy, nothing rushed. Just everyone being present and enjoying it together.
+        We just want this evening to feel warm, relaxed and unhurried. Good vibes, yummy food, endless conversations — everyone present, all of us enjoying the night together.
       </p>
     </div>
   </div>
@@ -2908,7 +2905,7 @@
         <p class="section-label reveal">The Venue</p>
         <h2 class="section-title reveal reveal-delay-1">Oasia Resort Sentosa</h2>
         <div class="section-divider center reveal reveal-delay-1"></div>
-        <p class="reveal reveal-delay-2" style="font-size:0.9rem; color:var(--ink-soft); line-height:1.85; max-width:520px; margin:0 auto;">
+        <p class="reveal reveal-delay-2" style="font-size:1rem; color:var(--ink-soft); line-height:1.85; max-width:520px; margin:0 auto;">
           The Aloes Ballroom — an elegant setting for an evening we hope you'll remember long after the night is over.
         </p>
 
@@ -3031,6 +3028,16 @@
             <p class="h-item-desc">Grab a drink and mingle with the rest of the guests.</p>
           </div>
 
+          <!-- 6.30pm Be Seated -->
+          <div class="h-item">
+            <div class="h-item-icon">
+              <svg viewBox="0 0 26 26"><rect x="6" y="13" width="14" height="6" rx="1"/><path d="M8 13V8a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v5"/><path d="M8 19v3M18 19v3"/></svg>
+            </div>
+            <p class="h-item-time">6.30 pm</p>
+            <p class="h-item-event">Be Seated</p>
+            <p class="h-item-desc">Find your seat and settle in — the evening's about to begin.</p>
+          </div>
+
           <!-- 6.45pm Ceremony -->
           <div class="h-item">
             <div class="h-item-icon">
@@ -3038,7 +3045,7 @@
             </div>
             <p class="h-item-time">6.45 pm</p>
             <p class="h-item-event">Ceremony Begins</p>
-            <p class="h-item-desc">Walk in and the moment we've been waiting for, with you beside us.</p>
+            <p class="h-item-desc">The walk-in, and the moment we've been waiting for — with you beside us. Please be seated in time so we can share it with you.</p>
           </div>
 
           <!-- 8.30pm Fun begins -->
@@ -3212,7 +3219,7 @@
       <h2 class="section-title">Helpers</h2>
       <div class="section-divider"></div>
     </div>
-    <p class="reveal reveal-delay-1" style="font-size:0.92rem; color:var(--ink-soft); margin-bottom:2.5rem; line-height:1.85; max-width:640px;">
+    <p class="reveal reveal-delay-1" style="font-size:1rem; color:var(--ink-soft); margin-bottom:2.5rem; line-height:1.85; max-width:640px;">
       If you need help finding your way, have a question, or are unsure where to go, these are the friendly faces to look for on the day.
     </p>
     <div class="reveal reveal-delay-2">
