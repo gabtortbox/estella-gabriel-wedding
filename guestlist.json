@@ -1,0 +1,29 @@
+{
+  "_comment": "FALLBACK ONLY — used when RSVP_ENDPOINT is empty (local dev). Real lookup goes through the Apps Script gateway. Each key is an opaque URL code matching what gets generated in your sheet's 'URL Code' column.",
+
+  "chng-k4f9": {
+    "household": "The Chng Family",
+    "type": "family",
+    "events": ["tea", "solem", "ceremony"],
+    "members": [
+      { "name": "Gabriel Chng" },
+      { "name": "Ng Guat Eng" },
+      { "name": "Chng Kwang Aik" },
+      { "name": "Grace Chng" },
+      { "name": "Gladys Chng" },
+      { "name": "Glenn Chng" },
+      { "name": "Zac Yong" },
+      { "name": "Isaac (grace +1)" }
+    ]
+  },
+
+  "wanqi-x4j7": {
+    "household": "Wanqi & Jun Rui",
+    "type": "friend",
+    "events": ["ceremony"],
+    "members": [
+      { "name": "Ang Wan Qi" },
+      { "name": "Chow Jun Rui" }
+    ]
+  }
+}
