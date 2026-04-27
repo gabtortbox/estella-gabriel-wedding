@@ -1432,8 +1432,9 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      .nav-links { display: none; }
+      nav { padding: 0.85rem 1rem; gap: 0.75rem; }
+      .nav-links { gap: 1.1rem; }
+      .nav-links a { font-size: 0.6rem; letter-spacing: 0.12em; }
       .story-spread { grid-template-columns: 1fr; gap: 2rem; }
       .story-spread.reverse { direction: ltr; }
       .info-grid { grid-template-columns: 1fr; }
@@ -1496,7 +1497,7 @@
       background: var(--white);
       position: relative;
     }
-    .ceremony-panel + .ceremony-panel { padding-top: 0; }
+    .ceremony-panel + .ceremony-panel { padding-top: 3.5rem; }
     .ceremony-panel .inner { max-width: 800px; margin: 0 auto; text-align: center; }
     .ceremony-panel .ceremony-meta {
       display: flex;
@@ -1909,7 +1910,7 @@
     }
 
     /* ══════════════════════════════════════════════════
-       FAIRYTALE DOOR OVERLAY — magical Disney-esque arch
+       ENVELOPE LANDING — tap to open, letter unfolds
        ══════════════════════════════════════════════════ */
     html.doors-locked, html.doors-locked body { overflow: hidden; height: 100%; }
 
@@ -1918,373 +1919,368 @@
       --gold-soft:   #e5c988;
       --gold-deep:   #8f6d2b;
       --ivory:       #fbf4e4;
-      --blush:       #f2dcc4;
-      --rose-gold:   #d4a374;
-      --emerald:     #2f4a3a;
+      --paper:       #f8eed7;
+      --paper-edge:  #e8d9b3;
+      --wax:         #a8324a;
+      --wax-light:   #c44a64;
     }
 
-    .door-overlay {
+    .env-overlay {
       position: fixed;
       inset: 0;
       z-index: 9999;
-      perspective: 2200px;
-      perspective-origin: 50% 40%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1800px;
+      perspective-origin: 50% 50%;
       pointer-events: auto;
       overflow: hidden;
       background:
-        radial-gradient(ellipse at 50% 30%, rgba(255,241,213,1) 0%, rgba(242,220,196,0.98) 40%, rgba(201,161,78,0.85) 100%);
+        radial-gradient(ellipse at 50% 35%, rgba(255,243,217,1) 0%, rgba(243,224,193,0.97) 45%, rgba(208,178,128,0.85) 100%);
     }
 
-    /* Warm magical bloom behind the doors */
-    .door-bloom {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      z-index: 1;
-      opacity: 0.6;
-      transition: opacity 1.4s ease 0.3s;
-    }
-    .door-bloom::before {
-      content: '';
-      width: 85vmin;
-      height: 85vmin;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle, rgba(255,235,190,0.9) 0%, rgba(232,198,128,0.55) 30%, rgba(201,161,78,0) 70%);
-      filter: blur(40px);
-      transform: scale(0.85);
-      animation: bloomBreathe 5s ease-in-out infinite;
-      transition: transform 1.8s cubic-bezier(0.22,1,0.36,1) 0.2s;
-    }
-    @keyframes bloomBreathe {
-      0%,100% { transform: scale(0.85); opacity: 0.8; }
-      50%     { transform: scale(1.0);  opacity: 1; }
-    }
-    .door-overlay.opening .door-bloom { opacity: 1; }
-    .door-overlay.opening .door-bloom::before { transform: scale(1.6); animation: none; }
-
-    /* ═══ Twinkling fairy-dust sparkles ═══ */
-    .door-particles {
+    /* Soft warm bloom behind the envelope */
+    .env-bloom {
       position: absolute;
       inset: 0;
       pointer-events: none;
-      z-index: 2;
-      overflow: hidden;
+      z-index: 0;
     }
-    .door-sparkle {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      background:
-        radial-gradient(circle, rgba(255,245,210,1) 0%, rgba(232,198,128,0.6) 35%, rgba(201,161,78,0) 70%);
-      border-radius: 50%;
-      opacity: 0;
-      animation: sparkleTwinkle 4s ease-in-out infinite;
-      filter: drop-shadow(0 0 6px rgba(255,220,140,0.9));
-    }
-    .door-sparkle::before,
-    .door-sparkle::after {
+    .env-bloom::before {
       content: '';
       position: absolute;
       top: 50%; left: 50%;
-      background: linear-gradient(90deg, transparent, rgba(255,245,210,1), transparent);
-      transform: translate(-50%,-50%);
+      width: 90vmin; height: 90vmin;
+      transform: translate(-50%,-50%) scale(0.85);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,235,185,0.85) 0%, rgba(232,198,128,0.45) 30%, rgba(208,178,128,0) 70%);
+      filter: blur(40px);
+      animation: envBreathe 5s ease-in-out infinite;
     }
-    .door-sparkle::before {
-      width: 100%; height: 1px;
+    @keyframes envBreathe {
+      0%,100% { transform: translate(-50%,-50%) scale(0.85); opacity: 0.85; }
+      50%     { transform: translate(-50%,-50%) scale(1);    opacity: 1; }
     }
-    .door-sparkle::after {
-      width: 1px; height: 100%;
-    }
-    @keyframes sparkleTwinkle {
-      0%,100% { opacity: 0;   transform: scale(0.3) rotate(0deg); }
-      50%     { opacity: 0.95; transform: scale(1) rotate(45deg); }
-    }
-    .door-petal {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      border-radius: 75% 15% 75% 15%;
-      background: radial-gradient(circle at 30% 30%, rgba(245,200,180,0.95), rgba(213,160,130,0.6) 70%, rgba(150,90,70,0) 100%);
-      opacity: 0;
-      animation: petalDrift 16s linear infinite;
-      filter: blur(0.3px);
-    }
-    @keyframes petalDrift {
-      0%   { transform: translate(0, 105vh) rotate(0deg); opacity: 0; }
-      8%   { opacity: 0.85; }
-      90%  { opacity: 0.7; }
-      100% { transform: translate(var(--dx, 40px), -10vh) rotate(720deg); opacity: 0; }
+    .env-overlay.opening .env-bloom::before {
+      animation: none;
+      transform: translate(-50%,-50%) scale(1.6);
+      transition: transform 1.6s cubic-bezier(0.22,1,0.36,1);
+      opacity: 1;
     }
 
-    /* ═══ Arched doorway frame (stone/gold filigree arch) ═══ */
-    .door-arch {
+    /* Ambient gold sparkles */
+    .env-sparkles {
       position: absolute;
-      top: 0; left: 50%;
-      width: min(88vmin, 94%);
-      height: 100%;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .env-spark {
+      position: absolute;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,245,210,1) 0%, rgba(232,198,128,0.5) 40%, transparent 70%);
+      filter: drop-shadow(0 0 5px rgba(255,220,140,0.85));
+      opacity: 0;
+      animation: sparkTwinkle 4s ease-in-out infinite;
+    }
+    @keyframes sparkTwinkle {
+      0%,100% { opacity: 0;   transform: scale(0.4); }
+      50%     { opacity: 0.95; transform: scale(1); }
+    }
+
+    /* The envelope (the visible thing before tap) */
+    .envelope {
+      position: relative;
+      z-index: 3;
+      width: clamp(280px, 56vmin, 460px);
+      aspect-ratio: 1.5 / 1;
+      transform-style: preserve-3d;
+      cursor: pointer;
+      transition: transform 0.5s ease;
+    }
+    .envelope:hover { transform: translateY(-4px); }
+    .env-overlay.opening .envelope { cursor: default; }
+    .env-overlay.opening .envelope:hover { transform: none; }
+
+    /* Body of the envelope — the rectangular pocket */
+    .env-body {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, #f4e3bb 0%, #e8d09a 100%);
+      box-shadow:
+        0 8px 24px rgba(140, 100, 50, 0.25),
+        0 20px 60px rgba(140, 100, 50, 0.18),
+        inset 0 -3px 8px rgba(140, 100, 50, 0.18),
+        inset 0 1px 1px rgba(255,255,255,0.4);
+      border: 1px solid rgba(140,100,50,0.35);
+    }
+    /* The "V" notch at the top edge of the envelope opening (visible when flap is open) */
+    .env-body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 50%;
+      background:
+        linear-gradient(180deg, rgba(140,100,50,0.18) 0%, transparent 35%),
+        linear-gradient(160deg, transparent 0%, transparent 50%, rgba(255,245,210,0.25) 51%, transparent 60%);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+    /* Subtle paper grain on the body */
+    .env-body::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(135deg, rgba(140,100,50,0.025) 0, rgba(140,100,50,0.025) 1px, transparent 1px, transparent 4px);
+      pointer-events: none;
+    }
+
+    /* Address line on the front */
+    .env-address {
+      position: absolute;
+      bottom: 18%;
+      left: 50%;
       transform: translateX(-50%);
+      text-align: center;
+      width: 80%;
       z-index: 2;
       pointer-events: none;
-      background:
-        radial-gradient(ellipse 50% 40% at 50% 40%, rgba(255,235,190,0.25), transparent 70%);
     }
-    .door-arch svg { width: 100%; height: 100%; display: block; overflow: visible; }
+    .env-address-to {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(90,60,20,0.55);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .env-address-name {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(1rem, 1.6vw, 1.35rem);
+      color: rgba(90,60,20,0.85);
+      font-weight: 300;
+      border-bottom: 1px solid rgba(140,100,50,0.25);
+      padding-bottom: 0.4rem;
+      max-width: 80%;
+      margin: 0 auto;
+    }
+    .env-address-from {
+      display: block;
+      margin-top: 0.55rem;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 0.78rem;
+      color: rgba(140,100,50,0.65);
+    }
 
-    /* The doors themselves — antique ivory w/ gold inlay */
-    .door-panel {
+    /* Flap — the triangle on top of the envelope */
+    .env-flap {
       position: absolute;
-      top: 0;
-      width: 50.5%;
-      height: 100%;
-      z-index: 3;
-      overflow: hidden;
-      transition: transform 2.3s cubic-bezier(0.77,0,0.175,1),
-                  box-shadow 1.8s ease,
-                  filter 1.8s ease;
-      will-change: transform;
-      background:
-        linear-gradient(180deg,
-          #f8ecd0 0%,
-          #eed9a8 30%,
-          #d9b978 55%,
-          #b8914a 100%);
+      top: 0; left: 0; right: 0;
+      height: 60%;
+      background: linear-gradient(180deg, #f7e8c2 0%, #ecd6a3 100%);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top center;
+      transform: rotateX(0deg);
+      transition: transform 1.1s cubic-bezier(0.65,0,0.35,1);
       box-shadow:
-        inset 0 0 140px rgba(143,109,43,0.35),
-        inset 0 -60px 100px rgba(90,60,20,0.25),
-        inset 0 40px 100px rgba(255,245,210,0.3);
+        0 4px 14px rgba(140,100,50,0.18),
+        inset 0 -1px 2px rgba(140,100,50,0.2);
+      backface-visibility: hidden;
+      z-index: 5;
     }
-    .door-panel.left {
-      left: 0;
-      transform-origin: left center;
-      background-image:
-        linear-gradient(90deg, rgba(90,60,20,0.35) 0%, transparent 8%, transparent 94%, rgba(90,60,20,0.1) 100%),
-        linear-gradient(180deg, #f8ecd0 0%, #eed9a8 30%, #d9b978 55%, #b8914a 100%);
-    }
-    .door-panel.right {
-      right: 0;
-      transform-origin: right center;
-      background-image:
-        linear-gradient(90deg, rgba(90,60,20,0.1) 0%, transparent 6%, transparent 92%, rgba(90,60,20,0.35) 100%),
-        linear-gradient(180deg, #f8ecd0 0%, #eed9a8 30%, #d9b978 55%, #b8914a 100%);
-    }
-
-    /* Subtle engraved wood/stone grain */
-    .door-panel::before {
+    /* The crease line + back-side hint */
+    .env-flap::before {
       content: '';
       position: absolute;
       inset: 0;
       background:
-        repeating-linear-gradient(180deg,
-          rgba(90,60,20,0.035) 0px,
-          rgba(90,60,20,0.035) 1px,
-          transparent 2px,
-          transparent 7px),
-        repeating-linear-gradient(180deg,
-          rgba(255,245,210,0.04) 0px,
-          rgba(255,245,210,0.04) 2px,
-          transparent 4px,
-          transparent 10px);
-      pointer-events: none;
-      mix-blend-mode: overlay;
+        linear-gradient(180deg, transparent 70%, rgba(140,100,50,0.18) 100%);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+    }
+    .env-overlay.opening .env-flap {
+      transform: rotateX(-180deg);
     }
 
-    /* Inner arched gold border (drawn per half via clip-path) */
-    .door-panel::after {
-      content: '';
-      position: absolute;
-      top: 4%;
-      bottom: 4%;
-      left: 6%;
-      right: 6%;
-      border: 1px solid var(--gold-deep);
-      box-shadow:
-        inset 0 0 0 4px rgba(255,235,190,0.2),
-        inset 0 0 0 5px var(--gold),
-        inset 0 0 0 6px rgba(143,109,43,0.4),
-        inset 0 0 30px rgba(255,235,190,0.25);
-      pointer-events: none;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    }
-    .door-panel.left::after  { right: 1.5%; border-top-left-radius: 40vmin 80vmin; }
-    .door-panel.right::after { left: 1.5%;  border-top-right-radius: 40vmin 80vmin; }
-
-    /* ═══ Climbing rose vines SVG (sits on top of each door) ═══ */
-    .door-vine {
-      position: absolute;
-      top: 3%;
-      bottom: 4%;
-      width: 30%;
-      z-index: 4;
-      pointer-events: none;
-      opacity: 0.75;
-      animation: vineSway 8s ease-in-out infinite alternate;
-    }
-    .door-panel.left  .door-vine { right: 2%; transform-origin: bottom right; }
-    .door-panel.right .door-vine { left: 2%;  transform-origin: bottom left;  transform: scaleX(-1); }
-    .door-vine svg { width: 100%; height: 100%; overflow: visible; }
-    @keyframes vineSway {
-      0%,100% { transform: rotate(0deg); }
-      50%     { transform: rotate(0.5deg); }
-    }
-    .door-panel.right .door-vine { animation-name: vineSway2; }
-    @keyframes vineSway2 {
-      0%,100% { transform: scaleX(-1) rotate(0deg); }
-      50%     { transform: scaleX(-1) rotate(0.5deg); }
-    }
-
-    /* Gold filigree corner ornaments */
-    .door-filigree {
-      position: absolute;
-      width: 18%;
-      max-width: 140px;
-      z-index: 4;
-      pointer-events: none;
-      opacity: 0.85;
-    }
-    .door-filigree svg { width: 100%; height: auto; display: block; }
-    .door-panel.left  .door-filigree.tl { top: 4%;    left: 6%; }
-    .door-panel.left  .door-filigree.bl { bottom: 4%; left: 6%;  transform: scaleY(-1); }
-    .door-panel.right .door-filigree.tr { top: 4%;    right: 6%; transform: scaleX(-1); }
-    .door-panel.right .door-filigree.br { bottom: 4%; right: 6%; transform: scale(-1,-1); }
-
-    /* Ornate brass ring handles at the inner edge */
-    .door-handle {
+    /* Wax seal at the tip of the flap */
+    .env-seal {
       position: absolute;
       top: 50%;
-      width: 28px;
-      height: 28px;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      width: clamp(46px, 9vmin, 64px);
+      height: clamp(46px, 9vmin, 64px);
       border-radius: 50%;
       background:
-        radial-gradient(circle at 35% 30%, #fff2c2 0%, var(--gold-soft) 25%, var(--gold) 55%, var(--gold-deep) 100%);
+        radial-gradient(circle at 35% 30%, var(--wax-light) 0%, var(--wax) 55%, #6f1f30 100%);
       box-shadow:
-        0 3px 8px rgba(60,40,10,0.5),
-        inset 0 2px 2px rgba(255,255,255,0.5),
-        inset 0 -3px 4px rgba(60,40,10,0.4);
-      transform: translateY(-50%);
-      z-index: 5;
-      border: 1px solid var(--gold-deep);
+        0 3px 10px rgba(110, 30, 45, 0.45),
+        inset 0 2px 4px rgba(255,255,255,0.25),
+        inset 0 -3px 6px rgba(80,15,25,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 6;
+      pointer-events: none;
+      transition: transform 0.6s cubic-bezier(0.6,-0.4,0.5,1.5),
+                  opacity 0.5s ease;
     }
-    .door-handle::before {
+    .env-seal::before {
+      /* Drip-edge texture around seal */
       content: '';
       position: absolute;
-      inset: 6px;
-      border: 1.5px solid var(--gold-deep);
+      inset: -3px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(60,40,10,0.25), transparent 70%);
+      background:
+        radial-gradient(circle at 50% 50%, transparent 60%, rgba(168,50,74,0.4) 64%, transparent 72%);
+      filter: blur(1px);
     }
-    .door-panel.left  .door-handle { right: 4%; }
-    .door-panel.right .door-handle { left: 4%;  }
+    .env-seal-letters {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(0.95rem, 2vmin, 1.3rem);
+      color: rgba(255, 240, 220, 0.95);
+      letter-spacing: 0.04em;
+      text-shadow:
+        0 1px 0 rgba(80,15,25,0.6),
+        0 -1px 0 rgba(255,200,210,0.2);
+    }
+    .env-overlay.opening .env-seal {
+      transform: translate(-50%,-50%) scale(0.5);
+      opacity: 0;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
 
-    /* Central seam shadow */
-    .door-seam {
+    /* The letter inside — initially hidden behind the envelope */
+    .env-letter {
       position: absolute;
-      top: 0; bottom: 0;
-      left: 50%;
-      width: 3px;
-      transform: translateX(-50%);
-      background: linear-gradient(to bottom,
-        transparent 0%,
-        rgba(60,40,10,0.35) 10%,
-        rgba(60,40,10,0.5) 50%,
-        rgba(60,40,10,0.35) 90%,
-        transparent 100%);
-      z-index: 4;
-      pointer-events: none;
-      transition: opacity 0.7s ease;
+      top: 50%; left: 50%;
+      width: 88%;
+      max-height: 80%;
+      transform: translate(-50%, 0) scale(0.75);
+      background: linear-gradient(180deg, var(--paper) 0%, #f0e0b8 100%);
+      box-shadow:
+        0 6px 18px rgba(140,100,50,0.25),
+        0 14px 36px rgba(140,100,50,0.15),
+        inset 0 0 0 1px rgba(140,100,50,0.18);
+      padding: clamp(1.25rem, 3.5vmin, 2rem) clamp(1rem, 3vmin, 1.5rem);
+      text-align: center;
+      opacity: 0;
+      z-index: 4;       /* above body, below flap until flap rotates away */
+      transition: transform 1.1s cubic-bezier(0.22,1,0.36,1) 0.5s,
+                  opacity 0.6s ease 0.6s,
+                  width 1.2s cubic-bezier(0.22,1,0.36,1) 1.5s,
+                  max-height 1.2s cubic-bezier(0.22,1,0.36,1) 1.5s;
     }
-    .door-overlay.opening .door-seam { opacity: 0; }
-
-    /* ═══ Center "E & G" medallion crest — splits across both doors ═══ */
-    .door-crest {
-      position: absolute;
-      top: 32%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: clamp(180px, 24vmin, 290px);
-      z-index: 5;
-      pointer-events: none;
-      filter: drop-shadow(0 6px 20px rgba(143,109,43,0.45));
-      transition: opacity 0.6s ease;
-    }
-    .door-crest svg { width: 100%; height: auto; display: block; overflow: visible; }
-    .door-crest .glow {
-      animation: crestGlow 3.5s ease-in-out infinite;
-      transform-origin: center;
-    }
-    @keyframes crestGlow {
-      0%,100% { opacity: 0.45; }
-      50%     { opacity: 0.85; }
-    }
-    .door-overlay.opening .door-crest { opacity: 0; transition: opacity 0.3s ease; }
-
-    /* Content block below the crest (names, date, venue) */
-    .door-content {
+    .env-letter::before {
+      /* Subtle paper grain */
+      content: '';
       position: absolute;
       inset: 0;
-      z-index: 6;
+      background:
+        repeating-linear-gradient(0deg, rgba(140,100,50,0.025) 0, rgba(140,100,50,0.025) 1px, transparent 1px, transparent 5px),
+        repeating-linear-gradient(90deg, rgba(140,100,50,0.018) 0, rgba(140,100,50,0.018) 1px, transparent 1px, transparent 6px);
+      pointer-events: none;
+    }
+    .env-letter::after {
+      /* The fold-line crease */
+      content: '';
+      position: absolute;
+      left: 8%; right: 8%;
+      top: 50%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(140,100,50,0.25), transparent);
+      pointer-events: none;
+    }
+
+    /* Letter content */
+    .letter-content {
+      position: relative;
+      z-index: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      text-align: center;
-      padding: 2rem;
-      padding-top: 18vmin;
-      gap: 0.9rem;
-      transition: opacity 0.7s ease;
+      gap: 0.55rem;
     }
-    .door-overlay.opening .door-content { opacity: 0; transition: opacity 0.4s ease; }
-
-    .door-flourish {
-      width: clamp(130px, 15vw, 200px);
-      height: 14px;
+    .letter-eyebrow {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(90,60,20,0.65);
+    }
+    .letter-monogram {
+      width: clamp(70px, 14vmin, 110px);
+      height: auto;
+      margin: 0.2rem 0 0.3rem;
+      filter: brightness(0.4) sepia(0.6) hue-rotate(355deg) saturate(0.7);
+      opacity: 0.9;
+    }
+    .letter-flourish {
+      width: clamp(80px, 14vmin, 130px);
+      height: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.6rem;
-      opacity: 0.85;
+      gap: 0.4rem;
     }
-    .door-flourish-line {
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold-deep), transparent);
+    .letter-flourish-line {
+      flex: 1; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(140,100,50,0.55), transparent);
     }
-    .door-flourish-dot {
-      width: 5px; height: 5px;
+    .letter-flourish-dot {
+      width: 4px; height: 4px;
       border-radius: 50%;
-      background: var(--gold);
-      box-shadow: 0 0 6px rgba(255,220,140,0.6);
+      background: rgba(140,100,50,0.7);
     }
-
-    .door-date {
-      font-family: var(--sans);
-      font-size: clamp(0.72rem, 0.95vw, 0.82rem);
-      letter-spacing: 0.42em;
-      text-transform: uppercase;
-      color: #5a3d15;
-      font-weight: 400;
-    }
-
-    .door-venue {
+    .letter-names {
       font-family: var(--serif);
       font-style: italic;
-      font-size: clamp(0.95rem, 1.15vw, 1.1rem);
+      font-weight: 300;
+      font-size: clamp(1.6rem, 4.2vmin, 2.6rem);
       color: #5a3d15;
-      margin-top: -0.25rem;
+      letter-spacing: 0.02em;
+      line-height: 1;
+      margin: 0.1rem 0;
+    }
+    .letter-date {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(90,60,20,0.7);
+    }
+    .letter-venue {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(0.85rem, 1.6vmin, 1rem);
+      color: rgba(90,60,20,0.78);
     }
 
-    /* ═══ Prompt — clearly visible, above the doors ═══ */
-    .door-prompt {
+    /* Animation: letter rises & expands once flap opens */
+    .env-overlay.opening .env-letter {
+      transform: translate(-50%, -55%) scale(1);
+      opacity: 1;
+      width: min(88vw, 540px);
+      max-height: 80vh;
+      z-index: 7;
+    }
+
+    /* Tap prompt */
+    .env-prompt {
       position: absolute;
-      bottom: clamp(2rem, 6vh, 5rem);
+      bottom: clamp(2rem, 7vh, 5rem);
       left: 50%;
       transform: translateX(-50%);
-      z-index: 20;  /* IMPORTANT: above the doors */
+      z-index: 20;
       font-family: var(--sans);
       font-size: 0.78rem;
       letter-spacing: 0.42em;
@@ -2292,55 +2288,49 @@
       color: #3b2a0c;
       pointer-events: auto;
       cursor: pointer;
-      padding: 1rem 2.5rem;
-      background: linear-gradient(180deg, rgba(255,245,210,0.8), rgba(232,198,128,0.7));
+      padding: 1rem 2.4rem;
+      background: linear-gradient(180deg, rgba(255,245,210,0.85), rgba(232,198,128,0.7));
       border: 1px solid var(--gold);
       border-radius: 100px;
-      box-shadow:
-        0 4px 16px rgba(143,109,43,0.3),
-        inset 0 1px 1px rgba(255,255,255,0.5);
       display: flex;
       flex-direction: row;
       align-items: center;
       gap: 0.8rem;
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
-      animation: doorPromptGlow 2.4s ease-in-out infinite;
+      animation: envPromptGlow 2.4s ease-in-out infinite;
       transition: all 0.3s ease;
     }
-    .door-prompt:hover {
+    .env-prompt:hover {
       color: #1a1206;
       letter-spacing: 0.5em;
       background: linear-gradient(180deg, rgba(255,245,210,1), rgba(232,198,128,0.9));
-      box-shadow:
-        0 8px 28px rgba(143,109,43,0.45),
-        0 0 30px rgba(255,220,140,0.6),
-        inset 0 1px 1px rgba(255,255,255,0.5);
     }
-    .door-prompt-chevron {
-      width: 14px; height: 14px;
+    .env-prompt-chevron {
+      width: 12px; height: 12px;
       border-right: 1.5px solid currentColor;
       border-bottom: 1.5px solid currentColor;
       transform: rotate(-45deg);
       opacity: 0.7;
     }
-    @keyframes doorPromptGlow {
-      0%,100% { box-shadow: 0 4px 16px rgba(143,109,43,0.3), 0 0 0 rgba(255,220,140,0), inset 0 1px 1px rgba(255,255,255,0.5); }
-      50%     { box-shadow: 0 6px 24px rgba(143,109,43,0.4), 0 0 24px rgba(255,220,140,0.55), inset 0 1px 1px rgba(255,255,255,0.5); }
+    @keyframes envPromptGlow {
+      0%,100% { box-shadow: 0 4px 16px rgba(143,109,43,0.3); }
+      50%     { box-shadow: 0 6px 24px rgba(143,109,43,0.4), 0 0 24px rgba(255,220,140,0.5); }
     }
-    .door-overlay.opening .door-prompt { opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
+    .env-overlay.opening .env-prompt {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
 
-    /* THE OPEN: doors swing outward, overlay fades */
-    .door-overlay.opening .door-panel.left  { transform: rotateY(-118deg); filter: brightness(0.7); box-shadow: inset 0 0 150px rgba(60,40,10,0.55); }
-    .door-overlay.opening .door-panel.right { transform: rotateY( 118deg); filter: brightness(0.7); box-shadow: inset 0 0 150px rgba(60,40,10,0.55); }
-
-    .door-overlay.closing { animation: doorFade 1s ease 1.5s forwards; }
-    @keyframes doorFade {
+    /* Final fade — overlay disappears after the letter has expanded */
+    .env-overlay.closing { animation: envFade 1s ease 2.6s forwards; }
+    @keyframes envFade {
       to { opacity: 0; visibility: hidden; }
     }
 
-    /* Main content subtle zoom reveal after doors open */
-    body.doors-revealing > *:not(.door-overlay) {
+    /* Site reveal beneath */
+    body.doors-revealing > *:not(.env-overlay) {
       animation: siteReveal 1.6s cubic-bezier(0.22,1,0.36,1) forwards;
     }
     @keyframes siteReveal {
@@ -2348,232 +2338,76 @@
       to   { transform: scale(1);    opacity: 1;   filter: blur(0); }
     }
 
-    /* Reduced motion: skip the whole animation */
     @media (prefers-reduced-motion: reduce) {
-      .door-overlay { display: none; }
+      .env-overlay { display: none; }
       html.doors-locked, html.doors-locked body { overflow: auto; height: auto; }
     }
 
     /* Mobile tweaks */
     @media (max-width: 640px) {
-      .door-panel::after { left: 5%; right: 5%; top: 3%; bottom: 3%; }
-      .door-panel.left::after  { right: 1%; }
-      .door-panel.right::after { left: 1%; }
-      .door-crest { width: clamp(150px, 48vw, 220px); top: 30%; }
-      .door-vine { width: 40%; }
-      .door-filigree { width: 26%; }
-      .door-handle { width: 22px; height: 22px; }
-      .door-prompt { bottom: 2rem; font-size: 0.7rem; letter-spacing: 0.34em; padding: 0.85rem 1.8rem; }
-      .door-content { padding-top: 22vmin; }
-      .door-date { font-size: 0.65rem; letter-spacing: 0.34em; }
-      .door-venue { font-size: 0.92rem; }
+      .envelope { width: clamp(260px, 80vmin, 360px); }
+      .env-prompt { bottom: 2rem; font-size: 0.7rem; letter-spacing: 0.32em; padding: 0.85rem 1.8rem; }
+      .env-address-name { font-size: 1rem; }
+      .letter-names { font-size: 1.7rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ═══════════ FAIRYTALE DOOR OVERLAY ═══════════ -->
-  <div class="door-overlay" id="doorOverlay" role="dialog" aria-label="Welcome — touch to enter">
+  <!-- ═══════════ ENVELOPE LANDING ═══════════ -->
+  <div class="env-overlay" id="envOverlay" role="dialog" aria-label="Tap the envelope to open your invitation">
 
-    <div class="door-bloom" aria-hidden="true"></div>
+    <div class="env-bloom" aria-hidden="true"></div>
 
-    <!-- Twinkling fairy dust + drifting petals -->
-    <div class="door-particles" aria-hidden="true">
-      <span class="door-sparkle" style="top:12%; left:6%;  animation-delay: 0s;"></span>
-      <span class="door-sparkle" style="top:28%; left:14%; animation-delay: -1.4s; width:6px; height:6px;"></span>
-      <span class="door-sparkle" style="top:68%; left:9%;  animation-delay: -2.2s;"></span>
-      <span class="door-sparkle" style="top:82%; left:20%; animation-delay: -0.8s; width:5px; height:5px;"></span>
-      <span class="door-sparkle" style="top:18%; left:28%; animation-delay: -3s;"></span>
-      <span class="door-sparkle" style="top:54%; left:5%;  animation-delay: -1.9s; width:10px; height:10px;"></span>
-      <span class="door-sparkle" style="top:10%; right:8%; animation-delay: -0.4s;"></span>
-      <span class="door-sparkle" style="top:30%; right:14%; animation-delay: -2.6s; width:7px; height:7px;"></span>
-      <span class="door-sparkle" style="top:72%; right:6%; animation-delay: -1.2s;"></span>
-      <span class="door-sparkle" style="top:86%; right:22%; animation-delay: -3.2s; width:5px; height:5px;"></span>
-      <span class="door-sparkle" style="top:22%; right:28%; animation-delay: -0.9s;"></span>
-      <span class="door-sparkle" style="top:50%; right:4%; animation-delay: -2s; width:9px; height:9px;"></span>
-      <span class="door-sparkle" style="top:40%; left:48%; animation-delay: -1.7s;"></span>
-      <span class="door-sparkle" style="top:60%; left:52%; animation-delay: -2.9s; width:6px; height:6px;"></span>
-      <span class="door-sparkle" style="top:8%;  left:46%; animation-delay: -0.5s;"></span>
-
-      <span class="door-petal" style="left:12%; --dx: 50px;  animation-delay: -1s;  animation-duration: 16s;"></span>
-      <span class="door-petal" style="left:32%; --dx: -40px; animation-delay: -7s;  animation-duration: 19s;"></span>
-      <span class="door-petal" style="left:52%; --dx: 30px;  animation-delay: -4s;  animation-duration: 17s;"></span>
-      <span class="door-petal" style="left:72%; --dx: -60px; animation-delay: -10s; animation-duration: 18s;"></span>
-      <span class="door-petal" style="left:88%; --dx: 25px;  animation-delay: -3s;  animation-duration: 15s;"></span>
+    <div class="env-sparkles" aria-hidden="true">
+      <span class="env-spark" style="top:14%; left:8%;  animation-delay: 0s;"></span>
+      <span class="env-spark" style="top:24%; left:18%; animation-delay: -1.4s;"></span>
+      <span class="env-spark" style="top:60%; left:6%;  animation-delay: -2.6s;"></span>
+      <span class="env-spark" style="top:78%; left:22%; animation-delay: -0.9s;"></span>
+      <span class="env-spark" style="top:18%; right:10%; animation-delay: -2.1s;"></span>
+      <span class="env-spark" style="top:34%; right:22%; animation-delay: -0.5s;"></span>
+      <span class="env-spark" style="top:68%; right:7%;  animation-delay: -1.7s;"></span>
+      <span class="env-spark" style="top:84%; right:24%; animation-delay: -3.2s;"></span>
+      <span class="env-spark" style="top:42%; left:48%; animation-delay: -1.1s;"></span>
+      <span class="env-spark" style="top:8%;  left:46%; animation-delay: -2.8s;"></span>
     </div>
 
-    <!-- DOORS -->
-    <div class="door-panel left" aria-hidden="true">
-      <!-- Climbing rose vine -->
-      <div class="door-vine">
-        <svg viewBox="0 0 120 500" preserveAspectRatio="none" fill="none">
-          <!-- main stem curving from bottom-right up to top -->
-          <path d="M110 490 C80 430, 70 400, 85 350 C100 300, 70 270, 55 230 C40 180, 75 150, 70 100 C65 60, 90 30, 75 0" stroke="#5f7a3c" stroke-width="1.5" opacity="0.85"/>
-          <!-- leaves along the stem -->
-          <path d="M85 350 C70 345, 60 355, 55 368 C62 365, 75 362, 85 350 Z" fill="#5f7a3c" opacity="0.7"/>
-          <path d="M70 270 C85 265, 95 270, 100 282 C90 282, 80 278, 70 270 Z" fill="#6a8545" opacity="0.75"/>
-          <path d="M55 230 C42 222, 30 226, 24 238 C34 238, 46 237, 55 230 Z" fill="#5f7a3c" opacity="0.7"/>
-          <path d="M70 100 C82 94, 94 96, 100 108 C88 110, 78 106, 70 100 Z" fill="#6a8545" opacity="0.75"/>
-          <!-- roses (small clusters of petals) -->
-          <g opacity="0.95">
-            <circle cx="90" cy="430" r="8" fill="#c05a6a"/>
-            <circle cx="87" cy="428" r="5" fill="#e6a6b0"/>
-            <circle cx="93" cy="432" r="3" fill="#f5d0d6"/>
-          </g>
-          <g opacity="0.95">
-            <circle cx="58" cy="280" r="7" fill="#c05a6a"/>
-            <circle cx="56" cy="279" r="4" fill="#e6a6b0"/>
-            <circle cx="60" cy="282" r="2.5" fill="#f5d0d6"/>
-          </g>
-          <g opacity="0.95">
-            <circle cx="72" cy="130" r="9" fill="#c05a6a"/>
-            <circle cx="69" cy="128" r="5.5" fill="#e6a6b0"/>
-            <circle cx="75" cy="132" r="3.5" fill="#f5d0d6"/>
-          </g>
-          <g opacity="0.95">
-            <circle cx="78" cy="30" r="6" fill="#c05a6a"/>
-            <circle cx="76" cy="29" r="3.5" fill="#e6a6b0"/>
-          </g>
-        </svg>
+    <!-- The envelope -->
+    <div class="envelope" id="envelopeShape">
+      <div class="env-body">
+        <div class="env-address">
+          <span class="env-address-to">to</span>
+          <span class="env-address-name">our beloved guest</span>
+          <span class="env-address-from">Estella &amp; Gabriel · 11 July 2027</span>
+        </div>
       </div>
-      <!-- Gold filigree corners -->
-      <div class="door-filigree tl">
-        <svg viewBox="0 0 140 140" fill="none">
-          <path d="M10 10 C40 10, 70 20, 90 50 C100 70, 95 95, 70 100 C50 103, 35 88, 40 68" stroke="#c9a14e" stroke-width="1.3" fill="none" opacity="0.9"/>
-          <path d="M10 10 C10 40, 20 70, 50 90 C70 100, 95 95, 100 70 C103 50, 88 35, 68 40" stroke="#8f6d2b" stroke-width="0.9" fill="none" opacity="0.7"/>
-          <circle cx="10" cy="10" r="3" fill="#c9a14e"/>
-          <circle cx="90" cy="50" r="2" fill="#c9a14e"/>
-          <circle cx="50" cy="90" r="2" fill="#c9a14e"/>
-          <circle cx="70" cy="70" r="1.5" fill="#e5c988"/>
-        </svg>
+
+      <div class="env-flap">
+        <div class="env-seal">
+          <span class="env-seal-letters">E&nbsp;&amp;&nbsp;G</span>
+        </div>
       </div>
-      <div class="door-filigree bl">
-        <svg viewBox="0 0 140 140" fill="none">
-          <path d="M10 10 C40 10, 70 20, 90 50 C100 70, 95 95, 70 100 C50 103, 35 88, 40 68" stroke="#c9a14e" stroke-width="1.3" fill="none" opacity="0.9"/>
-          <path d="M10 10 C10 40, 20 70, 50 90 C70 100, 95 95, 100 70 C103 50, 88 35, 68 40" stroke="#8f6d2b" stroke-width="0.9" fill="none" opacity="0.7"/>
-          <circle cx="10" cy="10" r="3" fill="#c9a14e"/>
-          <circle cx="90" cy="50" r="2" fill="#c9a14e"/>
-          <circle cx="50" cy="90" r="2" fill="#c9a14e"/>
-        </svg>
+
+      <!-- The letter inside (revealed when flap opens) -->
+      <div class="env-letter" aria-hidden="true">
+        <div class="letter-content">
+          <p class="letter-eyebrow">Together with our families</p>
+          <img class="letter-monogram" src="assets/photos/logo.png" alt="" onerror="this.style.display='none'" />
+          <div class="letter-flourish">
+            <span class="letter-flourish-line"></span>
+            <span class="letter-flourish-dot"></span>
+            <span class="letter-flourish-line"></span>
+          </div>
+          <h2 class="letter-names">Estella &amp; Gabriel</h2>
+          <p class="letter-date">Eleven · Seven · Twenty Twenty-Seven</p>
+          <p class="letter-venue">Oasia Resort Sentosa</p>
+        </div>
       </div>
-      <span class="door-handle"></span>
     </div>
 
-    <div class="door-panel right" aria-hidden="true">
-      <div class="door-vine">
-        <svg viewBox="0 0 120 500" preserveAspectRatio="none" fill="none">
-          <path d="M110 490 C80 430, 70 400, 85 350 C100 300, 70 270, 55 230 C40 180, 75 150, 70 100 C65 60, 90 30, 75 0" stroke="#5f7a3c" stroke-width="1.5" opacity="0.85"/>
-          <path d="M85 350 C70 345, 60 355, 55 368 C62 365, 75 362, 85 350 Z" fill="#5f7a3c" opacity="0.7"/>
-          <path d="M70 270 C85 265, 95 270, 100 282 C90 282, 80 278, 70 270 Z" fill="#6a8545" opacity="0.75"/>
-          <path d="M55 230 C42 222, 30 226, 24 238 C34 238, 46 237, 55 230 Z" fill="#5f7a3c" opacity="0.7"/>
-          <path d="M70 100 C82 94, 94 96, 100 108 C88 110, 78 106, 70 100 Z" fill="#6a8545" opacity="0.75"/>
-          <g opacity="0.95">
-            <circle cx="90" cy="430" r="8" fill="#c05a6a"/>
-            <circle cx="87" cy="428" r="5" fill="#e6a6b0"/>
-            <circle cx="93" cy="432" r="3" fill="#f5d0d6"/>
-          </g>
-          <g opacity="0.95">
-            <circle cx="58" cy="280" r="7" fill="#c05a6a"/>
-            <circle cx="56" cy="279" r="4" fill="#e6a6b0"/>
-            <circle cx="60" cy="282" r="2.5" fill="#f5d0d6"/>
-          </g>
-          <g opacity="0.95">
-            <circle cx="72" cy="130" r="9" fill="#c05a6a"/>
-            <circle cx="69" cy="128" r="5.5" fill="#e6a6b0"/>
-            <circle cx="75" cy="132" r="3.5" fill="#f5d0d6"/>
-          </g>
-          <g opacity="0.95">
-            <circle cx="78" cy="30" r="6" fill="#c05a6a"/>
-            <circle cx="76" cy="29" r="3.5" fill="#e6a6b0"/>
-          </g>
-        </svg>
-      </div>
-      <div class="door-filigree tr">
-        <svg viewBox="0 0 140 140" fill="none">
-          <path d="M10 10 C40 10, 70 20, 90 50 C100 70, 95 95, 70 100 C50 103, 35 88, 40 68" stroke="#c9a14e" stroke-width="1.3" fill="none" opacity="0.9"/>
-          <path d="M10 10 C10 40, 20 70, 50 90 C70 100, 95 95, 100 70 C103 50, 88 35, 68 40" stroke="#8f6d2b" stroke-width="0.9" fill="none" opacity="0.7"/>
-          <circle cx="10" cy="10" r="3" fill="#c9a14e"/>
-          <circle cx="90" cy="50" r="2" fill="#c9a14e"/>
-          <circle cx="50" cy="90" r="2" fill="#c9a14e"/>
-          <circle cx="70" cy="70" r="1.5" fill="#e5c988"/>
-        </svg>
-      </div>
-      <div class="door-filigree br">
-        <svg viewBox="0 0 140 140" fill="none">
-          <path d="M10 10 C40 10, 70 20, 90 50 C100 70, 95 95, 70 100 C50 103, 35 88, 40 68" stroke="#c9a14e" stroke-width="1.3" fill="none" opacity="0.9"/>
-          <path d="M10 10 C10 40, 20 70, 50 90 C70 100, 95 95, 100 70 C103 50, 88 35, 68 40" stroke="#8f6d2b" stroke-width="0.9" fill="none" opacity="0.7"/>
-          <circle cx="10" cy="10" r="3" fill="#c9a14e"/>
-          <circle cx="90" cy="50" r="2" fill="#c9a14e"/>
-          <circle cx="50" cy="90" r="2" fill="#c9a14e"/>
-        </svg>
-      </div>
-      <span class="door-handle"></span>
-    </div>
-
-    <div class="door-seam" aria-hidden="true"></div>
-
-    <!-- Ornate "E & G" medallion across the seam -->
-    <div class="door-crest" aria-hidden="true">
-      <svg viewBox="0 0 300 300" fill="none">
-        <defs>
-          <radialGradient id="crestFill" cx="50%" cy="50%" r="50%">
-            <stop offset="0%"  stop-color="#fff4d5"/>
-            <stop offset="60%" stop-color="#f3dfa2"/>
-            <stop offset="100%" stop-color="#c9a14e"/>
-          </radialGradient>
-          <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%"   stop-color="#e5c988"/>
-            <stop offset="50%"  stop-color="#c9a14e"/>
-            <stop offset="100%" stop-color="#8f6d2b"/>
-          </linearGradient>
-        </defs>
-        <!-- radiating glow -->
-        <circle class="glow" cx="150" cy="150" r="130" fill="#fff2c2" opacity="0.35"/>
-        <circle class="glow" cx="150" cy="150" r="110" fill="#ffe5a8" opacity="0.35"/>
-        <!-- outer decorative ring -->
-        <circle cx="150" cy="150" r="108" fill="url(#crestFill)" stroke="url(#ring)" stroke-width="2.2"/>
-        <circle cx="150" cy="150" r="100" fill="none" stroke="#8f6d2b" stroke-width="0.8" opacity="0.6"/>
-        <circle cx="150" cy="150" r="92"  fill="none" stroke="#c9a14e" stroke-width="0.6" opacity="0.7" stroke-dasharray="1 4"/>
-        <!-- laurel leaves wrapping the crest -->
-        <g stroke="#5f7a3c" stroke-width="1.1" fill="#6a8545" opacity="0.85">
-          <path d="M50 150 Q60 130 78 128 Q72 142 62 150 Q72 158 78 172 Q60 170 50 150 Z"/>
-          <path d="M250 150 Q240 130 222 128 Q228 142 238 150 Q228 158 222 172 Q240 170 250 150 Z"/>
-          <path d="M70 110 Q84 96 100 100 Q94 112 84 118 Q92 128 94 142 Q76 130 70 110 Z"/>
-          <path d="M230 110 Q216 96 200 100 Q206 112 216 118 Q208 128 206 142 Q224 130 230 110 Z"/>
-          <path d="M70 190 Q84 204 100 200 Q94 188 84 182 Q92 172 94 158 Q76 170 70 190 Z"/>
-          <path d="M230 190 Q216 204 200 200 Q206 188 216 182 Q208 172 206 158 Q224 170 230 190 Z"/>
-        </g>
-        <!-- the letters E & G -->
-        <text x="96"  y="172" font-family="'Cormorant Garamond', serif" font-style="italic" font-weight="400" font-size="82" fill="#5a3d15">E</text>
-        <text x="150" y="168" font-family="'Cormorant Garamond', serif" font-style="italic" font-weight="300" font-size="54" fill="#8f6d2b" text-anchor="middle">&amp;</text>
-        <text x="176" y="172" font-family="'Cormorant Garamond', serif" font-style="italic" font-weight="400" font-size="82" fill="#5a3d15">G</text>
-        <!-- tiny heart below -->
-        <path d="M150 208 C146 202 138 202 138 210 C138 218 150 226 150 226 C150 226 162 218 162 210 C162 202 154 202 150 208 Z" fill="#c05a6a" opacity="0.85"/>
-        <!-- sparkles radiating from the crest -->
-        <g fill="#fff4d5" opacity="0.9">
-          <circle cx="40"  cy="80"  r="2"/>
-          <circle cx="260" cy="80"  r="2"/>
-          <circle cx="30"  cy="220" r="2.5"/>
-          <circle cx="270" cy="220" r="2.5"/>
-          <circle cx="150" cy="28"  r="2"/>
-          <circle cx="150" cy="272" r="2"/>
-        </g>
-      </svg>
-    </div>
-
-    <div class="door-content">
-      <div class="door-flourish" aria-hidden="true">
-        <span class="door-flourish-line"></span>
-        <span class="door-flourish-dot"></span>
-        <span class="door-flourish-line"></span>
-      </div>
-      <div class="door-date">Eleven · Seven · Twenty Twenty-Seven</div>
-      <div class="door-venue">Oasia Resort Sentosa</div>
-    </div>
-
-    <button class="door-prompt" type="button" id="doorPrompt" aria-label="Open the doors">
-      <span>Touch to Enter</span>
-      <span class="door-prompt-chevron" aria-hidden="true"></span>
+    <button class="env-prompt" type="button" id="envPrompt" aria-label="Open the envelope">
+      <span>Tap to Open</span>
+      <span class="env-prompt-chevron" aria-hidden="true"></span>
     </button>
   </div>
 
@@ -2977,10 +2811,6 @@
             <div class="meta-label">Where</div>
             <div class="meta-value">Oasia Resort Sentosa<br /><em style="font-size:0.85em;">Cypress Function Room (Level 1)</em></div>
           </div>
-          <div class="meta-block">
-            <div class="meta-label">Officiant</div>
-            <div class="meta-value">[ROM solemniser name]</div>
-          </div>
         </div>
       </div>
     </section>
@@ -2997,7 +2827,7 @@
         <div class="ceremony-meta reveal reveal-delay-2">
           <div class="meta-block">
             <div class="meta-label">When</div>
-            <div class="meta-value">11 July 2027<br />6:00 pm onwards</div>
+            <div class="meta-value">11 July 2027<br />6:00 pm – 6:30 pm</div>
           </div>
           <div class="meta-block">
             <div class="meta-label">Where</div>
@@ -3018,32 +2848,32 @@
 
         <div class="h-timeline reveal reveal-delay-1">
 
-          <!-- 6pm Arrival -->
+          <!-- 6pm onwards Arrival -->
           <div class="h-item">
             <div class="h-item-icon">
               <svg viewBox="0 0 26 26"><path d="M8 12h10M14 8l4 4-4 4"/><path d="M4 20V6"/></svg>
             </div>
-            <p class="h-item-time">6 pm</p>
+            <p class="h-item-time">6 pm onwards</p>
             <p class="h-item-event">Arrival</p>
-            <p class="h-item-desc">Grab a drink and mingle with the rest of the guests.</p>
+            <p class="h-item-desc">Come in anytime after 6 pm — grab a drink and mingle with the rest of the guests.</p>
           </div>
 
-          <!-- 6.30pm Be Seated -->
+          <!-- 6.40pm Be Seated -->
           <div class="h-item">
             <div class="h-item-icon">
               <svg viewBox="0 0 26 26"><rect x="6" y="13" width="14" height="6" rx="1"/><path d="M8 13V8a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v5"/><path d="M8 19v3M18 19v3"/></svg>
             </div>
-            <p class="h-item-time">6.30 pm</p>
+            <p class="h-item-time">6.40 pm</p>
             <p class="h-item-event">Be Seated</p>
-            <p class="h-item-desc">Find your seat and settle in — the evening's about to begin.</p>
+            <p class="h-item-desc">Find your seat and settle in — the walk-in begins shortly.</p>
           </div>
 
-          <!-- 6.45pm Ceremony -->
+          <!-- 6.50pm Ceremony -->
           <div class="h-item">
             <div class="h-item-icon">
               <svg viewBox="0 0 26 26"><circle cx="9" cy="7" r="2.5"/><circle cx="17" cy="7" r="2.5"/><path d="M5 22v-5a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v5"/><path d="M11 13v3l2 2 2-2v-3"/></svg>
             </div>
-            <p class="h-item-time">6.45 pm</p>
+            <p class="h-item-time">6.50 pm</p>
             <p class="h-item-event">Ceremony Begins</p>
             <p class="h-item-desc">The walk-in, and the moment we've been waiting for — with you beside us. Please be seated in time so we can share it with you.</p>
           </div>
@@ -3226,15 +3056,50 @@
       <div class="helper-card">
         <div class="helper-avatar"></div>
         <div>
-          <p class="helper-name">Elsie Goh</p>
+          <p class="helper-name">Manju</p>
+          <p class="helper-role">Wedding Coordinator</p>
+        </div>
+      </div>
+      <div class="helper-card">
+        <div class="helper-avatar"></div>
+        <div>
+          <p class="helper-name">Grace <strong>Chng</strong></p>
           <p class="helper-role">Guest support &amp; reception flow</p>
         </div>
       </div>
       <div class="helper-card">
         <div class="helper-avatar"></div>
         <div>
-          <p class="helper-name">Manju</p>
-          <p class="helper-role">Venue Coordinator, Oasia Resort Sentosa</p>
+          <p class="helper-name">Elsie <strong>Goh</strong></p>
+          <p class="helper-role">Guest support &amp; reception flow</p>
+        </div>
+      </div>
+      <div class="helper-card">
+        <div class="helper-avatar"></div>
+        <div>
+          <p class="helper-name">Winnie <strong>Chau</strong></p>
+          <p class="helper-role">Reception &amp; setup</p>
+        </div>
+      </div>
+      <div class="helper-card">
+        <div class="helper-avatar"></div>
+        <div>
+          <p class="helper-name">Guo Chin <strong>Khoo</strong></p>
+          <p class="helper-role">Reception &amp; setup</p>
+        </div>
+      </div>
+      <div class="helper-card">
+        <div class="helper-avatar"></div>
+        <div>
+          <p class="helper-name"><strong>Ang</strong> Wanqi</p>
+          <p class="helper-role">Setup crew</p>
+        </div>
+      </div>
+      <div class="helper-card">
+        <div class="helper-avatar"></div>
+        <div>
+          <p class="helper-name">Xaiver <strong>Sim</strong></p>
+          <p class="helper-role">Setup crew</p>
         </div>
       </div>
     </div>
@@ -3248,22 +3113,36 @@
       <div class="section-divider"></div>
     </div>
     <div class="reveal reveal-delay-1">
+
+      <!-- ═══ Group: RSVP & Guest List ═══ -->
       <div class="faq-item">
         <div class="faq-question">When is the RSVP deadline?</div>
         <div class="faq-answer">Please RSVP by <strong>31 January 2027</strong>, about two months before the wedding. This helps us finalise numbers with the venue.</div>
       </div>
       <div class="faq-item">
+        <div class="faq-question">Can I update my RSVP later?</div>
+        <div class="faq-answer">Yes, anytime. Just <strong>open your personal RSVP link again</strong>, your previous answers will be loaded automatically. Make any changes you need and click <strong>Save</strong> to update your response. We'll always have the latest version.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Can I bring a +1?</div>
+        <div class="faq-answer">We've kept the guest list small and intentional, so the names on your invite are the seats we have for you. If you have a special circumstance, please reach out to us directly and we'll do our best.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Are children invited?</div>
+        <div class="faq-answer">We've planned this as an <strong>adults-only celebration</strong>, partly because of the limited capacity at our venue. We hope this gives you the chance to relax fully and enjoy the evening with us. If you absolutely need to bring your child along, please let us know in advance and we'll do our best to accommodate. Thank you so much for understanding.</div>
+      </div>
+
+      <!-- ═══ Group: On the day ═══ -->
+      <div class="faq-item">
+        <div class="faq-question">When should I arrive?</div>
+        <div class="faq-answer">You're welcome to arrive anytime from <strong>6 pm</strong> onwards for drinks and mingling. Please be seated by <strong>6:40 pm</strong> as the walk-in begins at <strong>6:50 pm</strong>.</div>
+      </div>
+      <div class="faq-item">
         <div class="faq-question">What should I wear?</div>
         <div class="faq-answer">The vibe is <strong>formal but funky</strong>, loud <em>or</em> pastel colours, depending on our florals (we'll confirm closer to the day). The venue can get cold, so we'd recommend bringing a jacket along. See the full details on the <a href="#dresscode">dress code</a> section.</div>
       </div>
-      <div class="faq-item">
-        <div class="faq-question">How do I get to the venue?</div>
-        <div class="faq-answer">We've got maps and step-by-step instructions for car, taxi/PHV and MRT in the <a href="#directions">directions</a> section above. There's also a QR code for free Sentosa entry, no need to message us separately.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">When should I arrive?</div>
-        <div class="faq-answer">Guests should be seated by <strong>6:30 pm</strong>. You're welcome to arrive as early as <strong>6 pm</strong> for cocktails and canapés, grab a drink and mingle with the rest of the guests.</div>
-      </div>
+
+      <!-- ═══ Group: Food & Drink ═══ -->
       <div class="faq-item">
         <div class="faq-question">What's on the menu?</div>
         <div class="faq-answer">We'll be having a <strong>6-course Chinese dinner</strong>. If you have any dietary requirements, please note them in your RSVP.</div>
@@ -3272,21 +3151,15 @@
         <div class="faq-question">Will there be drinks?</div>
         <div class="faq-answer">Yes! We're planning to serve <strong>red &amp; white wines, gin, vodka</strong> and a few other options. You're also welcome to <strong>bring your own</strong>, corkage is waived (to be confirmed). If you have a favourite bottle you'd like to share with us, bring it along.</div>
       </div>
+
+      <!-- ═══ Group: Getting there & staying ═══ -->
       <div class="faq-item">
-        <div class="faq-question">Are children invited?</div>
-        <div class="faq-answer">We've planned this as an <strong>adults-only celebration</strong>, so we kindly ask that the little ones stay home for the night. We hope this gives you the chance to relax fully and enjoy the evening with us. Thank you so much for understanding.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">Can I update my RSVP later?</div>
-        <div class="faq-answer">Yes, anytime. Just <strong>open your personal RSVP link again</strong>, your previous answers will be loaded automatically. Make any changes you need and click <strong>Save</strong> to update your response. We'll always have the latest version.</div>
+        <div class="faq-question">How do I get to the venue?</div>
+        <div class="faq-answer">We've got maps and step-by-step instructions for car, taxi/PHV and MRT in the <a href="#directions">directions</a> section above. There's also a QR code for free Sentosa entry, no need to message us separately.</div>
       </div>
       <div class="faq-item">
         <div class="faq-question">Can we park at the venue?</div>
         <div class="faq-answer"><strong>Valet drop-off at Oasia Resort Sentosa</strong> is complimentary, but covers only about <strong>20% of our guaranteed attendance</strong>. Parking coupons are on a first come, first serve basis.<br/><br/><strong>Self-park at Village Hotel Sentosa</strong> is a paid parking and a short walk to Oasia.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">Can I bring a +1?</div>
-        <div class="faq-answer">We've kept the guest list small and intentional, so the names on your invite are the seats we have for you. If you have a special circumstance, please reach out to us directly and we'll do our best.</div>
       </div>
       <div class="faq-item">
         <div class="faq-question">Where can I find nearby accommodation?</div>
@@ -3314,7 +3187,7 @@
         <div class="deadline">Kindly respond by 31 January 2027</div>
 
         <div class="rsvp-notes">
-          <p><strong>Remember to click "Save" once you're done</strong> — that's what locks in your response. You can return to this same link anytime to update your answers; we'll always keep the latest version.</p>
+          <p>Remember to click <strong>"Save"</strong> once you're done. You can return to this same link anytime to update your answers; we'll always keep the latest version.</p>
           <p><strong>An adults-only celebration.</strong> We've planned the evening with our grown-up loved ones in mind, so we kindly ask that little ones stay home for the night. We hope this gives you a chance to relax fully and enjoy the celebration with us.</p>
         </div>
       </div>
@@ -3369,9 +3242,9 @@
   </footer>
 
   <script>
-    // ── Fairytale door reveal
+    // ── Envelope landing reveal
     (function() {
-      const overlay = document.getElementById('doorOverlay');
+      const overlay = document.getElementById('envOverlay');
       if (!overlay) return;
 
       // If reduced motion OR deep-link (#hash), skip the whole thing
@@ -3384,32 +3257,32 @@
       }
 
       let opened = false;
-      function openDoors() {
+      function openEnvelope() {
         if (opened) return;
         opened = true;
         overlay.classList.add('opening');
         document.body.classList.add('doors-revealing');
-        // Allow scroll as doors begin to swing so the reveal feels interactive
+        // Allow scroll partway through the unfold so the reveal feels interactive
         setTimeout(() => {
           document.documentElement.classList.remove('doors-locked');
-        }, 900);
-        // Fade the overlay out & remove it from the tree after the swing
+        }, 1800);
+        // Fade the overlay out & remove it from the tree after the unfold
         overlay.classList.add('closing');
         overlay.addEventListener('animationend', (ev) => {
-          if (ev.animationName === 'doorFade') {
+          if (ev.animationName === 'envFade') {
             overlay.remove();
             document.body.classList.remove('doors-revealing');
           }
         });
       }
 
-      // Any interaction on the overlay opens the doors
-      const prompt = document.getElementById('doorPrompt');
-      if (prompt) prompt.addEventListener('click', openDoors);
-      overlay.addEventListener('click', openDoors);
-      overlay.addEventListener('touchstart', openDoors, { passive: true });
+      // Any interaction on the overlay opens the envelope
+      const prompt = document.getElementById('envPrompt');
+      if (prompt) prompt.addEventListener('click', openEnvelope);
+      overlay.addEventListener('click', openEnvelope);
+      overlay.addEventListener('touchstart', openEnvelope, { passive: true });
       window.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') openDoors();
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') openEnvelope();
       });
       // Nudge the prompt after 6s of inactivity
       setTimeout(() => {
@@ -3572,7 +3445,7 @@
             <div class="event-block">
               <div class="event-block-head">
                 <span class="event-block-title">Tea Ceremony</span>
-                <span class="event-block-time">6:00 pm onwards</span>
+                <span class="event-block-time">6:00 pm – 6:30 pm</span>
               </div>
               <div class="attend-toggle event-attend" role="radiogroup">
                 <label><input type="radio" name="tea_${i}" value="yes" /><span>Joining</span></label>
