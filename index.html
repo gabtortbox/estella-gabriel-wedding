@@ -46,7 +46,7 @@
     }
 
     body {
-      background: var(--white);
+      background: var(--sand-pale);
       color: var(--ink);
       font-family: var(--sans);
       font-weight: 300;
@@ -114,7 +114,7 @@
       align-items: center;
       text-align: center;
       position: relative;
-      background: var(--white);
+      background: var(--sand-pale);
       padding: clamp(5rem, 10vh, 7rem) 1.5rem clamp(2.5rem, 6vh, 4rem);
       gap: clamp(1.25rem, 3vh, 2rem);
     }
@@ -495,8 +495,8 @@
 
     .story-photos-track .photo-card {
       flex: 0 0 auto;
-      width: clamp(180px, 22vw, 260px);
-      aspect-ratio: 4/5;
+      height: clamp(220px, 32vh, 320px);
+      width: auto;
       background: var(--white);
       padding: 0.55rem 0.55rem 1.4rem;
       box-shadow:
@@ -506,6 +506,8 @@
                   box-shadow 0.55s ease;
       position: relative;
       overflow: visible;
+      display: flex;
+      flex-direction: column;
     }
     /* Polaroid scatter: tilts cycle every 3 cards for natural rhythm */
     .story-photos-track .photo-card:nth-child(3n+1) { transform: rotate(-1.5deg); }
@@ -519,7 +521,9 @@
       z-index: 2;
     }
     .story-photos-track .photo-card img {
-      width: 100%; height: 100%;
+      height: 100%;
+      width: auto;
+      max-width: none;
       object-fit: cover;
       display: block;
       filter: sepia(0.05) brightness(0.99);
@@ -671,7 +675,7 @@
     .h-timeline::before {
       content: '';
       position: absolute;
-      top: 52px;
+      top: 32px;             /* aligned with the vertical centre of the 64px icon circles */
       left: 4%;
       right: 4%;
       height: 0.5px;
@@ -687,7 +691,7 @@
       padding: 0 0.5rem;
     }
     .h-item-icon {
-      width: 56px; height: 56px;
+      width: 64px; height: 64px;
       background: var(--white);
       border: 0.5px solid var(--sand-light);
       border-radius: 50%;
@@ -697,20 +701,24 @@
       margin-bottom: 1.25rem;
       position: relative;
       z-index: 1;
-      transition: border-color 0.3s, transform 0.3s;
+      box-shadow: 0 4px 12px rgba(42,37,32,0.06);
+      transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
     }
     .h-item:hover .h-item-icon {
       border-color: var(--sand-dark);
-      transform: translateY(-3px);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 24px rgba(42,37,32,0.12);
     }
     .h-item-icon svg {
-      width: 26px; height: 26px;
+      width: 30px; height: 30px;
       stroke: var(--sand-dark);
       fill: none;
-      stroke-width: 1.2;
+      stroke-width: 1.3;
       stroke-linecap: round;
       stroke-linejoin: round;
+      transition: stroke 0.35s ease;
     }
+    .h-item:hover .h-item-icon svg { stroke: var(--ink); }
     .h-item-time {
       font-family: var(--serif);
       font-size: 0.95rem;
@@ -806,43 +814,24 @@
       line-height: 1.65;
     }
 
-    /* Horizontal timeline strip */
+    /* Grid layout — all 8 years visible at once, no horizontal scroll */
     .years-timeline {
       position: relative;
-      display: flex;
-      gap: 2rem;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      padding: 3.5rem clamp(1.5rem, 10vw, 8rem) 2rem;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-      scrollbar-color: var(--sand) transparent;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2.5rem 1.5rem;
+      padding: 2.5rem clamp(1.5rem, 5vw, 4rem) 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
     }
-    .years-timeline::-webkit-scrollbar { height: 4px; }
-    .years-timeline::-webkit-scrollbar-track { background: transparent; }
-    .years-timeline::-webkit-scrollbar-thumb {
-      background: var(--sand);
-      border-radius: 2px;
-    }
-
-    /* Central horizontal line through the dots */
-    .years-timeline::before {
-      content: '';
-      position: absolute;
-      top: calc(3.5rem + 110px);  /* align with center of dots */
-      left: clamp(1.5rem, 10vw, 8rem);
-      right: clamp(1.5rem, 10vw, 8rem);
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--sand) 4%, var(--sand) 96%, transparent);
-      z-index: 0;
-      pointer-events: none;
+    @media (max-width: 720px) {
+      .years-timeline {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem 1rem;
+      }
     }
 
     .year-entry {
-      flex: 0 0 auto;
-      width: clamp(180px, 22vw, 230px);
-      scroll-snap-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -973,57 +962,12 @@
       transform: scale(1);
     }
 
-    /* Edge fade hint — suggests horizontal scrollability */
-    .years-timeline-wrap {
-      position: relative;
-    }
-    .years-timeline-wrap::before,
-    .years-timeline-wrap::after {
-      content: '';
-      position: absolute;
-      top: 0; bottom: 0;
-      width: clamp(2rem, 6vw, 5rem);
-      z-index: 3;
-      pointer-events: none;
-    }
-    .years-timeline-wrap::before {
-      left: 0;
-      background: linear-gradient(to right, var(--sand-pale), transparent);
-    }
-    .years-timeline-wrap::after {
-      right: 0;
-      background: linear-gradient(to left, var(--sand-pale), transparent);
-    }
+    /* Years container (was a horizontal scroll wrapper, now just a grid) */
+    .years-timeline-wrap { position: relative; }
 
-    /* Scroll nav arrows (desktop) */
-    .years-nav {
-      position: absolute;
-      top: calc(3.5rem + 110px);
-      transform: translateY(-50%);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: var(--white);
-      border: 1px solid var(--sand);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 4;
-      color: var(--ink-soft);
-      transition: all 0.3s ease;
-      font-family: var(--sans);
-      font-size: 1rem;
-      line-height: 1;
-      box-shadow: 0 4px 14px rgba(42,37,32,0.08);
-    }
-    .years-nav:hover {
-      background: var(--sand-light);
-      color: var(--ink);
-      transform: translateY(-50%) scale(1.05);
-    }
-    .years-nav.prev { left: clamp(0.5rem, 3vw, 2rem); }
-    .years-nav.next { right: clamp(0.5rem, 3vw, 2rem); }
+    /* Year dot is now just a small accent above each photo */
+    .year-dot { display: none; }
+    .years-nav  { display: none; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 820px) {
@@ -2847,9 +2791,6 @@
       </div>
 
       <div class="years-timeline-wrap">
-        <button class="years-nav prev" type="button" aria-label="Scroll back">&lsaquo;</button>
-        <button class="years-nav next" type="button" aria-label="Scroll forward">&rsaquo;</button>
-
         <div class="years-timeline" id="yearsTimeline">
 
           <div class="year-entry" data-year="2019">
@@ -3047,70 +2988,117 @@
 
         <div class="h-timeline reveal reveal-delay-1">
 
-          <!-- 5.30pm Solemnisation (family only) -->
+          <!-- 5.30pm Solemnisation (family only) — interlocking rings -->
           <div class="h-item" data-audience="family">
             <div class="h-item-icon">
-              <svg viewBox="0 0 26 26"><path d="M13 4v18M9 8l4-4 4 4"/><path d="M6 22h14"/><circle cx="13" cy="14" r="2"/></svg>
+              <svg viewBox="0 0 32 32">
+                <circle cx="12" cy="18" r="6.5"/>
+                <circle cx="20" cy="18" r="6.5"/>
+                <path d="M9 9 L12 11.5"/>
+                <path d="M23 9 L20 11.5"/>
+                <circle cx="12" cy="18" r="0.6" fill="currentColor" stroke="none"/>
+              </svg>
             </div>
             <p class="h-item-time">5.30 pm</p>
             <p class="h-item-event">Solemnisation</p>
             <p class="h-item-desc">The legal moment, with our closest by our side. Cypress Function Room.</p>
           </div>
 
-          <!-- 6pm Tea Ceremony (family only) -->
+          <!-- 6pm Tea Ceremony (family only) — round teacup with steam -->
           <div class="h-item" data-audience="family">
             <div class="h-item-icon">
-              <svg viewBox="0 0 26 26"><path d="M7 12h10v5a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3v-5z"/><path d="M17 13h2a2 2 0 0 1 0 4h-2"/><path d="M10 8c0-1 1-1 1-2s-1-1-1-2M14 8c0-1 1-1 1-2s-1-1-1-2"/></svg>
+              <svg viewBox="0 0 32 32">
+                <path d="M8 13.5h13v6a4 4 0 0 1-4 4h-5a4 4 0 0 1-4-4v-6z"/>
+                <path d="M21 15h2.5a2.5 2.5 0 0 1 0 5H21"/>
+                <path d="M22 24.5h-15" stroke-width="1.1"/>
+                <path d="M11 9.5c0-1.2 1-1.2 1-2.4s-1-1.2-1-2.4"/>
+                <path d="M15.5 9.5c0-1.2 1-1.2 1-2.4s-1-1.2-1-2.4"/>
+              </svg>
             </div>
             <p class="h-item-time">6 pm</p>
             <p class="h-item-event">Tea Ceremony</p>
             <p class="h-item-desc">Honouring our families with the traditional tea, in the same room.</p>
           </div>
 
-          <!-- 6pm onwards Arrival -->
+          <!-- 6pm onwards Arrival — clinking champagne flutes -->
           <div class="h-item">
             <div class="h-item-icon">
-              <svg viewBox="0 0 26 26"><path d="M8 12h10M14 8l4 4-4 4"/><path d="M4 20V6"/></svg>
+              <svg viewBox="0 0 32 32">
+                <path d="M11 6 L9 14 a3 3 0 0 0 6 0 L13 6 Z"/>
+                <path d="M21 6 L19 14 a3 3 0 0 0 6 0 L23 6 Z"/>
+                <path d="M12 17 v8"/>
+                <path d="M22 17 v8"/>
+                <path d="M9 25 h6"/>
+                <path d="M19 25 h6"/>
+                <circle cx="11" cy="10" r="0.8" fill="currentColor" stroke="none"/>
+                <circle cx="22" cy="11" r="0.8" fill="currentColor" stroke="none"/>
+                <path d="M16 4 l-1 1.5 l1 1.5 l1 -1.5 z" fill="currentColor" stroke="none"/>
+              </svg>
             </div>
             <p class="h-item-time">6 pm onwards</p>
             <p class="h-item-event">Arrival</p>
             <p class="h-item-desc">Settle in over a drink, find familiar faces, and catch up before the night begins. Cocktails and canapés will be flowing.</p>
           </div>
 
-          <!-- 6.40pm Be Seated -->
+          <!-- 6.40pm Be Seated — chair with a heart -->
           <div class="h-item">
             <div class="h-item-icon">
-              <svg viewBox="0 0 26 26"><rect x="6" y="13" width="14" height="6" rx="1"/><path d="M8 13V8a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v5"/><path d="M8 19v3M18 19v3"/></svg>
+              <svg viewBox="0 0 32 32">
+                <rect x="8" y="16" width="16" height="6" rx="1.5"/>
+                <path d="M10 16 V10 a2.5 2.5 0 0 1 2.5 -2.5 h7 a2.5 2.5 0 0 1 2.5 2.5 V16"/>
+                <path d="M10 22 v4 M22 22 v4"/>
+                <path d="M16 11.5 c-1 -1.6 -3.5 -0.6 -3.5 1.2 c0 1.5 3.5 3 3.5 3 s3.5 -1.5 3.5 -3 c0 -1.8 -2.5 -2.8 -3.5 -1.2 z" fill="currentColor" stroke="none" opacity="0.65"/>
+              </svg>
             </div>
             <p class="h-item-time">6.40 pm</p>
             <p class="h-item-event">Be Seated</p>
             <p class="h-item-desc">Please be in your seat by 6.40 pm sharp — <strong>do not be late</strong>! The walk-in begins right after.</p>
           </div>
 
-          <!-- 6.50pm Ceremony -->
+          <!-- 6.50pm Ceremony — heart inside a circle, rays -->
           <div class="h-item">
             <div class="h-item-icon">
-              <svg viewBox="0 0 26 26"><circle cx="9" cy="7" r="2.5"/><circle cx="17" cy="7" r="2.5"/><path d="M5 22v-5a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v5"/><path d="M11 13v3l2 2 2-2v-3"/></svg>
+              <svg viewBox="0 0 32 32">
+                <path d="M16 13.5 c-2.5 -3.5 -8 -1.5 -8 3 c0 4 8 7.5 8 7.5 s8 -3.5 8 -7.5 c0 -4.5 -5.5 -6.5 -8 -3 z" fill="currentColor" stroke="none"/>
+                <path d="M16 4 v3" stroke-width="1"/>
+                <path d="M9 6 l1.5 2.5" stroke-width="1"/>
+                <path d="M23 6 l-1.5 2.5" stroke-width="1"/>
+                <path d="M5 13 l2 0.5" stroke-width="1"/>
+                <path d="M27 13 l-2 0.5" stroke-width="1"/>
+              </svg>
             </div>
             <p class="h-item-time">6.50 pm</p>
             <p class="h-item-event">Ceremony Begins</p>
             <p class="h-item-desc">The walk-in, with you beside us. Please be settled in time.</p>
           </div>
 
-          <!-- 8.30pm Fun begins -->
+          <!-- 8.30pm Fun begins — music note with sparkle -->
           <div class="h-item">
             <div class="h-item-icon">
-              <svg viewBox="0 0 26 26"><circle cx="15" cy="5" r="2"/><path d="M13 8l-2 5h6l-1 4"/><path d="M11 13l-3 4"/><path d="M15 17l2 5"/><path d="M10 7l-3 2"/></svg>
+              <svg viewBox="0 0 32 32">
+                <path d="M14 6 v15" stroke-width="1.4"/>
+                <path d="M14 6 q5 0.5 8 -1.5 v3 q-3 2 -8 1.5"/>
+                <ellipse cx="11.5" cy="22" rx="3.5" ry="2.5"/>
+                <path d="M22 7.5 v8.5" stroke-width="1.2"/>
+                <ellipse cx="19.5" cy="17.5" rx="2.7" ry="2"/>
+                <path d="M5 9 l1.5 1 M5 9 l-1 -1.5 M5 9 l-1.5 1.5 M5 9 l1 -1.5" stroke-width="0.9"/>
+                <path d="M27 22 l1.5 1 M27 22 l-1 -1.5 M27 22 l-1.5 1.5 M27 22 l1 -1.5" stroke-width="0.9"/>
+              </svg>
             </div>
             <p class="h-item-time">8.30 pm</p>
             <p class="h-item-event">The Fun Begins</p>
             <p class="h-item-desc">Music, drinks, desserts, conversations.</p>
           </div>
 
-          <!-- 10.30pm End -->
+          <!-- 10.30pm End — moon with stars -->
           <div class="h-item">
             <div class="h-item-icon">
-              <svg viewBox="0 0 26 26"><path d="M4 13l9-8 9 8"/><path d="M6 11v10h12V11"/><path d="M11 21v-5h4v5"/></svg>
+              <svg viewBox="0 0 32 32">
+                <path d="M22 9 a8 8 0 1 0 1 14 a7 7 0 0 1 -1 -14 z"/>
+                <path d="M9 8 l0.5 1.5 l1.5 0.5 l-1.5 0.5 l-0.5 1.5 l-0.5 -1.5 l-1.5 -0.5 l1.5 -0.5 z" fill="currentColor" stroke="none"/>
+                <path d="M7 18 l0.4 1.2 l1.2 0.4 l-1.2 0.4 l-0.4 1.2 l-0.4 -1.2 l-1.2 -0.4 l1.2 -0.4 z" fill="currentColor" stroke="none"/>
+                <path d="M14 4.5 l0.3 0.8 l0.8 0.3 l-0.8 0.3 l-0.3 0.8 l-0.3 -0.8 l-0.8 -0.3 l0.8 -0.3 z" fill="currentColor" stroke="none"/>
+              </svg>
             </div>
             <p class="h-item-time">10.30 pm</p>
             <p class="h-item-event">End of Wedding</p>
@@ -3326,10 +3314,10 @@
           <div class="car-subpanel" id="car-selfpark">
             <div class="dir-map-wrap">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d800!2d103.819686!3d1.252649!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da1b289c21d2a7%3A0x5daa43f9a7d6e1b2!2sVillage+Hotel+Sentosa!5e0!3m2!1sen!2ssg!4v1713700000001!5m2!1sen!2ssg"
+                src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d800!2d103.8198667!3d1.2536405!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x31da1957842e1633%3A0x63e0e948351056e4!2sSentosa+Gateway!3m2!1d1.2587436!2d103.8239898!4m5!1s0x31da1b782a25a79d%3A0xcc9fa70712ed9b21!2sVillage+Hotel+Sentosa!3m2!1d1.2523958!2d103.8201982!5e0!3m2!1sen!2ssg!4v1713700000001!5m2!1sen!2ssg"
                 width="100%" height="440" style="border:0;display:block;" allowfullscreen
                 loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                title="Village Hotel Sentosa — Self-Park location">
+                title="Sentosa Gateway to Village Hotel Sentosa — Self-Park route">
               </iframe>
             </div>
             <div class="dir-info">
