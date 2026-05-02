@@ -78,14 +78,11 @@
     .nav-logo img {
       height: 48px;
       width: auto;
-      filter: brightness(0) invert(1);
-      opacity: 0.92;
+      mix-blend-mode: multiply;  /* makes the JPEG's white bg disappear into the page bg */
+      opacity: 0.95;
       transition: opacity 0.3s;
     }
-    nav.scrolled .nav-logo img {
-      filter: none;
-      opacity: 1;
-    }
+    nav.scrolled .nav-logo img { opacity: 1; }
     .nav-logo img:hover { opacity: 1; }
     .nav-links {
       display: flex;
@@ -98,48 +95,54 @@
       font-weight: 300;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.85);
+      color: var(--ink-soft);
       text-decoration: none;
       transition: color 0.2s;
     }
-    nav.scrolled .nav-links a { color: var(--ink-soft); }
-    .nav-links a:hover { color: white; }
+    .nav-links a:hover { color: var(--ink); }
     nav.scrolled .nav-links a:hover { color: var(--sand-dark); }
     .nav-links a.active {
-      color: white;
-      border-bottom: 0.5px solid rgba(255,255,255,0.5);
-      padding-bottom: 2px;
-    }
-    nav.scrolled .nav-links a.active {
       color: var(--ink);
-      border-bottom-color: var(--sand-dark);
+      border-bottom: 0.5px solid var(--sand-dark);
+      padding-bottom: 2px;
     }
 
     /* ── HERO ── */
     #hero {
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
       text-align: center;
       position: relative;
-      overflow: hidden;
-      background: #1a1612;
-      padding: 0;
+      background: var(--white);
+      padding: clamp(5rem, 10vh, 7rem) 1.5rem clamp(2.5rem, 6vh, 4rem);
+      gap: clamp(1.25rem, 3vh, 2rem);
+    }
+
+    /* Big logo at the top — blends seamlessly into page bg */
+    .hero-logo-big {
+      width: clamp(180px, 26vw, 320px);
+      height: auto;
+      mix-blend-mode: multiply;
+      opacity: 0;
+      animation: fadeUp 1.1s cubic-bezier(0.22,1,0.36,1) 0.3s forwards;
+    }
+
+    /* Hero photo — shown at its natural size, no animation */
+    .hero-photo-card {
+      position: relative;
+      max-width: clamp(280px, 60vw, 600px);
+      width: auto;
+      box-shadow:
+        0 6px 18px rgba(42,37,32,0.12),
+        0 22px 48px rgba(42,37,32,0.16);
     }
 
     .hero-photo {
-      position: absolute;
-      inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: center 30%;
-      opacity: 0;
-      transform-origin: center center;
-      animation: heroReveal 1.8s cubic-bezier(0.22,1,0.36,1) 0.1s forwards,
-                 kenBurns 22s ease-in-out 2s infinite alternate;
-      will-change: transform, opacity;
+      display: block;
+      max-width: 100%;
+      width: auto;
+      height: auto;
     }
 
     @keyframes heroReveal {
@@ -171,12 +174,12 @@
       font-weight: 300;
       letter-spacing: 0.25em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
+      color: var(--ink-soft);
     }
     .scroll-line {
       width: 1px;
       height: 40px;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent);
+      background: linear-gradient(to bottom, var(--ink-soft), transparent);
       animation: scrollPulse 1.8s ease-in-out infinite;
     }
     @keyframes scrollPulse {
@@ -186,48 +189,14 @@
       100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
     }
 
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(20,16,12,0.45) 0%,
-        rgba(20,16,12,0.0) 25%,
-        rgba(20,16,12,0.0) 55%,
-        rgba(20,16,12,0.55) 78%,
-        rgba(20,16,12,0.75) 100%
-      );
-    }
-
-    /* Top block: logo + names */
-    .hero-top {
-      position: relative;
-      z-index: 2;
+    /* Content block below the photo card — meta + countdown + buttons */
+    .hero-content {
       width: 100%;
+      max-width: 720px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 8rem 2rem 0;
-    }
-
-    /* Bottom block: date, countdown, buttons, scroll */
-    .hero-bottom {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 0 2rem 1rem;
-      gap: 0;
-    }
-
-    .hero-logo {
-      width: clamp(130px, 20vw, 230px);
-      margin-bottom: 0;
-      opacity: 0;
-      filter: brightness(0) invert(1);
-      animation: fadeUp 1.2s cubic-bezier(0.22,1,0.36,1) 0.6s forwards;
+      gap: clamp(1rem, 2.5vh, 1.5rem);
     }
 
     .hero-names {
@@ -247,14 +216,13 @@
     }
 
     .hero-meta {
-      margin-top: 0;
-      margin-bottom: 1.25rem;
+      margin: 0;
       font-family: var(--sans);
-      font-size: 0.7rem;
+      font-size: 0.92rem;
       font-weight: 300;
-      letter-spacing: 0.28em;
+      letter-spacing: 0.32em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.75);
+      color: var(--ink-soft);
       opacity: 0;
       animation: fadeUp 1s cubic-bezier(0.22,1,0.36,1) 1.1s forwards;
     }
@@ -262,8 +230,8 @@
     .hero-divider {
       width: 40px;
       height: 0.5px;
-      background: rgba(255,255,255,0.35);
-      margin: 0 auto 1.5rem;
+      background: var(--sand-dark);
+      margin: 0 auto;
       opacity: 0;
       animation: fadeUp 1s ease 1.2s forwards;
     }
@@ -272,7 +240,7 @@
     .countdown {
       display: flex;
       gap: 2.5rem;
-      margin-bottom: 1.5rem;
+      margin: 0;
       opacity: 0;
       animation: fadeUp 1s cubic-bezier(0.22,1,0.36,1) 1.3s forwards;
     }
@@ -286,7 +254,7 @@
       font-family: var(--serif);
       font-size: clamp(2rem, 4vw, 3rem);
       font-weight: 300;
-      color: #fff;
+      color: var(--ink);
       line-height: 1;
       min-width: 2.5ch;
       text-align: center;
@@ -297,11 +265,11 @@
       font-weight: 300;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
+      color: var(--ink-soft);
     }
 
     .hero-cta {
-      margin-top: 2.5rem;
+      margin-top: 0.5rem;
       display: flex;
       gap: 1.2rem;
       opacity: 0;
@@ -315,25 +283,25 @@
       text-transform: uppercase;
       text-decoration: none;
       padding: 0.85rem 2rem;
-      border: 0.5px solid rgba(255,255,255,0.6);
-      color: rgba(255,255,255,0.9);
+      border: 0.5px solid var(--ink-soft);
+      color: var(--ink);
       transition: all 0.3s;
       background: transparent;
     }
     .btn:hover {
-      background: rgba(255,255,255,0.15);
-      border-color: white;
-      color: white;
+      background: var(--sand-pale);
+      border-color: var(--ink);
+      color: var(--ink);
     }
     .btn.filled {
-      background: rgba(255,255,255,0.15);
-      color: white;
-      border-color: rgba(255,255,255,0.8);
-      backdrop-filter: blur(4px);
+      background: var(--ink);
+      color: var(--white);
+      border-color: var(--ink);
     }
     .btn.filled:hover {
-      background: white;
-      color: var(--ink);
+      background: var(--sand-dark);
+      border-color: var(--sand-dark);
+      color: var(--white);
     }
     /* non-hero buttons (used outside of hero) */
     .btn-dark {
@@ -441,15 +409,20 @@
     }
 
     .story-spread {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      display: flex;
+      flex-direction: column;
       align-items: center;
+      gap: 2.5rem;
       margin-bottom: 6rem;
     }
-    .story-spread.reverse { direction: rtl; }
-    .story-spread.reverse > * { direction: ltr; }
+    /* .reverse no longer alters layout, kept for backward compatibility */
+    .story-spread.reverse { direction: ltr; }
 
+    .story-spread-text {
+      max-width: 640px;
+      text-align: center;
+      padding: 0 1rem;
+    }
     .story-spread-text .spread-num {
       font-family: var(--serif);
       font-size: 0.75rem;
@@ -459,7 +432,7 @@
     }
     .story-spread-text h3 {
       font-family: var(--serif);
-      font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+      font-size: clamp(1.7rem, 2.8vw, 2.4rem);
       font-weight: 400;
       font-style: italic;
       color: var(--ink);
@@ -467,8 +440,8 @@
       line-height: 1.2;
     }
     .story-spread-text p {
-      font-size: 0.92rem;
-      line-height: 1.9;
+      font-size: 1rem;
+      line-height: 1.85;
       color: var(--ink-soft);
       margin-bottom: 1rem;
     }
@@ -477,37 +450,89 @@
       gap: 0.75rem;
       flex-wrap: wrap;
       margin-top: 1.25rem;
+      justify-content: center;
     }
     .story-tag {
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--sand-dark);
       border: 0.5px solid var(--sand-light);
-      padding: 0.35rem 0.85rem;
+      padding: 0.4rem 0.95rem;
+      background: var(--white);
     }
 
+    /* ── Photo strip — auto-scrolling infinite marquee of polaroids ── */
     .story-spread-photos {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-    .story-spread-photos .photo-card {
-      background: var(--sand-light);
-      aspect-ratio: 3/4;
+      width: 100vw;
+      max-width: 100%;
+      position: relative;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      padding: 1.5rem 0 2rem;
       overflow: hidden;
+      /* edge fades on left & right */
+      mask: linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%);
+      -webkit-mask: linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%);
     }
-    .story-spread-photos .photo-card:first-child {
-      grid-column: 1 / -1;
-      aspect-ratio: 16/9;
+
+    /* The animated track holds the photos twice (original + clone) so
+       translating -50% loops seamlessly back to the start position. */
+    .story-photos-track {
+      display: flex;
+      gap: 1.5rem;
+      width: max-content;
+      animation: marqueeScroll 60s linear infinite;
+      will-change: transform;
     }
-    .story-spread-photos img {
+    /* Pause on hover so a guest can linger on a photo */
+    .story-spread-photos:hover .story-photos-track { animation-play-state: paused; }
+
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(calc(-50% - 0.75rem)); } /* half the doubled track minus half the gap */
+    }
+
+    .story-photos-track .photo-card {
+      flex: 0 0 auto;
+      width: clamp(180px, 22vw, 260px);
+      aspect-ratio: 4/5;
+      background: var(--white);
+      padding: 0.55rem 0.55rem 1.4rem;
+      box-shadow:
+        0 4px 14px rgba(42,37,32,0.12),
+        0 14px 32px rgba(42,37,32,0.10);
+      transition: transform 0.55s cubic-bezier(0.22,1,0.36,1),
+                  box-shadow 0.55s ease;
+      position: relative;
+      overflow: visible;
+    }
+    /* Polaroid scatter: tilts cycle every 3 cards for natural rhythm */
+    .story-photos-track .photo-card:nth-child(3n+1) { transform: rotate(-1.5deg); }
+    .story-photos-track .photo-card:nth-child(3n+2) { transform: rotate(0.8deg); }
+    .story-photos-track .photo-card:nth-child(3n+3) { transform: rotate(-0.4deg) translateY(-6px); }
+    .story-photos-track .photo-card:hover {
+      transform: rotate(0deg) translateY(-10px) scale(1.04);
+      box-shadow:
+        0 6px 18px rgba(42,37,32,0.16),
+        0 22px 48px rgba(42,37,32,0.22);
+      z-index: 2;
+    }
+    .story-photos-track .photo-card img {
       width: 100%; height: 100%;
       object-fit: cover;
-      filter: sepia(0.1);
-      transition: transform 0.6s ease;
+      display: block;
+      filter: sepia(0.05) brightness(0.99);
+      transition: filter 0.6s ease;
     }
-    .story-spread-photos .photo-card:hover img { transform: scale(1.04); }
+    .story-photos-track .photo-card:hover img {
+      filter: sepia(0) brightness(1);
+    }
+    /* Reduced-motion users: stop the marquee */
+    @media (prefers-reduced-motion: reduce) {
+      .story-photos-track { animation: none; }
+      .story-spread-photos { overflow-x: auto; }
+    }
 
     /* ── VISION ── */
     #vision {
@@ -1303,32 +1328,92 @@
     .info-block ul { padding-left: 1rem; }
     .info-block strong { color: var(--ink); font-weight: 400; }
 
+    /* Helpers section — centered, two rows: 3 + 4 */
+    #helpers {
+      padding: 6rem 2rem 7rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    #helpers .guests-header,
+    #helpers > p { margin-left: auto; margin-right: auto; }
+    .helpers-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      column-gap: 1rem;
+      row-gap: 2.5rem;
+      margin: 1rem auto 0;
+      max-width: 920px;
+      justify-items: center;
+    }
+    /* Row 1: 3 cards × 4 cols each = 12 */
+    .helper-card:nth-child(1),
+    .helper-card:nth-child(2),
+    .helper-card:nth-child(3) { grid-column: span 4; }
+    /* Row 2: 4 cards × 3 cols each = 12 */
+    .helper-card:nth-child(n+4) { grid-column: span 3; }
+
     .helper-card {
       display: flex;
-      align-items: flex-start;
-      gap: 1.25rem;
-      padding: 1.25rem 0;
-      border-bottom: 0.5px solid var(--sand-light);
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.95rem;
+      padding: 0.5rem;
+      width: 100%;
+      max-width: 200px;
+      transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
     }
+    .helper-card:hover { transform: translateY(-4px); }
     .helper-avatar {
-      width: 48px; height: 48px;
+      width: clamp(140px, 16vw, 180px);
+      height: clamp(140px, 16vw, 180px);
       border-radius: 50%;
       background: var(--sand-light);
       flex-shrink: 0;
       overflow: hidden;
+      box-shadow:
+        0 4px 14px rgba(42,37,32,0.10),
+        0 0 0 1px var(--sand-light);
+      transition: box-shadow 0.4s ease;
     }
-    .helper-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .helper-card:hover .helper-avatar {
+      box-shadow:
+        0 12px 30px rgba(42,37,32,0.22),
+        0 0 0 2px var(--sand);
+    }
+    .helper-avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      transform: scale(1.35);
+      transform-origin: center 30%;
+    }
+    /* Per-helper face-position tweaks (Elsie's selfie sits to the right) */
+    .helper-card[data-helper="elsie"] .helper-avatar img { object-position: 65% 35%; transform: scale(1.4); }
+    .helper-card[data-helper="guochin"] .helper-avatar img { object-position: center 28%; transform: scale(1.35); }
+    .helper-card[data-helper="winnie"] .helper-avatar img { object-position: center 35%; transform: scale(1.3); }
     .helper-name {
       font-family: var(--serif);
+      font-style: italic;
       font-size: 1.1rem;
       font-weight: 400;
       color: var(--ink);
+      line-height: 1.25;
     }
     .helper-role {
-      font-size: 0.78rem;
+      font-family: var(--sans);
+      font-size: 0.7rem;
       color: var(--sand-dark);
-      letter-spacing: 0.08em;
-      margin-top: 0.2rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 0.25rem;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 720px) {
+      .helpers-grid { grid-template-columns: repeat(2, 1fr); }
+      .helper-card:nth-child(n) { grid-column: auto; }
     }
 
     .faq-item {
@@ -1435,8 +1520,9 @@
       nav { padding: 0.85rem 1rem; gap: 0.75rem; }
       .nav-links { gap: 1.1rem; }
       .nav-links a { font-size: 0.6rem; letter-spacing: 0.12em; }
-      .story-spread { grid-template-columns: 1fr; gap: 2rem; }
-      .story-spread.reverse { direction: ltr; }
+      .story-spread { gap: 1.75rem; margin-bottom: 4rem; }
+      .story-spread-photos { gap: 1rem; padding: 1rem 0 1.5rem; }
+      .story-spread-photos .photo-card { width: clamp(160px, 65vw, 220px); }
       .info-grid { grid-template-columns: 1fr; }
       .photo-mosaic {
         grid-template-columns: 1fr 1fr;
@@ -1464,7 +1550,7 @@
 
     /* Anything keyed to family-only is hidden by default; JS reveals it */
     [data-audience="family"] { display: none; }
-    [data-audience="family"].audience-show { display: block; }
+    [data-audience="family"].audience-show { display: revert; }
 
     /* Personalised greeting banner */
     .invite-greeting {
@@ -1932,75 +2018,148 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      perspective: 1800px;
+      perspective: 2000px;
       perspective-origin: 50% 50%;
       pointer-events: auto;
       overflow: hidden;
       background:
-        radial-gradient(ellipse at 50% 35%, rgba(255,243,217,1) 0%, rgba(243,224,193,0.97) 45%, rgba(208,178,128,0.85) 100%);
+        radial-gradient(ellipse at 30% 20%, rgba(255,229,180,0.85) 0%, transparent 55%),
+        radial-gradient(ellipse at 75% 75%, rgba(232,184,128,0.6) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 35%, rgba(255,243,217,1) 0%, rgba(243,224,193,0.97) 45%, rgba(195,160,108,0.92) 100%);
     }
 
-    /* Soft warm bloom behind the envelope */
+    /* Layered magical bloom behind the envelope */
     .env-bloom {
       position: absolute;
       inset: 0;
       pointer-events: none;
       z-index: 0;
+      overflow: hidden;
     }
-    .env-bloom::before {
+    .env-bloom::before,
+    .env-bloom::after {
       content: '';
       position: absolute;
       top: 50%; left: 50%;
-      width: 90vmin; height: 90vmin;
+      width: 110vmin; height: 110vmin;
       transform: translate(-50%,-50%) scale(0.85);
       border-radius: 50%;
+      filter: blur(50px);
+      animation: envBreathe 6s ease-in-out infinite;
+    }
+    .env-bloom::before {
       background: radial-gradient(circle, rgba(255,235,185,0.85) 0%, rgba(232,198,128,0.45) 30%, rgba(208,178,128,0) 70%);
-      filter: blur(40px);
-      animation: envBreathe 5s ease-in-out infinite;
+    }
+    .env-bloom::after {
+      background: radial-gradient(circle, rgba(255,250,230,0.55) 0%, rgba(248,220,170,0.3) 35%, transparent 70%);
+      animation-duration: 9s;
+      animation-direction: alternate-reverse;
+      animation-delay: -3s;
+      mix-blend-mode: soft-light;
+      transform: translate(-50%,-50%) scale(1.1) rotate(20deg);
     }
     @keyframes envBreathe {
       0%,100% { transform: translate(-50%,-50%) scale(0.85); opacity: 0.85; }
-      50%     { transform: translate(-50%,-50%) scale(1);    opacity: 1; }
+      50%     { transform: translate(-50%,-50%) scale(1.05); opacity: 1; }
     }
     .env-overlay.opening .env-bloom::before {
       animation: none;
-      transform: translate(-50%,-50%) scale(1.6);
-      transition: transform 1.6s cubic-bezier(0.22,1,0.36,1);
-      opacity: 1;
+      transform: translate(-50%,-50%) scale(2);
+      transition: transform 1.8s cubic-bezier(0.22,1,0.36,1), opacity 1.4s ease;
+      opacity: 0;
+    }
+    .env-overlay.opening .env-bloom::after {
+      animation: none;
+      transform: translate(-50%,-50%) scale(2.4) rotate(40deg);
+      transition: transform 2s cubic-bezier(0.22,1,0.36,1), opacity 1.6s ease;
+      opacity: 0;
     }
 
-    /* Ambient gold sparkles */
-    .env-sparkles {
+    /* Drifting gold dust orbs (large slow movement) */
+    .env-orbs {
       position: absolute;
       inset: 0;
       pointer-events: none;
       z-index: 1;
+      overflow: hidden;
+    }
+    .env-orb {
+      position: absolute;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,235,185,0.45) 0%, rgba(232,198,128,0.18) 35%, transparent 70%);
+      filter: blur(30px);
+      animation: orbDrift 18s linear infinite;
+    }
+    @keyframes orbDrift {
+      0%   { transform: translate(0, 0)         scale(0.9); opacity: 0; }
+      10%  { opacity: 0.85; }
+      90%  { opacity: 0.7; }
+      100% { transform: translate(var(--ox, 30px), -120vh) scale(1.2); opacity: 0; }
+    }
+
+    /* Ambient gold sparkles (twinkling stars) */
+    .env-sparkles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
     }
     .env-spark {
       position: absolute;
-      width: 6px; height: 6px;
+      width: 8px; height: 8px;
+      background:
+        radial-gradient(circle, rgba(255,245,210,1) 0%, rgba(232,198,128,0.5) 40%, transparent 70%);
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,245,210,1) 0%, rgba(232,198,128,0.5) 40%, transparent 70%);
-      filter: drop-shadow(0 0 5px rgba(255,220,140,0.85));
+      filter: drop-shadow(0 0 7px rgba(255,220,140,0.95));
       opacity: 0;
       animation: sparkTwinkle 4s ease-in-out infinite;
     }
+    .env-spark::before,
+    .env-spark::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      background: linear-gradient(90deg, transparent, rgba(255,245,210,0.85), transparent);
+      transform: translate(-50%,-50%);
+    }
+    .env-spark::before { width: 100%; height: 1px; }
+    .env-spark::after  { width: 1px;  height: 100%; }
     @keyframes sparkTwinkle {
-      0%,100% { opacity: 0;   transform: scale(0.4); }
-      50%     { opacity: 0.95; transform: scale(1); }
+      0%,100% { opacity: 0;   transform: scale(0.3) rotate(0deg); }
+      50%     { opacity: 0.95; transform: scale(1) rotate(45deg); }
+    }
+
+    /* Drifting petal-flecks for warmth */
+    .env-flecks { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+    .env-fleck {
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 70% 15% 70% 15%;
+      background: radial-gradient(circle at 30% 30%, rgba(245,200,170,0.85), rgba(213,160,130,0.55) 70%, transparent 100%);
+      opacity: 0;
+      animation: fleckDrift 14s linear infinite;
+      filter: blur(0.4px);
+    }
+    @keyframes fleckDrift {
+      0%   { transform: translate(0, 105vh) rotate(0deg); opacity: 0; }
+      8%   { opacity: 0.85; }
+      90%  { opacity: 0.7; }
+      100% { transform: translate(var(--fx, 50px), -10vh) rotate(720deg); opacity: 0; }
     }
 
     /* The envelope (the visible thing before tap) */
     .envelope {
       position: relative;
       z-index: 3;
-      width: clamp(280px, 56vmin, 460px);
+      width: clamp(330px, 70vmin, 600px);
       aspect-ratio: 1.5 / 1;
       transform-style: preserve-3d;
       cursor: pointer;
       transition: transform 0.5s ease;
+      filter: drop-shadow(0 30px 60px rgba(140,100,50,0.28));
     }
-    .envelope:hover { transform: translateY(-4px); }
+    .envelope:hover { transform: translateY(-6px) scale(1.02); }
     .env-overlay.opening .envelope { cursor: default; }
     .env-overlay.opening .envelope:hover { transform: none; }
 
@@ -2208,7 +2367,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 0.55rem;
+      transform-origin: center;
+      transition: opacity 0.6s ease, transform 0.8s ease;
     }
     .letter-eyebrow {
       font-family: var(--sans);
@@ -2265,13 +2427,37 @@
       color: rgba(90,60,20,0.78);
     }
 
-    /* Animation: letter rises & expands once flap opens */
+    /* Animation: letter rises out of envelope, then grows to fill viewport (becomes the site) */
     .env-overlay.opening .env-letter {
-      transform: translate(-50%, -55%) scale(1);
+      transform: translate(-50%, -50%) scale(1);
       opacity: 1;
-      width: min(88vw, 540px);
-      max-height: 80vh;
+      width: 100vw;
+      max-height: 100vh;
+      height: 100vh;
       z-index: 7;
+      box-shadow: none;
+      transition:
+        transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.5s,
+        opacity 0.4s ease 0.6s,
+        width 1.4s cubic-bezier(0.83,0,0.17,1) 1.2s,
+        height 1.4s cubic-bezier(0.83,0,0.17,1) 1.2s,
+        max-height 1.4s cubic-bezier(0.83,0,0.17,1) 1.2s,
+        box-shadow 0.8s ease 1.6s,
+        background 1.4s ease 1.2s;
+      background: linear-gradient(180deg, var(--paper) 0%, #f0e0b8 100%);
+    }
+    /* As the letter reaches viewport size, fade its content so the actual site shows through */
+    .env-overlay.opening .env-letter .letter-content {
+      animation: letterContentFade 1s ease 2.2s forwards;
+    }
+    @keyframes letterContentFade {
+      to { opacity: 0; transform: scale(1.04); }
+    }
+    .env-overlay.opening .env-letter::after {
+      animation: letterFoldFade 0.8s ease 1.8s forwards;
+    }
+    @keyframes letterFoldFade {
+      to { opacity: 0; }
     }
 
     /* Tap prompt */
@@ -2323,8 +2509,8 @@
       transition: opacity 0.3s ease;
     }
 
-    /* Final fade — overlay disappears after the letter has expanded */
-    .env-overlay.closing { animation: envFade 1s ease 2.6s forwards; }
+    /* Final fade: overlay disappears after the letter has expanded to viewport size */
+    .env-overlay.closing { animation: envFade 1.1s ease 3.2s forwards; }
     @keyframes envFade {
       to { opacity: 0; visibility: hidden; }
     }
@@ -2359,17 +2545,40 @@
 
     <div class="env-bloom" aria-hidden="true"></div>
 
+    <!-- Drifting gold dust orbs -->
+    <div class="env-orbs" aria-hidden="true">
+      <span class="env-orb" style="left:10%; top:80%;  --ox: 80px;   animation-delay: -2s;  animation-duration: 22s;"></span>
+      <span class="env-orb" style="left:30%; top:90%;  --ox: -60px;  animation-delay: -8s;  animation-duration: 26s;"></span>
+      <span class="env-orb" style="left:55%; top:75%;  --ox: 50px;   animation-delay: -14s; animation-duration: 24s;"></span>
+      <span class="env-orb" style="left:78%; top:88%;  --ox: -90px;  animation-delay: -5s;  animation-duration: 20s;"></span>
+      <span class="env-orb" style="left:92%; top:72%;  --ox: 40px;   animation-delay: -11s; animation-duration: 28s;"></span>
+    </div>
+
+    <!-- Twinkling sparkle stars -->
     <div class="env-sparkles" aria-hidden="true">
-      <span class="env-spark" style="top:14%; left:8%;  animation-delay: 0s;"></span>
-      <span class="env-spark" style="top:24%; left:18%; animation-delay: -1.4s;"></span>
-      <span class="env-spark" style="top:60%; left:6%;  animation-delay: -2.6s;"></span>
-      <span class="env-spark" style="top:78%; left:22%; animation-delay: -0.9s;"></span>
-      <span class="env-spark" style="top:18%; right:10%; animation-delay: -2.1s;"></span>
+      <span class="env-spark" style="top:14%; left:8%;   animation-delay: 0s;     width:10px; height:10px;"></span>
+      <span class="env-spark" style="top:24%; left:18%;  animation-delay: -1.4s;"></span>
+      <span class="env-spark" style="top:60%; left:6%;   animation-delay: -2.6s;  width:9px; height:9px;"></span>
+      <span class="env-spark" style="top:78%; left:22%;  animation-delay: -0.9s;"></span>
+      <span class="env-spark" style="top:18%; right:10%; animation-delay: -2.1s;  width:11px; height:11px;"></span>
       <span class="env-spark" style="top:34%; right:22%; animation-delay: -0.5s;"></span>
-      <span class="env-spark" style="top:68%; right:7%;  animation-delay: -1.7s;"></span>
+      <span class="env-spark" style="top:68%; right:7%;  animation-delay: -1.7s;  width:8px; height:8px;"></span>
       <span class="env-spark" style="top:84%; right:24%; animation-delay: -3.2s;"></span>
-      <span class="env-spark" style="top:42%; left:48%; animation-delay: -1.1s;"></span>
-      <span class="env-spark" style="top:8%;  left:46%; animation-delay: -2.8s;"></span>
+      <span class="env-spark" style="top:42%; left:48%;  animation-delay: -1.1s;  width:9px; height:9px;"></span>
+      <span class="env-spark" style="top:8%;  left:46%;  animation-delay: -2.8s;"></span>
+      <span class="env-spark" style="top:50%; left:14%;  animation-delay: -3.6s;"></span>
+      <span class="env-spark" style="top:30%; right:32%; animation-delay: -2.4s;  width:7px; height:7px;"></span>
+      <span class="env-spark" style="top:88%; left:62%;  animation-delay: -0.3s;"></span>
+      <span class="env-spark" style="top:6%;  right:38%; animation-delay: -1.9s;"></span>
+    </div>
+
+    <!-- Drifting petal-flecks -->
+    <div class="env-flecks" aria-hidden="true">
+      <span class="env-fleck" style="left:14%; --fx: 50px;   animation-delay: -1s;  animation-duration: 16s;"></span>
+      <span class="env-fleck" style="left:34%; --fx: -40px;  animation-delay: -7s;  animation-duration: 19s;"></span>
+      <span class="env-fleck" style="left:56%; --fx: 30px;   animation-delay: -4s;  animation-duration: 17s;"></span>
+      <span class="env-fleck" style="left:74%; --fx: -55px;  animation-delay: -10s; animation-duration: 18s;"></span>
+      <span class="env-fleck" style="left:90%; --fx: 25px;   animation-delay: -3s;  animation-duration: 15s;"></span>
     </div>
 
     <!-- The envelope -->
@@ -2392,7 +2601,7 @@
       <div class="env-letter" aria-hidden="true">
         <div class="letter-content">
           <p class="letter-eyebrow">Together with our families</p>
-          <img class="letter-monogram" src="assets/photos/logo.png" alt="" onerror="this.style.display='none'" />
+          <img class="letter-monogram" src="assets/photos/logo.jpeg" alt="" onerror="this.style.display='none'" />
           <div class="letter-flourish">
             <span class="letter-flourish-line"></span>
             <span class="letter-flourish-dot"></span>
@@ -2417,7 +2626,7 @@
   <!-- NAV -->
   <nav id="nav">
     <a href="#hero" class="nav-logo">
-      <img src="assets/photos/logo.png" alt="E&G" onerror="this.style.display='none'" />
+      <img src="assets/photos/logo.jpeg" alt="E&G" onerror="this.style.display='none'" />
     </a>
     <ul class="nav-links">
       <li><a href="#story">Our Story</a></li>
@@ -2429,25 +2638,25 @@
 
   <!-- HERO -->
   <div id="hero">
+    <!-- Big logo at the top -->
     <img
-      src="assets/photos/hero.jpg"
-      alt="Estella and Gabriel at Lake Tekapo, New Zealand"
-      class="hero-photo"
+      src="assets/photos/logo.jpeg"
+      alt="Estella and Gabriel monogram"
+      class="hero-logo-big"
+      onerror="this.style.display='none'"
     />
-    <div class="hero-overlay"></div>
 
-    <!-- TOP: logo + names high above the subjects -->
-    <div class="hero-top">
+    <!-- Hero photo as a picture card -->
+    <div class="hero-photo-card">
       <img
-        src="assets/photos/logo.png"
-        alt="Estella and Gabriel monogram"
-        class="hero-logo"
-        onerror="this.style.display='none'"
+        src="assets/photos/hero.jpeg"
+        alt="Estella and Gabriel at Lake Tekapo, New Zealand"
+        class="hero-photo"
       />
     </div>
 
-    <!-- BOTTOM: date · venue, countdown, buttons — below feet -->
-    <div class="hero-bottom">
+    <!-- Details, countdown, buttons -->
+    <div class="hero-content">
       <p class="hero-meta">11 July 2027 &nbsp;·&nbsp; Oasia Resort Sentosa &nbsp;·&nbsp; Singapore</p>
       <div class="hero-divider"></div>
 
@@ -2504,14 +2713,21 @@
         </div>
       </div>
       <div class="story-spread-photos reveal-right">
-        <div class="photo-card">
-          <img src="assets/photos/journey-1.jpg" alt="University memories" onerror="this.style.display='none'" />
-        </div>
-        <div class="photo-card">
-          <img src="assets/photos/journey-2.jpg" alt="Early memories" onerror="this.style.display='none'" />
-        </div>
-        <div class="photo-card">
-          <img src="assets/photos/journey-3.jpg" alt="NTU days" onerror="this.style.display='none'" />
+        <div class="story-photos-track">
+          <!-- Set 1 -->
+          <div class="photo-card"><img src="assets/photos/Before1.jpeg" alt="Before we knew" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Before2.jpeg" alt="Friends first" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Before3.jpeg" alt="NTU days" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Before4.jpeg" alt="University memories" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Before5.jpeg" alt="Babies group" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Before6.jpeg" alt="Graduation days" onerror="this.style.display='none'" /></div>
+          <!-- Set 2 (clone for seamless loop) -->
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before1.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before2.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before3.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before4.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before5.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before6.jpeg" alt="" onerror="this.style.display='none'" /></div>
         </div>
       </div>
     </div>
@@ -2529,14 +2745,21 @@
         </div>
       </div>
       <div class="story-spread-photos reveal-left">
-        <div class="photo-card">
-          <img src="assets/photos/travel-korea.jpg" alt="Korea" onerror="this.style.display='none'" />
-        </div>
-        <div class="photo-card">
-          <img src="assets/photos/travel-cebu.jpg" alt="Cebu" onerror="this.style.display='none'" />
-        </div>
-        <div class="photo-card">
-          <img src="assets/photos/travel-japan.jpg" alt="Japan" onerror="this.style.display='none'" />
+        <div class="story-photos-track">
+          <!-- Set 1 -->
+          <div class="photo-card"><img src="assets/photos/Routes1.jpeg" alt="Routes we shared" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Routes2.jpeg" alt="Travel together" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Routes3.jpeg" alt="On the road" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Routes4.jpeg" alt="Adventures" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Routes5.jpeg" alt="Mountains and snow" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Routes6.jpeg" alt="Quiet moments" onerror="this.style.display='none'" /></div>
+          <!-- Set 2 (clone) -->
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes1.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes2.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes3.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes4.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes5.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes6.jpeg" alt="" onerror="this.style.display='none'" /></div>
         </div>
       </div>
     </div>
@@ -2555,14 +2778,27 @@
         </div>
       </div>
       <div class="story-spread-photos reveal-right">
-        <div class="photo-card">
-          <img src="assets/photos/together-1.jpg" alt="Adventures together" onerror="this.style.display='none'" />
-        </div>
-        <div class="photo-card">
-          <img src="assets/photos/together-2.jpg" alt="Closer moments" onerror="this.style.display='none'" />
-        </div>
-        <div class="photo-card">
-          <img src="assets/photos/together-3.jpg" alt="Diving" onerror="this.style.display='none'" />
+        <div class="story-photos-track">
+          <!-- Set 1 -->
+          <div class="photo-card"><img src="assets/photos/Us1.jpeg" alt="Us together" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us2.jpeg" alt="Closer moments" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us3.jpeg" alt="Adventures" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us4.jpeg" alt="Diving" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us5.jpeg" alt="Beneath the surface" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us6.jpeg" alt="Underwater calm" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us7.jpeg" alt="Deep blue" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us8.jpeg" alt="Side by side" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us9.jpeg" alt="Together" onerror="this.style.display='none'" /></div>
+          <!-- Set 2 (clone) -->
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us1.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us2.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us3.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us4.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us5.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us6.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us7.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us8.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us9.jpeg" alt="" onerror="this.style.display='none'" /></div>
         </div>
       </div>
     </div>
@@ -2580,14 +2816,21 @@
         </div>
       </div>
       <div class="story-spread-photos reveal-left">
-        <div class="photo-card">
-          <img src="assets/photos/next-1.jpg" alt="Next chapter" onerror="this.style.display='none'" />
-        </div>
-        <div class="photo-card">
-          <img src="assets/photos/next-2.jpg" alt="Together" onerror="this.style.display='none'" />
-        </div>
-        <div class="photo-card">
-          <img src="assets/photos/closing.jpg" alt="The celebration ahead" onerror="this.style.display='none'" />
+        <div class="story-photos-track">
+          <!-- Set 1 -->
+          <div class="photo-card"><img src="assets/photos/NextChap1.jpeg" alt="Next chapter" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Nextchap2.jpeg" alt="Together always" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/NextChap3.jpeg" alt="Open horizons" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/NextChap4.jpeg" alt="Stories yet to come" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/NextChap5.jpeg" alt="One more page" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/NextChap6.jpeg" alt="The celebration ahead" onerror="this.style.display='none'" /></div>
+          <!-- Set 2 (clone) -->
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap1.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Nextchap2.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap3.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap4.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap5.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap6.jpeg" alt="" onerror="this.style.display='none'" /></div>
         </div>
       </div>
     </div>
@@ -2612,7 +2855,7 @@
           <div class="year-entry" data-year="2019">
             <div class="year-photo-wrap">
               <div class="year-photo">
-                <img src="assets/photos/2019.jpg" alt="Us in 2019" onerror="this.parentElement.style.background='#d5cec4'" />
+                <img src="assets/photos/2019.jpeg" alt="Us in 2019" onerror="this.parentElement.style.background='#d5cec4'" />
               </div>
             </div>
             <div class="year-dot" aria-hidden="true"></div>
@@ -2625,7 +2868,7 @@
           <div class="year-entry" data-year="2020">
             <div class="year-photo-wrap">
               <div class="year-photo">
-                <img src="assets/photos/2020.jpg" alt="Us in 2020" onerror="this.parentElement.style.background='#cdc6bb'" />
+                <img src="assets/photos/2020.jpeg" alt="Us in 2020" onerror="this.parentElement.style.background='#cdc6bb'" />
               </div>
             </div>
             <div class="year-dot" aria-hidden="true"></div>
@@ -2638,7 +2881,7 @@
           <div class="year-entry" data-year="2021">
             <div class="year-photo-wrap">
               <div class="year-photo">
-                <img src="assets/photos/2021.jpg" alt="Us in 2021" onerror="this.parentElement.style.background='#ddd7ce'" />
+                <img src="assets/photos/2021.jpeg" alt="Us in 2021" onerror="this.parentElement.style.background='#ddd7ce'" />
               </div>
             </div>
             <div class="year-dot" aria-hidden="true"></div>
@@ -2651,7 +2894,7 @@
           <div class="year-entry" data-year="2022">
             <div class="year-photo-wrap">
               <div class="year-photo">
-                <img src="assets/photos/2022.jpg" alt="Us in 2022" onerror="this.parentElement.style.background='#c8c0b5'" />
+                <img src="assets/photos/2022.jpeg" alt="Us in 2022" onerror="this.parentElement.style.background='#c8c0b5'" />
               </div>
             </div>
             <div class="year-dot" aria-hidden="true"></div>
@@ -2664,7 +2907,7 @@
           <div class="year-entry" data-year="2023">
             <div class="year-photo-wrap">
               <div class="year-photo">
-                <img src="assets/photos/2023.jpg" alt="Us in 2023" onerror="this.parentElement.style.background='#d0c9bf'" />
+                <img src="assets/photos/2023.jpeg" alt="Us in 2023" onerror="this.parentElement.style.background='#d0c9bf'" />
               </div>
             </div>
             <div class="year-dot" aria-hidden="true"></div>
@@ -2677,7 +2920,7 @@
           <div class="year-entry" data-year="2024">
             <div class="year-photo-wrap">
               <div class="year-photo">
-                <img src="assets/photos/2024.jpg" alt="Us in 2024" onerror="this.parentElement.style.background='#d8d1c7'" />
+                <img src="assets/photos/2024.jpeg" alt="Us in 2024" onerror="this.parentElement.style.background='#d8d1c7'" />
               </div>
             </div>
             <div class="year-dot" aria-hidden="true"></div>
@@ -2690,7 +2933,7 @@
           <div class="year-entry" data-year="2025">
             <div class="year-photo-wrap">
               <div class="year-photo">
-                <img src="assets/photos/2025.jpg" alt="Us in 2025" onerror="this.parentElement.style.background='#c5bdb2'" />
+                <img src="assets/photos/2025.jpeg" alt="Us in 2025" onerror="this.parentElement.style.background='#c5bdb2'" />
               </div>
             </div>
             <div class="year-dot" aria-hidden="true"></div>
@@ -2703,7 +2946,7 @@
           <div class="year-entry" data-year="2026">
             <div class="year-photo-wrap">
               <div class="year-photo">
-                <img src="assets/photos/2026.jpg" alt="Us in 2026" onerror="this.parentElement.style.background='#dbd4ca'" />
+                <img src="assets/photos/2026.jpeg" alt="Us in 2026" onerror="this.parentElement.style.background='#dbd4ca'" />
               </div>
             </div>
             <div class="year-dot" aria-hidden="true"></div>
@@ -2759,7 +3002,7 @@
         <h2 class="section-title reveal reveal-delay-1">Formal but Funky</h2>
         <div class="section-divider reveal reveal-delay-1"></div>
         <p class="dresscode-note reveal reveal-delay-2">
-          Loud <em>or</em> pastel colours; we'll confirm the exact palette closer to the day, depending on our florals. Pick whichever end of the spectrum you love.
+          Loud <em>or</em> pastel colours; we'll confirm the exact palette closer to the day, depending on our florals. Pick whichever end of the spectrum you love. <em style="opacity:0.85;">(For the gents: a tie isn't necessary, "formal" doesn't have to mean stiff.)</em>
         </p>
         <div class="dresscode-swatches reveal reveal-delay-3">
           <div class="swatch">
@@ -2793,50 +3036,6 @@
       </div>
     </div>
 
-    <!-- SOLEMNISATION (family invites only) -->
-    <section class="ceremony-panel solem" id="solem" data-audience="family">
-      <div class="inner">
-        <h2 class="section-title reveal reveal-delay-1">Solemnisation</h2>
-        <div class="section-divider center reveal reveal-delay-1"></div>
-        <p class="reveal reveal-delay-2" style="font-family:var(--serif); font-style:italic; color:var(--ink-soft); max-width:520px; margin:1rem auto 0; line-height:1.75;">
-          Before the evening begins, we will gather for the legal moment witnessed by those closest to us. A small, intimate gathering before we head to the evening reception.
-        </p>
-
-        <div class="ceremony-meta reveal reveal-delay-2">
-          <div class="meta-block">
-            <div class="meta-label">When</div>
-            <div class="meta-value">11 July 2027<br />5:30 pm – 6:00 pm</div>
-          </div>
-          <div class="meta-block">
-            <div class="meta-label">Where</div>
-            <div class="meta-value">Oasia Resort Sentosa<br /><em style="font-size:0.85em;">Cypress Function Room (Level 1)</em></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TEA CEREMONY (family invites only) -->
-    <section class="ceremony-panel tea" id="tea" data-audience="family">
-      <div class="inner">
-        <h2 class="section-title reveal reveal-delay-1">Tea Ceremony</h2>
-        <div class="section-divider center reveal reveal-delay-1"></div>
-        <p class="reveal reveal-delay-2" style="font-family:var(--serif); font-style:italic; color:var(--ink-soft); max-width:520px; margin:1rem auto 0; line-height:1.75;">
-          We will remain and gather to honour the people in our family with the traditional tea ceremony, a quiet moment we'd love to share exclusively with you.
-        </p>
-
-        <div class="ceremony-meta reveal reveal-delay-2">
-          <div class="meta-block">
-            <div class="meta-label">When</div>
-            <div class="meta-value">11 July 2027<br />6:00 pm – 6:30 pm</div>
-          </div>
-          <div class="meta-block">
-            <div class="meta-label">Where</div>
-            <div class="meta-value">Oasia Resort Sentosa<br /><em style="font-size:0.85em;">Cypress Function Room (Level 1)</em></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Illustrated horizontal timeline -->
     <div class="timeline-panel" id="schedule">
       <div class="inner">
@@ -2848,6 +3047,26 @@
 
         <div class="h-timeline reveal reveal-delay-1">
 
+          <!-- 5.30pm Solemnisation (family only) -->
+          <div class="h-item" data-audience="family">
+            <div class="h-item-icon">
+              <svg viewBox="0 0 26 26"><path d="M13 4v18M9 8l4-4 4 4"/><path d="M6 22h14"/><circle cx="13" cy="14" r="2"/></svg>
+            </div>
+            <p class="h-item-time">5.30 pm</p>
+            <p class="h-item-event">Solemnisation</p>
+            <p class="h-item-desc">The legal moment, with our closest by our side. Cypress Function Room.</p>
+          </div>
+
+          <!-- 6pm Tea Ceremony (family only) -->
+          <div class="h-item" data-audience="family">
+            <div class="h-item-icon">
+              <svg viewBox="0 0 26 26"><path d="M7 12h10v5a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3v-5z"/><path d="M17 13h2a2 2 0 0 1 0 4h-2"/><path d="M10 8c0-1 1-1 1-2s-1-1-1-2M14 8c0-1 1-1 1-2s-1-1-1-2"/></svg>
+            </div>
+            <p class="h-item-time">6 pm</p>
+            <p class="h-item-event">Tea Ceremony</p>
+            <p class="h-item-desc">Honouring our families with the traditional tea, in the same room.</p>
+          </div>
+
           <!-- 6pm onwards Arrival -->
           <div class="h-item">
             <div class="h-item-icon">
@@ -2855,7 +3074,7 @@
             </div>
             <p class="h-item-time">6 pm onwards</p>
             <p class="h-item-event">Arrival</p>
-            <p class="h-item-desc">Come in anytime after 6 pm. Grab a drink and mingle with the rest of the guests.</p>
+            <p class="h-item-desc">Settle in over a drink, find familiar faces, and catch up before the night begins. Cocktails and canapés will be flowing.</p>
           </div>
 
           <!-- 6.40pm Be Seated -->
@@ -2865,7 +3084,7 @@
             </div>
             <p class="h-item-time">6.40 pm</p>
             <p class="h-item-event">Be Seated</p>
-            <p class="h-item-desc">Find your seat and settle in. The walk-in begins shortly.</p>
+            <p class="h-item-desc">Please be in your seat by 6.40 pm sharp — <strong>do not be late</strong>! The walk-in begins right after.</p>
           </div>
 
           <!-- 6.50pm Ceremony -->
@@ -2875,7 +3094,7 @@
             </div>
             <p class="h-item-time">6.50 pm</p>
             <p class="h-item-event">Ceremony Begins</p>
-            <p class="h-item-desc">The walk-in, and the moment we've been waiting for, with you beside us. Please be seated in time so we can share it with you.</p>
+            <p class="h-item-desc">The walk-in, with you beside us. Please be settled in time.</p>
           </div>
 
           <!-- 8.30pm Fun begins -->
@@ -2885,7 +3104,7 @@
             </div>
             <p class="h-item-time">8.30 pm</p>
             <p class="h-item-event">The Fun Begins</p>
-            <p class="h-item-desc">Good music, drinks, desserts, conversations.</p>
+            <p class="h-item-desc">Music, drinks, desserts, conversations.</p>
           </div>
 
           <!-- 10.30pm End -->
@@ -2895,7 +3114,7 @@
             </div>
             <p class="h-item-time">10.30 pm</p>
             <p class="h-item-event">End of Wedding</p>
-            <p class="h-item-desc">That's a wrap. Thank you for making our night, drive safe and rest well.</p>
+            <p class="h-item-desc">That's a wrap. Thank you for making our night.</p>
           </div>
 
         </div>
@@ -2903,6 +3122,133 @@
     </div>
 
   </div>
+
+  <!-- RSVP -->
+  <section id="rsvp">
+    <div class="rsvp-inner">
+      <div class="rsvp-header reveal">
+        <p class="section-label">RSVP</p>
+        <h2 class="section-title">We would be so happy<br />to celebrate with you.</h2>
+        <div class="section-divider center"></div>
+        <p style="font-family:var(--serif); font-style:italic; color:var(--ink-soft); max-width:480px; margin:1.5rem auto 0; line-height:1.75;">
+          Please let us know if you'll be joining us, and share any details we should know before the day.
+        </p>
+        <div class="deadline">Kindly respond by 31 January 2027</div>
+
+        <div class="rsvp-notes">
+          <p>Remember to click <strong>"Save"</strong> once you're done. You can return to this same link anytime to update your answers; we'll always keep the latest version.</p>
+          <p><strong>An adults-only celebration.</strong> We've planned the evening with our grown-up loved ones in mind, so we kindly ask that little ones stay home for the night. We hope this gives you a chance to relax fully and enjoy the celebration with us.</p>
+        </div>
+      </div>
+
+      <!-- Public preview (shown when no valid invite code is present) -->
+      <div class="rsvp-public" id="rsvpPublic">
+        <h3>Welcome, friend.</h3>
+        <p>This page is personalised for each guest. If you've received an invitation from us, please use the unique link we sent you to RSVP. If you can't find it, just message Estella or Gabriel and we'll resend it.</p>
+      </div>
+
+      <!-- Dynamic form (rendered when ?inv=<code> is present) -->
+      <form id="rsvpForm" autocomplete="off" novalidate>
+        <div id="rsvpReturningNote" style="display:none; text-align:center; margin-bottom:1.5rem; font-family:var(--serif); font-style:italic; color:var(--ink-soft); font-size:0.95rem;">
+          Welcome back. We've loaded your previous answers below. Feel free to update anything and save again.
+        </div>
+
+        <div id="rsvpSavedBanner" class="rsvp-saved-banner">
+          <span class="check">✓</span> Saved! You can keep editing or close this page. We'll have the latest version.
+        </div>
+
+        <div id="memberList"></div>
+
+        <div class="household-block">
+          <h3>One last thing</h3>
+
+          <div class="household-row">
+            <div>
+              <label class="field-label">Will you / your group be driving?</label>
+              <div class="kids-toggle">
+                <label><input type="radio" name="driving" value="no" checked /><span>No</span></label>
+                <label><input type="radio" name="driving" value="yes" /><span>Yes</span></label>
+              </div>
+            </div>
+            <div id="vehiclesWrap">
+              <label class="field-label">How many vehicles?</label>
+              <input class="field-input" type="number" name="vehicles" min="1" max="10" placeholder="e.g. 1" />
+            </div>
+          </div>
+        </div>
+
+        <div class="submit-row">
+          <button type="submit" class="rsvp-submit" id="rsvpSubmit">Send Our RSVP</button>
+        </div>
+      </form>
+
+    </div>
+  </section>
+  <!-- HELPERS -->
+  <section id="helpers">
+    <div class="guests-header reveal">
+      <p class="section-label">On The Day</p>
+      <h2 class="section-title">Helpers</h2>
+      <div class="section-divider"></div>
+    </div>
+    <p class="reveal reveal-delay-1" style="font-size:1rem; color:var(--ink-soft); margin:0 auto 2.5rem; line-height:1.85; max-width:640px; text-align:center;">
+      If you need help finding your way, have a question, or are unsure where to go, these are the friendly faces to look for on the day.
+    </p>
+    <div class="helpers-grid reveal reveal-delay-2">
+      <!-- Row 1: 3 helpers -->
+      <div class="helper-card">
+        <div class="helper-avatar"></div>
+        <div>
+          <p class="helper-name">Manju</p>
+          <p class="helper-role">Wedding Coordinator</p>
+        </div>
+      </div>
+      <div class="helper-card" data-helper="elsie">
+        <div class="helper-avatar"><img src="assets/photos/Elsie.jpeg" alt="Elsie Goh" onerror="this.style.display='none'" /></div>
+        <div>
+          <p class="helper-name">Elsie Goh</p>
+          <p class="helper-role">Guest support &amp; reception flow</p>
+        </div>
+      </div>
+      <div class="helper-card">
+        <div class="helper-avatar"><img src="assets/photos/Grace.jpeg" alt="Grace Chng" onerror="this.style.display='none'" /></div>
+        <div>
+          <p class="helper-name">Grace Chng</p>
+          <p class="helper-role">Guest support &amp; reception flow</p>
+        </div>
+      </div>
+
+      <!-- Row 2: 4 helpers -->
+      <div class="helper-card" data-helper="winnie">
+        <div class="helper-avatar"><img src="assets/photos/Winnie.jpeg" alt="Winnie Chau" onerror="this.style.display='none'" /></div>
+        <div>
+          <p class="helper-name">Winnie Chau</p>
+          <p class="helper-role">Reception &amp; setup</p>
+        </div>
+      </div>
+      <div class="helper-card" data-helper="guochin">
+        <div class="helper-avatar"><img src="assets/photos/GuoChin.jpeg" alt="Khoo Guo Chin" onerror="this.style.display='none'" /></div>
+        <div>
+          <p class="helper-name">Khoo Guo Chin</p>
+          <p class="helper-role">Reception &amp; setup</p>
+        </div>
+      </div>
+      <div class="helper-card">
+        <div class="helper-avatar"><img src="assets/photos/WanQi.jpeg" alt="Ang Wan Qi" onerror="this.style.display='none'" /></div>
+        <div>
+          <p class="helper-name">Ang Wan Qi</p>
+          <p class="helper-role">Setup crew</p>
+        </div>
+      </div>
+      <div class="helper-card">
+        <div class="helper-avatar"><img src="assets/photos/Xaiver.jpeg" alt="Xaiver Sim" onerror="this.style.display='none'" /></div>
+        <div>
+          <p class="helper-name">Xaiver Sim</p>
+          <p class="helper-role">Setup crew</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- DIRECTIONS -->
   <section id="directions">
@@ -2972,7 +3318,7 @@
               <div class="dir-step"><div class="dir-step-num">1</div><p>Drive into Sentosa via <strong>Sentosa Gateway</strong>. Use our QR code above for complimentary island entry.</p></div>
               <div class="dir-step"><div class="dir-step-num">2</div><p>Follow signs to <strong>Oasia Resort Sentosa</strong>. Drive up to the hotel entrance and hand your keys to the valet team.</p></div>
               <div class="dir-step"><div class="dir-step-num">3</div><p>Head inside and take the <strong>lift or escalator down to Level 1</strong>. The wedding will be at the <strong>Aloes Ballroom</strong>.</p></div>
-              <div class="dir-qr-note">⚠️ <strong>Heads up: valet is limited.</strong> Complimentary valet covers only about <strong>20% of our guaranteed attendance</strong>, so it's <strong>first come, first served</strong>. If valet is full, please head over to Village Hotel Sentosa to self-park.</div>
+              <div class="dir-qr-note">🅿️ <strong>Valet is complimentary for all guests.</strong> Drive straight to Oasia Resort Sentosa and the valet team will take care of the rest. If you'd rather self-park, see the Self-Park option.</div>
             </div>
           </div>
 
@@ -2980,19 +3326,19 @@
           <div class="car-subpanel" id="car-selfpark">
             <div class="dir-map-wrap">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d150!2d103.819686!3d1.252649!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s!2sSentosa+Gateway!3m2!1d1.2630468!2d103.8238529!4m5!1s0x31da1b289c21d2a7%3A0x5daa43f9a7d6e1b2!2sVillage+Hotel+Sentosa!3m2!1d1.252649!2d103.819686!5e0!3m2!1sen!2ssg!4v1713700000001!5m2!1sen!2ssg"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d800!2d103.819686!3d1.252649!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da1b289c21d2a7%3A0x5daa43f9a7d6e1b2!2sVillage+Hotel+Sentosa!5e0!3m2!1sen!2ssg!4v1713700000001!5m2!1sen!2ssg"
                 width="100%" height="440" style="border:0;display:block;" allowfullscreen
                 loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                title="Village Hotel Sentosa — Self-Park">
+                title="Village Hotel Sentosa — Self-Park location">
               </iframe>
             </div>
             <div class="dir-info">
               <h4>Self-Park at Village Hotel</h4>
               <div class="dir-step"><div class="dir-step-num">1</div><p>Drive into Sentosa via <strong>Sentosa Gateway</strong>. Use our QR code above for complimentary island entry.</p></div>
-              <div class="dir-step"><div class="dir-step-num">2</div><p>Park at <strong>Village Hotel Sentosa</strong> car park. Standard parking charges apply. Parking coupons are <strong>not</strong> provided for Village Hotel Sentosa.</p></div>
+              <div class="dir-step"><div class="dir-step-num">2</div><p>Park at <strong>Village Hotel Sentosa</strong> car park. We've been allocated parking coupons equivalent to <strong>20% of our guaranteed attendance</strong>, available on a <strong>first come, first served</strong> basis for self-park guests.</p></div>
               <div class="dir-step"><div class="dir-step-num">3</div><p>Follow signs to <strong>Oasia Resort Sentosa</strong>. It's a short walk from Village Hotel for the celebration.</p></div>
               <div class="dir-step"><div class="dir-step-num">4</div><p>Head inside and take the <strong>lift or escalator down to Level 1</strong>. The wedding will be at the <strong>Aloes Ballroom</strong>.</p></div>
-              <div class="dir-qr-note">🎟️ <strong>QR code covers Sentosa entry only.</strong> Village Hotel parking charges apply separately.</div>
+              <div class="dir-qr-note">🎟️ <strong>Tip:</strong> if you'd rather avoid self-parking altogether, valet at Oasia is complimentary for all guests.</div>
             </div>
           </div>
 
@@ -3042,69 +3388,6 @@
     </div>
   </section>
 
-  <!-- HELPERS -->
-  <section id="helpers">
-    <div class="guests-header reveal">
-      <p class="section-label">On The Day</p>
-      <h2 class="section-title">Helpers</h2>
-      <div class="section-divider"></div>
-    </div>
-    <p class="reveal reveal-delay-1" style="font-size:1rem; color:var(--ink-soft); margin-bottom:2.5rem; line-height:1.85; max-width:640px;">
-      If you need help finding your way, have a question, or are unsure where to go, these are the friendly faces to look for on the day.
-    </p>
-    <div class="reveal reveal-delay-2">
-      <div class="helper-card">
-        <div class="helper-avatar"></div>
-        <div>
-          <p class="helper-name">Manju</p>
-          <p class="helper-role">Wedding Coordinator</p>
-        </div>
-      </div>
-      <div class="helper-card">
-        <div class="helper-avatar"></div>
-        <div>
-          <p class="helper-name">Grace <strong>Chng</strong></p>
-          <p class="helper-role">Guest support &amp; reception flow</p>
-        </div>
-      </div>
-      <div class="helper-card">
-        <div class="helper-avatar"></div>
-        <div>
-          <p class="helper-name">Elsie <strong>Goh</strong></p>
-          <p class="helper-role">Guest support &amp; reception flow</p>
-        </div>
-      </div>
-      <div class="helper-card">
-        <div class="helper-avatar"></div>
-        <div>
-          <p class="helper-name">Winnie <strong>Chau</strong></p>
-          <p class="helper-role">Reception &amp; setup</p>
-        </div>
-      </div>
-      <div class="helper-card">
-        <div class="helper-avatar"></div>
-        <div>
-          <p class="helper-name">Guo Chin <strong>Khoo</strong></p>
-          <p class="helper-role">Reception &amp; setup</p>
-        </div>
-      </div>
-      <div class="helper-card">
-        <div class="helper-avatar"></div>
-        <div>
-          <p class="helper-name"><strong>Ang</strong> Wanqi</p>
-          <p class="helper-role">Setup crew</p>
-        </div>
-      </div>
-      <div class="helper-card">
-        <div class="helper-avatar"></div>
-        <div>
-          <p class="helper-name">Xaiver <strong>Sim</strong></p>
-          <p class="helper-role">Setup crew</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- FAQ -->
   <section id="faq">
     <div class="guests-header reveal">
@@ -3128,8 +3411,8 @@
         <div class="faq-answer">We've kept the guest list small and intentional, so the names on your invite are the seats we have for you. If you have a special circumstance, please reach out to us directly and we'll do our best.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-question">Are children invited?</div>
-        <div class="faq-answer">We've planned this as an <strong>adults-only celebration</strong>, partly because of the limited capacity at our venue. We hope this gives you the chance to relax fully and enjoy the evening with us. If you absolutely need to bring your child along, please let us know in advance and we'll do our best to accommodate. Thank you so much for understanding.</div>
+        <div class="faq-question">Are children welcome?</div>
+        <div class="faq-answer">While we absolutely love your little ones, our celebration will include alcohol, loud music, live performances, and a lively crowd that may be overwhelming for young children. The venue itself also has limited capacity for us to comfortably accommodate everyone.<br/><br/>We kindly ask that children stay comfy at home so everyone can be fully present in the moment. If you have a special circumstance and absolutely need to bring your little one along, please let us know in advance and we'll do our best to accommodate. Thank you so much for understanding.</div>
       </div>
 
       <!-- ═══ Group: On the day ═══ -->
@@ -3159,7 +3442,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-question">Can we park at the venue?</div>
-        <div class="faq-answer"><strong>Valet drop-off at Oasia Resort Sentosa</strong> is complimentary, but covers only about <strong>20% of our guaranteed attendance</strong>. Parking coupons are on a first come, first serve basis.<br/><br/><strong>Self-park at Village Hotel Sentosa</strong> is a paid parking and a short walk to Oasia.</div>
+        <div class="faq-answer"><strong>Valet at Oasia Resort Sentosa</strong> is complimentary for <strong>all guests</strong>. Drive straight to Oasia and the valet team will take care of the rest. <br/><br/>If you'd rather <strong>self-park</strong>, the closest car park is at <strong>Village Hotel Sentosa</strong>, a short walk to Oasia. We've been allocated parking coupons equivalent to <strong>20% of our guaranteed attendance</strong>, available on a <strong>first come, first served</strong> basis for self-park guests.</div>
       </div>
       <div class="faq-item">
         <div class="faq-question">Where can I find nearby accommodation?</div>
@@ -3174,67 +3457,6 @@
   </section>
   <!-- END FAQ -->
 
-  <!-- RSVP -->
-  <section id="rsvp">
-    <div class="rsvp-inner">
-      <div class="rsvp-header reveal">
-        <p class="section-label">RSVP</p>
-        <h2 class="section-title">We would be so happy<br />to celebrate with you.</h2>
-        <div class="section-divider center"></div>
-        <p style="font-family:var(--serif); font-style:italic; color:var(--ink-soft); max-width:480px; margin:1.5rem auto 0; line-height:1.75;">
-          Please let us know if you'll be joining us, and share any details we should know before the day.
-        </p>
-        <div class="deadline">Kindly respond by 31 January 2027</div>
-
-        <div class="rsvp-notes">
-          <p>Remember to click <strong>"Save"</strong> once you're done. You can return to this same link anytime to update your answers; we'll always keep the latest version.</p>
-          <p><strong>An adults-only celebration.</strong> We've planned the evening with our grown-up loved ones in mind, so we kindly ask that little ones stay home for the night. We hope this gives you a chance to relax fully and enjoy the celebration with us.</p>
-        </div>
-      </div>
-
-      <!-- Public preview (shown when no valid invite code is present) -->
-      <div class="rsvp-public" id="rsvpPublic">
-        <h3>Welcome, friend.</h3>
-        <p>This page is personalised for each guest. If you've received an invitation from us, please use the unique link we sent you to RSVP. If you can't find it, just message Estella or Gabriel and we'll resend it.</p>
-      </div>
-
-      <!-- Dynamic form (rendered when ?inv=<code> is present) -->
-      <form id="rsvpForm" autocomplete="off" novalidate>
-        <div id="rsvpReturningNote" style="display:none; text-align:center; margin-bottom:1.5rem; font-family:var(--serif); font-style:italic; color:var(--ink-soft); font-size:0.95rem;">
-          Welcome back. We've loaded your previous answers below. Feel free to update anything and save again.
-        </div>
-
-        <div id="rsvpSavedBanner" class="rsvp-saved-banner">
-          <span class="check">✓</span> Saved! You can keep editing or close this page. We'll have the latest version.
-        </div>
-
-        <div id="memberList"></div>
-
-        <div class="household-block">
-          <h3>One last thing</h3>
-
-          <div class="household-row">
-            <div>
-              <label class="field-label">Will you / your group be driving?</label>
-              <div class="kids-toggle">
-                <label><input type="radio" name="driving" value="no" checked /><span>No</span></label>
-                <label><input type="radio" name="driving" value="yes" /><span>Yes</span></label>
-              </div>
-            </div>
-            <div id="vehiclesWrap">
-              <label class="field-label">How many vehicles?</label>
-              <input class="field-input" type="number" name="vehicles" min="1" max="10" placeholder="e.g. 1" />
-            </div>
-          </div>
-        </div>
-
-        <div class="submit-row">
-          <button type="submit" class="rsvp-submit" id="rsvpSubmit">Send Our RSVP</button>
-        </div>
-      </form>
-
-    </div>
-  </section>
 
   <!-- FOOTER -->
   <footer>
@@ -3596,11 +3818,7 @@
         if (a.getAttribute('href') === '#' + current) a.classList.add('active');
       });
 
-      // Parallax on hero photo
-      const heroPhoto = document.querySelector('.hero-photo');
-      if (heroPhoto && scrollY < window.innerHeight) {
-        heroPhoto.style.transform = `translateY(${scrollY * 0.35}px) scale(1)`;
-      }
+      // (Hero parallax removed — was conflicting with kenBurns animation, causing scroll jitter)
 
       updateProgress();
     }
