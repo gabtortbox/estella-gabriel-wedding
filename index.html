@@ -16,7 +16,7 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&family=Pinyon+Script&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -123,12 +123,12 @@
 
     /* Big title at the top of the hero — elegant script for the names */
     .hero-title {
-      font-family: 'Allura', 'Cormorant Garamond', cursive;
+      font-family: 'Pinyon Script', 'Allura', 'Cormorant Garamond', cursive;
       font-style: normal;
       font-weight: 400;
-      font-size: clamp(2.6rem, 7vw, 5rem);
-      line-height: 1.05;
-      letter-spacing: 0.01em;
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 1.1;
+      letter-spacing: 0.005em;
       color: var(--ink);
       margin: 0;
       opacity: 0;
@@ -136,7 +136,7 @@
     .hero-title .amp {
       color: var(--sand-dark);
       font-weight: 400;
-      margin: 0 0.06em;
+      margin: 0 0.05em;
       font-size: 0.95em;
     }
 
@@ -256,6 +256,7 @@
       letter-spacing: 0.32em;
       text-transform: uppercase;
       color: var(--ink-soft);
+      white-space: nowrap;
     }
 
     .hero-divider {
@@ -727,9 +728,13 @@
     .h-timeline {
       display: flex;
       align-items: flex-start;
+      justify-content: space-between;
       position: relative;
       min-width: 600px;
       padding: 0 1rem;
+    }
+    .h-item {
+      width: 0;            /* let flex distribute equal width using flex:1 below */
     }
     .h-timeline::before {
       content: '';
@@ -1530,8 +1535,8 @@
       .nav-links a { font-size: 0.56rem; letter-spacing: 0.1em; }
       /* Hero scaling */
       #hero { padding: clamp(4rem, 8vh, 5rem) 1rem clamp(2rem, 4vh, 3rem); gap: 1rem; }
-      .hero-title { font-size: clamp(2.2rem, 11vw, 3.4rem); }
-      .hero-meta { font-size: 0.7rem; letter-spacing: 0.22em; }
+      .hero-title { font-size: clamp(2.4rem, 12vw, 3.6rem); }
+      .hero-meta { font-size: 0.55rem; letter-spacing: 0.18em; }
       .countdown { gap: 1.25rem; }
       .countdown-num { font-size: 1.7rem; }
       .countdown-label { font-size: 0.55rem; }
@@ -1882,15 +1887,20 @@
       flex: 1;
       cursor: pointer;
       padding: 0.5rem 0.85rem;
+      min-height: 2.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
       border: 1px solid var(--sand);
       background: var(--sand-pale);
       font-family: var(--sans);
       font-size: 0.7rem;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--ink-soft);
       transition: all 0.25s ease;
+      line-height: 1.25;
     }
     .attend-toggle label:hover { background: var(--sand-light); color: var(--ink); }
     .attend-toggle input { display: none; }
@@ -2762,12 +2772,17 @@
       html.doors-locked, html.doors-locked body { overflow: auto; height: auto; }
     }
 
-    /* Mobile tweaks */
+    /* Mobile tweaks — also lighten the envelope so it isn't laggy */
     @media (max-width: 640px) {
       .envelope { width: clamp(260px, 80vmin, 360px); }
       .env-prompt { bottom: 2rem; font-size: 0.7rem; letter-spacing: 0.32em; padding: 0.85rem 1.8rem; }
       .env-address-name { font-size: 1rem; }
       .letter-names { font-size: 1.7rem; }
+      /* Drop the heavy decoration on phones so the envelope opens smoothly */
+      .env-orbs, .env-flecks { display: none; }
+      .env-bloom::before, .env-bloom::after { filter: blur(28px); }
+      /* Show fewer sparkles to keep paint cost low */
+      .env-spark:nth-child(n+8) { display: none; }
     }
   </style>
 </head>
@@ -2903,7 +2918,7 @@
 
     <!-- Details, countdown, buttons -->
     <div class="hero-content">
-      <p class="hero-meta">11 July 2027 &nbsp;·&nbsp; Oasia Resort Sentosa &nbsp;·&nbsp; Singapore</p>
+      <p class="hero-meta">11 July 2027 &nbsp;·&nbsp; Oasia Resort Sentosa</p>
       <div class="hero-divider"></div>
 
       <div class="countdown" id="countdown" aria-label="Countdown to wedding">
@@ -3286,7 +3301,7 @@
             </div>
             <p class="h-item-time">5.30 pm</p>
             <p class="h-item-event">Solemnisation</p>
-            <p class="h-item-desc">The legal moment, with our closest by our side. Cypress Function Room.</p>
+            <p class="h-item-desc">The legal vows, with our closest by our side.</p>
           </div>
 
           <!-- 6pm Tea Ceremony (family only) — round teacup with steam -->
@@ -3302,7 +3317,7 @@
             </div>
             <p class="h-item-time">6 pm</p>
             <p class="h-item-event">Tea Ceremony</p>
-            <p class="h-item-desc">Honouring our families with the traditional tea, in the same room.</p>
+            <p class="h-item-desc">Honouring our families with traditional tea.</p>
           </div>
 
           <!-- 6pm onwards Arrival — clinking champagne flutes -->
@@ -3322,7 +3337,7 @@
             </div>
             <p class="h-item-time">6 pm onwards</p>
             <p class="h-item-event">Arrival</p>
-            <p class="h-item-desc">Settle in over a drink, find familiar faces, and catch up before the night begins. Drinks and canapés will be flowing.</p>
+            <p class="h-item-desc">Drinks, canapés, and warm hellos.</p>
           </div>
 
           <!-- 6.40pm Be Seated — chair with a heart -->
@@ -3337,7 +3352,7 @@
             </div>
             <p class="h-item-time">6.40 pm</p>
             <p class="h-item-event">Be Seated</p>
-            <p class="h-item-desc">Please be in your seat by 6.40 pm sharp. <strong>Do not be late!</strong></p>
+            <p class="h-item-desc">Be in your seat by 6.40 pm sharp. <strong>Do not be late!</strong></p>
           </div>
 
           <!-- 6.50pm Ceremony — heart inside a circle, rays -->
@@ -3354,7 +3369,7 @@
             </div>
             <p class="h-item-time">6.50 pm</p>
             <p class="h-item-event">Ceremony Begins</p>
-            <p class="h-item-desc">The walk-in, with you beside us. Please be settled in time.</p>
+            <p class="h-item-desc">The walk-in, with you beside us.</p>
           </div>
 
           <!-- 8.30pm Fun begins — music note with sparkle -->
