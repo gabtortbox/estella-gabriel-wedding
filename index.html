@@ -63,14 +63,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.85rem 2rem;
+      padding: 0.4rem 1.75rem;
       background: var(--sand-pale);
       border-bottom: 0.5px solid var(--sand-light);
       transition: background 0.4s, backdrop-filter 0.4s, box-shadow 0.4s;
     }
     nav.scrolled {
-      background: rgba(247, 243, 238, 0.94);
-      backdrop-filter: blur(12px);
+      background: var(--sand-pale);   /* solid bg avoids expensive backdrop-filter blur */
       box-shadow: 0 2px 12px rgba(42,37,32,0.05);
     }
     .nav-logo {
@@ -78,13 +77,13 @@
       text-decoration: none;
     }
     .nav-logo img {
-      height: 64px;
+      height: 48px;
       width: auto;
       mix-blend-mode: multiply;  /* makes the JPEG's white bg disappear into the page bg */
       opacity: 0.95;
       transition: opacity 0.3s, height 0.3s;
     }
-    nav.scrolled .nav-logo img { opacity: 1; height: 56px; }
+    nav.scrolled .nav-logo img { opacity: 1; height: 42px; }
     .nav-logo img:hover { opacity: 1; }
     .nav-links {
       display: flex;
@@ -117,9 +116,8 @@
       text-align: center;
       position: relative;
       background: var(--sand-pale);
-      padding: clamp(5.5rem, 10vh, 7.5rem) 1.5rem clamp(1.25rem, 2.5vh, 2rem);
-      gap: clamp(0.75rem, 1.5vh, 1.25rem);
-      min-height: 100vh;
+      padding: clamp(7rem, 13vh, 9.5rem) 1.5rem clamp(2rem, 4vh, 3rem);
+      gap: clamp(1.1rem, 2.2vh, 1.75rem);
       box-sizing: border-box;
     }
 
@@ -163,9 +161,9 @@
     /* Hero photo — capped to fit comfortably in viewport with the rest of the hero */
     .hero-photo-card {
       position: relative;
-      max-width: clamp(260px, 46vw, 460px);
+      max-width: clamp(280px, 50vw, 500px);
       width: auto;
-      max-height: 38vh;
+      max-height: 42vh;
       overflow: hidden;
       box-shadow:
         0 6px 18px rgba(42,37,32,0.12),
@@ -175,7 +173,7 @@
     .hero-photo {
       display: block;
       max-width: 100%;
-      max-height: 38vh;
+      max-height: 42vh;
       width: auto;
       height: auto;
       object-fit: cover;
@@ -498,20 +496,32 @@
       margin-right: calc(50% - 50vw);
       padding: 1.5rem 0 2rem;
       overflow: hidden;
-      /* edge fades on left & right */
-      mask: linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%);
-      -webkit-mask: linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%);
+      contain: layout paint;
     }
+    /* Edge fades using cheap pseudo-elements (not GPU-expensive masks) */
+    .story-spread-photos::before,
+    .story-spread-photos::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 6vw;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .story-spread-photos::before { left: 0; background: linear-gradient(to right, var(--sand-pale), transparent); }
+    .story-spread-photos::after  { right: 0; background: linear-gradient(to left,  var(--sand-pale), transparent); }
 
     /* The animated track holds the photos twice (original + clone) so
-       translating -50% loops seamlessly back to the start position. */
+       translating -50% loops seamlessly back to the start position.
+       Animation starts paused; JS resumes it when the strip enters the viewport. */
     .story-photos-track {
       display: flex;
       gap: 1.5rem;
       width: max-content;
-      animation: marqueeScroll 60s linear infinite;
+      animation: marqueeScroll 60s linear infinite paused;
       will-change: transform;
     }
+    .story-spread-photos.in-view .story-photos-track { animation-play-state: running; }
     /* Pause on hover so a guest can linger on a photo */
     .story-spread-photos:hover .story-photos-track { animation-play-state: paused; }
 
@@ -936,6 +946,7 @@
       transition: transform 0.6s cubic-bezier(0.22,1,0.36,1),
                   box-shadow 0.6s ease;
       transform-origin: center bottom;
+      contain: layout paint;
     }
     .year-photo img {
       width: 100%; height: 100%;
@@ -1512,9 +1523,9 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      nav { padding: 0.65rem 0.85rem; gap: 0.5rem; }
-      .nav-logo img { height: 48px; }
-      nav.scrolled .nav-logo img { height: 44px; }
+      nav { padding: 0.35rem 0.75rem; gap: 0.5rem; }
+      .nav-logo img { height: 38px; }
+      nav.scrolled .nav-logo img { height: 34px; }
       .nav-links { gap: 0.75rem; }
       .nav-links a { font-size: 0.56rem; letter-spacing: 0.1em; }
       /* Hero scaling */
@@ -2276,10 +2287,10 @@
       pointer-events: none;
     }
 
-    /* Address line on the front */
+    /* Address line on the front — sits low so the flap point doesn't overlap it */
     .env-address {
       position: absolute;
-      bottom: 18%;
+      bottom: 6%;
       left: 50%;
       transform: translateX(-50%);
       text-align: center;
@@ -2387,7 +2398,7 @@
     .env-flap {
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 60%;
+      height: 48%;
       background: linear-gradient(180deg, #f7e8c2 0%, #ecd6a3 100%);
       clip-path: polygon(0 0, 100% 0, 50% 100%);
       transform-origin: top center;
@@ -3052,7 +3063,6 @@
 
   <!-- YEARS TIMELINE -->
   <section id="years">
-    <div class="years-silk" aria-hidden="true"></div>
     <div class="years-inner">
       <div class="years-header reveal">
         <p class="section-label">Us, Through the Years</p>
@@ -3755,13 +3765,13 @@
         // Allow scrolling once the paper is rising out
         setTimeout(() => {
           document.documentElement.classList.remove('doors-locked');
-        }, 1800);
+        }, 2400);
 
-        // After the paper has expanded to its full size, fade the overlay and reveal the hero
+        // Card lingers fully visible for ~2.5s before we begin the reveal
         setTimeout(() => {
           document.body.classList.add('hero-ready');
           overlay.classList.add('closing');
-        }, 2400);
+        }, 4500);
 
         overlay.addEventListener('animationend', (ev) => {
           if (ev.animationName === 'envFade') {
@@ -4114,7 +4124,17 @@
       updateProgress();
     }
 
-    window.addEventListener('scroll', updateNav, { passive: true });
+    // Throttle scroll updates with requestAnimationFrame so we update at most once per frame
+    let scrollTicking = false;
+    window.addEventListener('scroll', () => {
+      if (!scrollTicking) {
+        scrollTicking = true;
+        requestAnimationFrame(() => {
+          updateNav();
+          scrollTicking = false;
+        });
+      }
+    }, { passive: true });
 
     // ── Countdown with count-up on load
     const wedding = new Date('2027-07-11T17:00:00+08:00');
@@ -4171,6 +4191,18 @@
       });
     }, { threshold: 0.1 });
     allReveals.forEach(el => revealObserver.observe(el));
+
+    // ── Pause story photo marquees when off-screen (saves a lot of CPU/GPU)
+    const storyStrips = document.querySelectorAll('.story-spread-photos');
+    if (storyStrips.length && 'IntersectionObserver' in window) {
+      const stripObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => e.target.classList.toggle('in-view', e.isIntersecting));
+      }, { rootMargin: '200px 0px' });
+      storyStrips.forEach(el => stripObs.observe(el));
+    } else {
+      // Fallback: just keep them all running
+      storyStrips.forEach(el => el.classList.add('in-view'));
+    }
 
     // ── Years timeline: staggered reveal as each photo scrolls into the strip
     const yearsTimeline = document.getElementById('yearsTimeline');
