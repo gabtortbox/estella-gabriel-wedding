@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Estella & Gabriel | 11 July 2027</title>
+  <title>Gabriel & Estella | 11 July 2027</title>
   <script>
     // Lock scroll & jump-anchor during door reveal (before first paint)
     (function() {
@@ -16,18 +16,18 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --sand: #c8b99a;
-      --sand-light: #e8ddd0;
-      --sand-pale: #f7f3ee;
-      --sand-dark: #8a7660;
-      --ink: #2a2520;
-      --ink-soft: #5a5248;
-      --white: #fdfaf7;
+      --sand: #c4ab94;
+      --sand-light: #ecdfd2;
+      --sand-pale: #f7f1ec;
+      --sand-dark: #8c7460;
+      --ink: #2c2520;
+      --ink-soft: #5d5046;
+      --white: #fdfaf6;
       --serif: 'Cormorant Garamond', Georgia, serif;
       --sans: 'Jost', sans-serif;
     }
@@ -63,26 +63,28 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.25rem 3rem;
-      transition: background 0.4s, backdrop-filter 0.4s;
+      padding: 0.85rem 2rem;
+      background: var(--sand-pale);
+      border-bottom: 0.5px solid var(--sand-light);
+      transition: background 0.4s, backdrop-filter 0.4s, box-shadow 0.4s;
     }
     nav.scrolled {
-      background: rgba(253, 250, 247, 0.92);
+      background: rgba(247, 243, 238, 0.94);
       backdrop-filter: blur(12px);
-      border-bottom: 0.5px solid var(--sand-light);
+      box-shadow: 0 2px 12px rgba(42,37,32,0.05);
     }
     .nav-logo {
       display: block;
       text-decoration: none;
     }
     .nav-logo img {
-      height: 48px;
+      height: 64px;
       width: auto;
       mix-blend-mode: multiply;  /* makes the JPEG's white bg disappear into the page bg */
       opacity: 0.95;
-      transition: opacity 0.3s;
+      transition: opacity 0.3s, height 0.3s;
     }
-    nav.scrolled .nav-logo img { opacity: 1; }
+    nav.scrolled .nav-logo img { opacity: 1; height: 56px; }
     .nav-logo img:hover { opacity: 1; }
     .nav-links {
       display: flex;
@@ -115,24 +117,56 @@
       text-align: center;
       position: relative;
       background: var(--sand-pale);
-      padding: clamp(5rem, 10vh, 7rem) 1.5rem clamp(2.5rem, 6vh, 4rem);
-      gap: clamp(1.25rem, 3vh, 2rem);
+      padding: clamp(5.5rem, 10vh, 7.5rem) 1.5rem clamp(1.25rem, 2.5vh, 2rem);
+      gap: clamp(0.75rem, 1.5vh, 1.25rem);
+      min-height: 100vh;
+      box-sizing: border-box;
     }
 
-    /* Big logo at the top — blends seamlessly into page bg */
-    .hero-logo-big {
-      width: clamp(180px, 26vw, 320px);
-      height: auto;
-      mix-blend-mode: multiply;
+    /* Big title at the top of the hero — elegant script for the names */
+    .hero-title {
+      font-family: 'Allura', 'Cormorant Garamond', cursive;
+      font-style: normal;
+      font-weight: 400;
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      line-height: 1.05;
+      letter-spacing: 0.01em;
+      color: var(--ink);
+      margin: 0;
       opacity: 0;
-      animation: fadeUp 1.1s cubic-bezier(0.22,1,0.36,1) 0.3s forwards;
+    }
+    .hero-title .amp {
+      color: var(--sand-dark);
+      font-weight: 400;
+      margin: 0 0.06em;
+      font-size: 0.95em;
     }
 
-    /* Hero photo — shown at its natural size, no animation */
+    /* Hero contents only animate in once the envelope is finished */
+    .hero-photo-card,
+    .hero-meta,
+    .hero-divider,
+    .countdown,
+    .hero-cta,
+    .scroll-indicator {
+      opacity: 0;
+    }
+    /* Hero photo card fades in immediately so it cross-fades with the dissolving envelope letter */
+    body.hero-ready .hero-photo-card  { animation: fadeIn 1.1s ease 0s forwards; }
+    body.hero-ready .hero-title       { animation: fadeUp 1.1s cubic-bezier(0.22,1,0.36,1) 0.4s forwards; }
+    body.hero-ready .hero-meta        { animation: fadeUp 0.9s ease 0.9s forwards; }
+    body.hero-ready .hero-divider     { animation: fadeUp 0.9s ease 1.0s forwards; }
+    body.hero-ready .countdown        { animation: fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.1s forwards; }
+    body.hero-ready .hero-cta         { animation: fadeUp 0.9s ease 1.3s forwards; }
+    body.hero-ready .scroll-indicator { animation: fadeIn 0.9s ease 1.6s forwards; }
+
+    /* Hero photo — capped to fit comfortably in viewport with the rest of the hero */
     .hero-photo-card {
       position: relative;
-      max-width: clamp(280px, 60vw, 600px);
+      max-width: clamp(260px, 46vw, 460px);
       width: auto;
+      max-height: 38vh;
+      overflow: hidden;
       box-shadow:
         0 6px 18px rgba(42,37,32,0.12),
         0 22px 48px rgba(42,37,32,0.16);
@@ -141,8 +175,10 @@
     .hero-photo {
       display: block;
       max-width: 100%;
+      max-height: 38vh;
       width: auto;
       height: auto;
+      object-fit: cover;
     }
 
     @keyframes heroReveal {
@@ -155,19 +191,18 @@
       to   { transform: scale(1.07); object-position: center 38%; }
     }
 
-    /* Scroll indicator */
+    /* Scroll indicator (animated in by body.hero-ready) */
     .scroll-indicator {
       position: relative;
       z-index: 2;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
-      opacity: 0;
-      animation: fadeIn 1s ease 2.2s forwards;
-      padding-bottom: 1.5rem;
-      margin-top: 1.5rem;
+      gap: 0.4rem;
+      padding-bottom: 0;
+      margin-top: 0.5rem;
     }
+    .scroll-line { height: 28px; }
     .scroll-indicator span {
       font-family: var(--sans);
       font-size: 0.58rem;
@@ -223,8 +258,6 @@
       letter-spacing: 0.32em;
       text-transform: uppercase;
       color: var(--ink-soft);
-      opacity: 0;
-      animation: fadeUp 1s cubic-bezier(0.22,1,0.36,1) 1.1s forwards;
     }
 
     .hero-divider {
@@ -232,8 +265,6 @@
       height: 0.5px;
       background: var(--sand-dark);
       margin: 0 auto;
-      opacity: 0;
-      animation: fadeUp 1s ease 1.2s forwards;
     }
 
     /* ── COUNTDOWN ── */
@@ -241,8 +272,6 @@
       display: flex;
       gap: 2.5rem;
       margin: 0;
-      opacity: 0;
-      animation: fadeUp 1s cubic-bezier(0.22,1,0.36,1) 1.3s forwards;
     }
     .countdown-unit {
       display: flex;
@@ -252,7 +281,7 @@
     }
     .countdown-num {
       font-family: var(--serif);
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
       font-weight: 300;
       color: var(--ink);
       line-height: 1;
@@ -261,7 +290,7 @@
     }
     .countdown-label {
       font-family: var(--sans);
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       font-weight: 300;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -272,8 +301,6 @@
       margin-top: 0.5rem;
       display: flex;
       gap: 1.2rem;
-      opacity: 0;
-      animation: fadeUp 1s ease 1.5s forwards;
     }
     .btn {
       font-family: var(--sans);
@@ -615,6 +642,19 @@
     .dresscode-panel .section-label { color: var(--sand); }
     .dresscode-panel .section-title { color: var(--white); }
     .dresscode-panel .section-divider { background: var(--sand); margin: 1.5rem auto 2.5rem; }
+    /* Dress code image — white bg removed via multiply blending */
+    .dresscode-image {
+      position: relative;
+      max-width: 520px;
+      margin: 2.5rem auto 1.5rem;
+    }
+    .dresscode-image img {
+      display: block;
+      width: 100%;
+      height: auto;
+      mix-blend-mode: multiply;       /* white pixels disappear into the page bg */
+    }
+
     .dresscode-swatches {
       display: flex;
       justify-content: center;
@@ -627,11 +667,20 @@
       flex-direction: column;
       align-items: center;
       gap: 0.6rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
     }
+    .swatch:hover { transform: translateY(-3px); }
     .swatch-circle {
       width: 48px; height: 48px;
       border-radius: 50%;
       border: 0.5px solid rgba(255,255,255,0.15);
+      box-shadow: 0 2px 6px rgba(42,37,32,0.08);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .swatch:hover .swatch-circle {
+      box-shadow: 0 6px 16px rgba(42,37,32,0.18);
+      transform: scale(1.08);
     }
     .swatch-name {
       font-family: var(--sans);
@@ -675,11 +724,13 @@
     .h-timeline::before {
       content: '';
       position: absolute;
-      top: 32px;             /* aligned with the vertical centre of the 64px icon circles */
+      top: 32px;             /* exact centre of the 64px icon circles */
       left: 4%;
       right: 4%;
-      height: 0.5px;
+      height: 1px;
       background: var(--sand);
+      transform: translateY(-50%);   /* centres the 1px line precisely on y=32 */
+      pointer-events: none;
     }
     .h-item {
       flex: 1;
@@ -1027,7 +1078,7 @@
       line-height: 1.4;
     }
     .dir-btn + .dir-btn { border-top: 0.5px solid var(--sand-light); }
-    .dir-btn svg { width: 15px; height: 15px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .dir-btn svg { width: 22px; height: 22px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
     .dir-btn:hover { color: var(--ink); background: rgba(200,185,154,0.12); }
     .dir-btn.active { color: var(--ink); background: var(--white); border-left-color: var(--sand-dark); font-weight: 400; }
 
@@ -1461,12 +1512,28 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      nav { padding: 0.85rem 1rem; gap: 0.75rem; }
-      .nav-links { gap: 1.1rem; }
-      .nav-links a { font-size: 0.6rem; letter-spacing: 0.12em; }
+      nav { padding: 0.65rem 0.85rem; gap: 0.5rem; }
+      .nav-logo img { height: 48px; }
+      nav.scrolled .nav-logo img { height: 44px; }
+      .nav-links { gap: 0.75rem; }
+      .nav-links a { font-size: 0.56rem; letter-spacing: 0.1em; }
+      /* Hero scaling */
+      #hero { padding: clamp(4rem, 8vh, 5rem) 1rem clamp(2rem, 4vh, 3rem); gap: 1rem; }
+      .hero-title { font-size: clamp(2.2rem, 11vw, 3.4rem); }
+      .hero-meta { font-size: 0.7rem; letter-spacing: 0.22em; }
+      .countdown { gap: 1.25rem; }
+      .countdown-num { font-size: 1.7rem; }
+      .countdown-label { font-size: 0.55rem; }
+      .hero-cta .btn { padding: 0.75rem 1.4rem; font-size: 0.62rem; letter-spacing: 0.18em; }
+      /* Story */
       .story-spread { gap: 1.75rem; margin-bottom: 4rem; }
-      .story-spread-photos { gap: 1rem; padding: 1rem 0 1.5rem; }
-      .story-spread-photos .photo-card { width: clamp(160px, 65vw, 220px); }
+      .story-spread-text h3 { font-size: 1.6rem; }
+      .story-spread-text p { font-size: 0.95rem; line-height: 1.75; }
+      .story-spread-photos { padding: 1rem 0 1.5rem; }
+      .story-photos-track { gap: 1rem; }
+      .story-photos-track .photo-card { height: clamp(200px, 28vh, 260px); padding: 0.4rem 0.4rem 1.1rem; }
+      /* Section titles a touch tighter */
+      .section-title { font-size: clamp(1.6rem, 6.5vw, 2.4rem); }
       .info-grid { grid-template-columns: 1fr; }
       .photo-mosaic {
         grid-template-columns: 1fr 1fr;
@@ -1665,25 +1732,49 @@
       letter-spacing: 0.02em;
     }
 
-    /* Event block — clear per-event rsvp toggle stack */
+    /* Event block — per-event rsvp segment with icon + title + toggle */
     .event-block {
-      margin: 0.55rem 0 0;
-      padding-bottom: 0.55rem;
-      border-bottom: 1px dashed rgba(200,185,154,0.4);
+      margin: 0.65rem 0 0;
+      padding: 0.55rem 0.85rem 0.7rem;
+      background: rgba(247, 243, 238, 0.45);
+      border-radius: 8px;
     }
-    .event-block:last-of-type { border-bottom: none; padding-bottom: 0; }
     .event-block.primary {
-      margin-top: 0.7rem;
-      padding-top: 0.6rem;
-      border-top: 1px solid rgba(200,185,154,0.55);
+      background: rgba(232, 221, 208, 0.4);
+      margin-top: 0.85rem;
+      padding: 0.75rem 0.9rem 0.85rem;
+      border: 1px solid rgba(200,185,154,0.4);
     }
     .event-block-head {
       display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 0.35rem;
-      flex-wrap: wrap;
-      gap: 0.4rem;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 0.55rem;
+    }
+    .event-block-icon {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1px solid var(--sand-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .event-block-icon svg {
+      width: 16px; height: 16px;
+      stroke: var(--sand-dark);
+      fill: none;
+      stroke-width: 1.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .event-block-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+      min-width: 0;
     }
     .event-block-title {
       font-family: var(--serif);
@@ -1699,12 +1790,13 @@
     .event-block-time {
       font-family: var(--sans);
       font-size: 0.6rem;
-      letter-spacing: 0.28em;
+      letter-spacing: 0.26em;
       text-transform: uppercase;
       color: var(--ink-soft);
+      margin-top: 0.2rem;
     }
     .attend-toggle.event-attend label {
-      padding: 0.4rem 0.75rem;
+      padding: 0.45rem 0.85rem;
       font-size: 0.62rem;
       letter-spacing: 0.22em;
     }
@@ -1714,20 +1806,61 @@
     #rsvpForm.show { display: block; }
     .member-card {
       background: var(--white);
-      padding: 1.1rem 1.25rem 1rem;
-      margin-bottom: 0.75rem;
+      padding: 1.4rem 1.5rem 1.25rem;
+      margin-bottom: 1.25rem;
+      border-radius: 10px;
+      border: 1px solid var(--sand-light);
       border-left: 3px solid var(--sand);
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 8px rgba(42,37,32,0.04);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     }
-    .member-card.attending { border-left-color: #6a8545; box-shadow: 0 4px 14px rgba(106,133,69,0.1); }
-    .member-card.declining { border-left-color: #b08a7a; opacity: 0.85; }
+    .member-card.attending {
+      border-left-color: #6a8545;
+      box-shadow: 0 4px 18px rgba(106,133,69,0.10);
+    }
+    .member-card.declining {
+      border-left-color: #b08a7a;
+      opacity: 0.86;
+    }
+    .member-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px dashed rgba(200,185,154,0.5);
+      margin-bottom: 0.85rem;
+    }
+    .member-icon {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: var(--sand-pale);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.3s ease;
+    }
+    .member-icon svg {
+      width: 18px; height: 18px;
+      stroke: var(--sand-dark);
+      fill: none;
+      stroke-width: 1.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 0.3s ease;
+    }
+    .member-card.attending .member-icon { background: #e3ecd2; }
+    .member-card.attending .member-icon svg { stroke: #6a8545; }
+    .member-card.declining .member-icon { background: #f0e0d6; }
+    .member-card.declining .member-icon svg { stroke: #b08a7a; }
     .member-card .member-name {
       font-family: var(--serif);
       font-style: italic;
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       color: var(--ink);
-      margin-bottom: 0.5rem;
+      margin: 0;
       font-weight: 300;
+      line-height: 1.1;
     }
     .attend-toggle {
       display: flex;
@@ -2177,10 +2310,77 @@
     .env-address-from {
       display: block;
       margin-top: 0.55rem;
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(140,100,50,0.65);
+    }
+    .env-address-divider {
+      display: block;
+      width: 36px;
+      height: 1px;
+      margin: 0.55rem auto;
+      background: rgba(140,100,50,0.45);
+    }
+    .env-address-script {
+      display: block;
+      font-family: 'Allura', cursive;
+      font-weight: 400;
+      font-size: clamp(1.4rem, 3.6vmin, 2rem);
+      line-height: 1;
+      color: rgba(70,45,15,0.85);
+      letter-spacing: 0.01em;
+    }
+
+    /* Gold corner ornaments on envelope front */
+    .env-orn {
+      position: absolute;
+      width: clamp(20px, 4.5vmin, 30px);
+      height: clamp(20px, 4.5vmin, 30px);
+      border: 1px solid rgba(143,109,43,0.7);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .env-orn.tl { top: clamp(0.5rem, 1.6vmin, 1rem); left: clamp(0.5rem, 1.6vmin, 1rem); border-right: none; border-bottom: none; }
+    .env-orn.tr { top: clamp(0.5rem, 1.6vmin, 1rem); right: clamp(0.5rem, 1.6vmin, 1rem); border-left: none; border-bottom: none; }
+    .env-orn.bl { bottom: clamp(0.5rem, 1.6vmin, 1rem); left: clamp(0.5rem, 1.6vmin, 1rem); border-right: none; border-top: none; }
+    .env-orn.br { bottom: clamp(0.5rem, 1.6vmin, 1rem); right: clamp(0.5rem, 1.6vmin, 1rem); border-left: none; border-top: none; }
+
+    /* Postage-style date stamp in the top-right corner */
+    .env-stamp {
+      position: absolute;
+      top: clamp(0.85rem, 2.4vmin, 1.4rem);
+      right: clamp(0.85rem, 2.4vmin, 1.4rem);
+      width: clamp(48px, 9vmin, 72px);
+      height: clamp(48px, 9vmin, 72px);
+      border: 1px dashed rgba(140,100,50,0.55);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.05rem;
+      transform: rotate(-8deg);
+      z-index: 3;
+      background: rgba(247,237,210,0.4);
+    }
+    .env-stamp-line {
+      font-family: var(--sans);
+      font-size: clamp(0.45rem, 1.3vmin, 0.6rem);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(110,75,25,0.75);
+      line-height: 1;
+    }
+    .env-stamp-line.stamp-month {
       font-family: var(--serif);
       font-style: italic;
-      font-size: 0.78rem;
-      color: rgba(140,100,50,0.65);
+      font-size: clamp(0.7rem, 1.9vmin, 0.95rem);
+      letter-spacing: 0.04em;
+      text-transform: none;
+      color: var(--gold-deep);
+      margin: 0.1rem 0;
     }
 
     /* Flap — the triangle on top of the envelope */
@@ -2283,6 +2483,96 @@
                   width 1.2s cubic-bezier(0.22,1,0.36,1) 1.5s,
                   max-height 1.2s cubic-bezier(0.22,1,0.36,1) 1.5s;
     }
+    .letter-paper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: clamp(1.5rem, 4vmin, 2.75rem) clamp(1rem, 4vmin, 2.5rem);
+      gap: clamp(0.5rem, 1.4vmin, 1rem);
+    }
+    .letter-corner {
+      position: absolute;
+      width: clamp(28px, 6vmin, 44px);
+      height: clamp(28px, 6vmin, 44px);
+      border: 1px solid rgba(140,100,50,0.6);
+      pointer-events: none;
+    }
+    .letter-corner.tl { top: clamp(0.6rem, 1.8vmin, 1.2rem); left: clamp(0.6rem, 1.8vmin, 1.2rem); border-right: none; border-bottom: none; }
+    .letter-corner.tr { top: clamp(0.6rem, 1.8vmin, 1.2rem); right: clamp(0.6rem, 1.8vmin, 1.2rem); border-left: none; border-bottom: none; }
+    .letter-corner.bl { bottom: clamp(0.6rem, 1.8vmin, 1.2rem); left: clamp(0.6rem, 1.8vmin, 1.2rem); border-right: none; border-top: none; }
+    .letter-corner.br { bottom: clamp(0.6rem, 1.8vmin, 1.2rem); right: clamp(0.6rem, 1.8vmin, 1.2rem); border-left: none; border-top: none; }
+
+    .letter-eyebrow {
+      font-family: var(--sans);
+      font-size: clamp(0.55rem, 1.4vmin, 0.7rem);
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(90,60,20,0.75);
+      margin: 0;
+    }
+    .letter-script {
+      font-family: 'Allura', cursive;
+      font-weight: 400;
+      font-size: clamp(2.2rem, 7.5vmin, 4rem);
+      line-height: 1.1;
+      letter-spacing: 0.01em;
+      color: #5a3d15;
+      margin: 0.2rem 0 0.4rem;
+    }
+    .letter-amp {
+      color: var(--gold-deep);
+      font-size: 0.92em;
+      margin: 0 0.05em;
+    }
+    .letter-invite {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(0.78rem, 1.7vmin, 0.95rem);
+      color: rgba(90,60,20,0.85);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .letter-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      width: clamp(120px, 26vmin, 200px);
+      margin: 0.4rem auto 0.2rem;
+      color: var(--gold-deep);
+    }
+    .letter-divider span {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-deep), transparent);
+    }
+    .letter-divider .diamond {
+      flex: 0 0 auto;
+      font-size: 0.7rem;
+      color: var(--gold-deep);
+    }
+    .letter-date {
+      font-family: var(--sans);
+      font-size: clamp(0.62rem, 1.5vmin, 0.78rem);
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: #5a3d15;
+      margin: 0.2rem 0 0;
+    }
+    .letter-venue {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(0.78rem, 1.7vmin, 0.95rem);
+      color: rgba(90,60,20,0.85);
+      margin: 0;
+    }
     .env-letter::before {
       /* Subtle paper grain */
       content: '';
@@ -2371,34 +2661,22 @@
       color: rgba(90,60,20,0.78);
     }
 
-    /* Animation: letter rises out of envelope, then grows to fill viewport (becomes the site) */
+    /* Open state — letter rises out of the envelope and grows into a centered paper card */
     .env-overlay.opening .env-letter {
       transform: translate(-50%, -50%) scale(1);
       opacity: 1;
-      width: 100vw;
-      max-height: 100vh;
-      height: 100vh;
+      width: min(86vw, 520px);
+      height: auto;
+      max-height: 85vh;
       z-index: 7;
-      box-shadow: none;
       transition:
-        transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.5s,
-        opacity 0.4s ease 0.6s,
-        width 1.4s cubic-bezier(0.83,0,0.17,1) 1.2s,
-        height 1.4s cubic-bezier(0.83,0,0.17,1) 1.2s,
-        max-height 1.4s cubic-bezier(0.83,0,0.17,1) 1.2s,
-        box-shadow 0.8s ease 1.6s,
-        background 1.4s ease 1.2s;
-      background: linear-gradient(180deg, var(--paper) 0%, #f0e0b8 100%);
-    }
-    /* As the letter reaches viewport size, fade its content so the actual site shows through */
-    .env-overlay.opening .env-letter .letter-content {
-      animation: letterContentFade 1s ease 2.2s forwards;
-    }
-    @keyframes letterContentFade {
-      to { opacity: 0; transform: scale(1.04); }
+        transform 1s cubic-bezier(0.22,1,0.36,1) 0.5s,
+        opacity 0.5s ease 0.55s,
+        width 1.1s cubic-bezier(0.22,1,0.36,1) 0.7s,
+        max-height 1.1s cubic-bezier(0.22,1,0.36,1) 0.7s;
     }
     .env-overlay.opening .env-letter::after {
-      animation: letterFoldFade 0.8s ease 1.8s forwards;
+      animation: letterFoldFade 0.5s ease 0.4s forwards;
     }
     @keyframes letterFoldFade {
       to { opacity: 0; }
@@ -2453,8 +2731,8 @@
       transition: opacity 0.3s ease;
     }
 
-    /* Final fade: overlay disappears after the letter has expanded to viewport size */
-    .env-overlay.closing { animation: envFade 1.1s ease 3.2s forwards; }
+    /* Final fade: overlay disappears once JS adds .closing (after the letter has morphed) */
+    .env-overlay.closing { animation: envFade 1.1s ease 0s forwards; }
     @keyframes envFade {
       to { opacity: 0; visibility: hidden; }
     }
@@ -2528,32 +2806,50 @@
     <!-- The envelope -->
     <div class="envelope" id="envelopeShape">
       <div class="env-body">
+        <!-- Decorative gold corner ornaments -->
+        <span class="env-orn tl" aria-hidden="true"></span>
+        <span class="env-orn tr" aria-hidden="true"></span>
+        <span class="env-orn bl" aria-hidden="true"></span>
+        <span class="env-orn br" aria-hidden="true"></span>
+
+        <!-- A small "stamp" in the top-right with the date -->
+        <div class="env-stamp" aria-hidden="true">
+          <span class="env-stamp-line">11</span>
+          <span class="env-stamp-line stamp-month">JUL</span>
+          <span class="env-stamp-line">2027</span>
+        </div>
+
         <div class="env-address">
           <span class="env-address-to">to</span>
           <span class="env-address-name">our beloved guest</span>
-          <span class="env-address-from">Estella &amp; Gabriel · 11 July 2027</span>
+          <span class="env-address-divider"></span>
+          <span class="env-address-script">Gabriel &amp; Estella</span>
+          <span class="env-address-from">a wedding invitation · 11 · 07 · 2027</span>
         </div>
       </div>
 
       <div class="env-flap">
         <div class="env-seal">
-          <span class="env-seal-letters">E&nbsp;&amp;&nbsp;G</span>
+          <span class="env-seal-letters">G&nbsp;&amp;&nbsp;E</span>
         </div>
       </div>
 
-      <!-- The letter inside (revealed when flap opens) -->
+      <!-- Paper letter inside (revealed when flap opens) -->
       <div class="env-letter" aria-hidden="true">
-        <div class="letter-content">
+        <div class="letter-paper">
+          <span class="letter-corner tl"></span>
+          <span class="letter-corner tr"></span>
+          <span class="letter-corner bl"></span>
+          <span class="letter-corner br"></span>
+
           <p class="letter-eyebrow">Together with our families</p>
-          <img class="letter-monogram" src="assets/photos/logo.jpeg" alt="" onerror="this.style.display='none'" />
-          <div class="letter-flourish">
-            <span class="letter-flourish-line"></span>
-            <span class="letter-flourish-dot"></span>
-            <span class="letter-flourish-line"></span>
-          </div>
-          <h2 class="letter-names">Estella &amp; Gabriel</h2>
-          <p class="letter-date">Eleven · Seven · Twenty Twenty-Seven</p>
-          <p class="letter-venue">Oasia Resort Sentosa</p>
+          <h2 class="letter-script">Gabriel <span class="letter-amp">&amp;</span> Estella</h2>
+          <p class="letter-invite">request the pleasure of your company<br/>at the celebration of their marriage</p>
+
+          <div class="letter-divider"><span></span><span class="diamond">◆</span><span></span></div>
+
+          <p class="letter-date">Eleven · July · Twenty Twenty-Seven</p>
+          <p class="letter-venue">Oasia Resort Sentosa, Singapore</p>
         </div>
       </div>
     </div>
@@ -2582,19 +2878,14 @@
 
   <!-- HERO -->
   <div id="hero">
-    <!-- Big logo at the top -->
-    <img
-      src="assets/photos/logo.jpeg"
-      alt="Estella and Gabriel monogram"
-      class="hero-logo-big"
-      onerror="this.style.display='none'"
-    />
+    <!-- Big title at the top -->
+    <h1 class="hero-title">Gabriel <span class="amp">&amp;</span> Estella</h1>
 
     <!-- Hero photo as a picture card -->
     <div class="hero-photo-card">
       <img
         src="assets/photos/hero.jpeg"
-        alt="Estella and Gabriel at Lake Tekapo, New Zealand"
+        alt="Gabriel and Estella at Lake Tekapo, New Zealand"
         class="hero-photo"
       />
     </div>
@@ -2650,11 +2941,6 @@
         <h3>Before We Knew</h3>
         <p>We first met in 2018, when we enrolled in the same course at NTU's Asian School of the Environment, studying Environmental Earth Systems Science.</p>
         <p>Alongside Wanqi &amp; Xavier, we became a close group of friends (s/o to babies!) where we spent the four years in university together. Late nights in the computer lab working on GIS maps, camping at each other's hall doing our coding assignments, going on morning runs. Long before this became a love story, it was built on comfort, familiarity, and a quiet sense of steadiness.</p>
-        <div class="story-tags">
-          <span class="story-tag">NTU</span>
-          <span class="story-tag">Babies</span>
-          <span class="story-tag">Friends First</span>
-        </div>
       </div>
       <div class="story-spread-photos reveal-right">
         <div class="story-photos-track">
@@ -2682,11 +2968,6 @@
         <h3>The Routes We Shared</h3>
         <p>As the years went on, our friendship grew through shared experiences and travel. Korea after graduation. Cebu for an outdoor adventure. Japan for snowboarding.</p>
         <p>These journeys were not just holidays, but memories that deepened our closeness, shaped our friendship, and quietly became part of the story that led us here.</p>
-        <div class="story-tags">
-          <span class="story-tag">Korea</span>
-          <span class="story-tag">Cebu</span>
-          <span class="story-tag">Japan</span>
-        </div>
       </div>
       <div class="story-spread-photos reveal-left">
         <div class="story-photos-track">
@@ -2714,12 +2995,6 @@
         <h3>Then It Became Us</h3>
         <p>What brought us closer was not one single moment, but a series of shared interests, choices, and experiences that slowly made the story feel different.</p>
         <p>From a baking course to a barista course at Bettr Academy, and from Tioman to Taiwan to Okinawa, we kept finding joy in learning, exploring, and discovering new things side by side. Diving, especially, became part of that journey, bringing trust, calm, and a deeper closeness that stayed with us.</p>
-        <div class="story-tags">
-          <span class="story-tag">Tioman</span>
-          <span class="story-tag">Taiwan</span>
-          <span class="story-tag">Okinawa</span>
-          <span class="story-tag">Diving</span>
-        </div>
       </div>
       <div class="story-spread-photos reveal-right">
         <div class="story-photos-track">
@@ -2753,11 +3028,6 @@
         <h3>The Next Chapter</h3>
         <p>What began as friendship became partnership, and what grew through years of shared experiences, places, and quiet turns now brings us here.</p>
         <p>This celebration is not only about a day, but about the life we have been building together, shaped by the people we love and the journey that brought us here. We are so happy to share this joy with you.</p>
-        <div class="story-tags">
-          <span class="story-tag">Partnership</span>
-          <span class="story-tag">Celebration</span>
-          <span class="story-tag">11 July 2027</span>
-        </div>
       </div>
       <div class="story-spread-photos reveal-left">
         <div class="story-photos-track">
@@ -2945,28 +3215,33 @@
         <p class="dresscode-note reveal reveal-delay-2">
           Loud <em>or</em> pastel colours; we'll confirm the exact palette closer to the day, depending on our florals. Pick whichever end of the spectrum you love. <em style="opacity:0.85;">(For the gents: a tie isn't necessary, "formal" doesn't have to mean stiff.)</em>
         </p>
+
+        <div class="dresscode-image reveal reveal-delay-2">
+          <img src="assets/photos/dresscode.jpeg" alt="Dress code style guide" onerror="this.parentElement.style.display='none'" />
+        </div>
+
         <div class="dresscode-swatches reveal reveal-delay-3">
-          <div class="swatch">
+          <div class="swatch" data-tint="#e8446b">
             <div class="swatch-circle" style="background:#e8446b;"></div>
             <span class="swatch-name">Bold</span>
           </div>
-          <div class="swatch">
+          <div class="swatch" data-tint="#f2a93b">
             <div class="swatch-circle" style="background:#f2a93b;"></div>
             <span class="swatch-name">Bright</span>
           </div>
-          <div class="swatch">
+          <div class="swatch" data-tint="#4a8fc9">
             <div class="swatch-circle" style="background:#4a8fc9;"></div>
             <span class="swatch-name">Vivid</span>
           </div>
-          <div class="swatch">
+          <div class="swatch" data-tint="#f4c2c2">
             <div class="swatch-circle" style="background:#f4c2c2;"></div>
             <span class="swatch-name">Blush</span>
           </div>
-          <div class="swatch">
+          <div class="swatch" data-tint="#c4d5b0">
             <div class="swatch-circle" style="background:#c4d5b0;"></div>
             <span class="swatch-name">Sage</span>
           </div>
-          <div class="swatch">
+          <div class="swatch" data-tint="#d4c5e8">
             <div class="swatch-circle" style="background:#d4c5e8;"></div>
             <span class="swatch-name">Lavender</span>
           </div>
@@ -3037,7 +3312,7 @@
             </div>
             <p class="h-item-time">6 pm onwards</p>
             <p class="h-item-event">Arrival</p>
-            <p class="h-item-desc">Settle in over a drink, find familiar faces, and catch up before the night begins. Cocktails and canapés will be flowing.</p>
+            <p class="h-item-desc">Settle in over a drink, find familiar faces, and catch up before the night begins. Drinks and canapés will be flowing.</p>
           </div>
 
           <!-- 6.40pm Be Seated — chair with a heart -->
@@ -3052,7 +3327,7 @@
             </div>
             <p class="h-item-time">6.40 pm</p>
             <p class="h-item-event">Be Seated</p>
-            <p class="h-item-desc">Please be in your seat by 6.40 pm sharp — <strong>do not be late</strong>! The walk-in begins right after.</p>
+            <p class="h-item-desc">Please be in your seat by 6.40 pm sharp. <strong>Do not be late!</strong></p>
           </div>
 
           <!-- 6.50pm Ceremony — heart inside a circle, rays -->
@@ -3132,7 +3407,7 @@
       <!-- Public preview (shown when no valid invite code is present) -->
       <div class="rsvp-public" id="rsvpPublic">
         <h3>Welcome, friend.</h3>
-        <p>This page is personalised for each guest. If you've received an invitation from us, please use the unique link we sent you to RSVP. If you can't find it, just message Estella or Gabriel and we'll resend it.</p>
+        <p>This page is personalised for each guest. If you've received an invitation from us, please use the unique link we sent you to RSVP. If you can't find it, just message Gabriel or Estella and we'll resend it.</p>
       </div>
 
       <!-- Dynamic form (rendered when ?inv=<code> is present) -->
@@ -3257,7 +3532,7 @@
         </div>
         <div class="qr-text">
           <h4>Sentosa Entry QR Code</h4>
-          <p>Scan or save this QR code to enter Sentosa for free on the day, no need to message us individually.</p>
+          <p>Scan or save this QR code to enter Sentosa for free on the day.</p>
           <p style="font-size:0.78rem; color:var(--sand-dark); margin-top:0.4rem;">Tip: screenshot it in advance so you have it ready at the gantry.</p>
         </div>
       </div>
@@ -3267,15 +3542,15 @@
         <!-- Vertical transport sidebar -->
         <div class="dir-transport-tabs">
           <button class="dir-btn active" data-dir="car">
-            <svg viewBox="0 0 24 24"><path d="M5 17H3v-5l2-5h14l2 5v5h-2"/><rect x="1" y="12" width="22" height="5" rx="1"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+            <svg viewBox="0 0 32 32"><path d="M6 21 L6 14 a2 2 0 0 1 0.5 -1.4 L9 9 a2.5 2.5 0 0 1 2 -1 h10 a2.5 2.5 0 0 1 2 1 l2.5 3.6 a2 2 0 0 1 0.5 1.4 V21 z"/><circle cx="10" cy="22" r="2.2"/><circle cx="22" cy="22" r="2.2"/><path d="M9 13 L23 13" stroke-opacity="0.6"/><path d="M11 9.5 q1 -1 2 -1 h6 q1 0 2 1" stroke-opacity="0"/><circle cx="12" cy="17.5" r="0.5" fill="currentColor" stroke="none"/></svg>
             By Car
           </button>
           <button class="dir-btn" data-dir="taxi">
-            <svg viewBox="0 0 24 24"><rect x="2" y="10" width="20" height="8" rx="2"/><path d="M6 10V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><line x1="12" y1="6" x2="12" y2="2"/></svg>
+            <svg viewBox="0 0 32 32"><rect x="14" y="3" width="4" height="3" rx="0.5"/><path d="M5 21 L5 14 a2 2 0 0 1 0.5 -1.4 L8 9 a2.5 2.5 0 0 1 2 -1 h12 a2.5 2.5 0 0 1 2 1 l2.5 3.6 a2 2 0 0 1 0.5 1.4 V21 z"/><circle cx="9" cy="22" r="2.2"/><circle cx="23" cy="22" r="2.2"/><path d="M8 13 L24 13" stroke-opacity="0.6"/><path d="M12 16 h8" stroke-width="1.6"/></svg>
             By Taxi / PHV
           </button>
           <button class="dir-btn" data-dir="mrt">
-            <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="18" rx="3"/><line x1="9" y1="20" x2="7" y2="23"/><line x1="15" y1="20" x2="17" y2="23"/><circle cx="9" cy="16" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="16" r="1.2" fill="currentColor" stroke="none"/></svg>
+            <svg viewBox="0 0 32 32"><rect x="6" y="4" width="20" height="20" rx="3.5"/><path d="M6 14 h20" stroke-opacity="0.6"/><circle cx="12" cy="9" r="0.9" fill="currentColor" stroke="none"/><circle cx="20" cy="9" r="0.9" fill="currentColor" stroke="none"/><circle cx="11.5" cy="19.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="20.5" cy="19.5" r="1.4" fill="currentColor" stroke="none"/><path d="M11 24 L8.5 28"/><path d="M21 24 L23.5 28"/></svg>
             By MRT &amp; Monorail
           </button>
         </div>
@@ -3426,7 +3701,7 @@
       <!-- ═══ Group: Getting there & staying ═══ -->
       <div class="faq-item">
         <div class="faq-question">How do I get to the venue?</div>
-        <div class="faq-answer">We've got maps and step-by-step instructions for car, taxi/PHV and MRT in the <a href="#directions">directions</a> section above. There's also a QR code for free Sentosa entry, no need to message us separately.</div>
+        <div class="faq-answer">We've got maps and step-by-step instructions for car, taxi/PHV and MRT in the <a href="#directions">directions</a> section above. There's also a QR code for free Sentosa entry.</div>
       </div>
       <div class="faq-item">
         <div class="faq-question">Can we park at the venue?</div>
@@ -3439,7 +3714,7 @@
 
       <div class="faq-contact-note">
         <strong>Still have a question?</strong> Drop us a message anytime.<br/>
-        Estella &nbsp;<a href="tel:+6596602955">9660 2955</a>&nbsp; · &nbsp;Gabriel &nbsp;<a href="tel:+6590855893">9085 5893</a>
+        Gabriel &nbsp;<a href="tel:+6590855893">9085 5893</a>&nbsp; · &nbsp;Estella &nbsp;<a href="tel:+6596602955">9660 2955</a>
       </div>
     </div>
   </section>
@@ -3448,14 +3723,17 @@
 
   <!-- FOOTER -->
   <footer>
-    <p>Estella &amp; Gabriel &nbsp;·&nbsp; 11 July 2027 &nbsp;·&nbsp; Oasia Resort Sentosa, Singapore</p>
+    <p>Gabriel &amp; Estella &nbsp;·&nbsp; 11 July 2027 &nbsp;·&nbsp; Oasia Resort Sentosa, Singapore</p>
   </footer>
 
   <script>
     // ── Envelope landing reveal
     (function() {
       const overlay = document.getElementById('envOverlay');
-      if (!overlay) return;
+      if (!overlay) {
+        document.body.classList.add('hero-ready');
+        return;
+      }
 
       // If reduced motion OR deep-link (#hash), skip the whole thing
       const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -3463,6 +3741,7 @@
       if (reduced || hasHash) {
         overlay.style.display = 'none';
         document.documentElement.classList.remove('doors-locked');
+        document.body.classList.add('hero-ready');
         return;
       }
 
@@ -3472,12 +3751,18 @@
         opened = true;
         overlay.classList.add('opening');
         document.body.classList.add('doors-revealing');
-        // Allow scroll partway through the unfold so the reveal feels interactive
+
+        // Allow scrolling once the paper is rising out
         setTimeout(() => {
           document.documentElement.classList.remove('doors-locked');
         }, 1800);
-        // Fade the overlay out & remove it from the tree after the unfold
-        overlay.classList.add('closing');
+
+        // After the paper has expanded to its full size, fade the overlay and reveal the hero
+        setTimeout(() => {
+          document.body.classList.add('hero-ready');
+          overlay.classList.add('closing');
+        }, 2400);
+
         overlay.addEventListener('animationend', (ev) => {
           if (ev.animationName === 'envFade') {
             overlay.remove();
@@ -3634,19 +3919,31 @@
       const showTea = events.includes('tea');
       const showSolem = events.includes('solem');
 
+      // Reusable inline SVG icons for each event
+      const ICON_SOLEM = `<svg viewBox="0 0 24 24"><circle cx="9" cy="14" r="4.5"/><circle cx="15" cy="14" r="4.5"/><path d="M7 9 L9 11"/><path d="M17 9 L15 11"/></svg>`;
+      const ICON_TEA   = `<svg viewBox="0 0 24 24"><path d="M5 10 h12 v6 a3 3 0 0 1 -3 3 H8 a3 3 0 0 1 -3 -3 z"/><path d="M17 11 h2 a2 2 0 0 1 0 4 h-2"/><path d="M19 21 H4"/><path d="M9 7 c0 -1 1 -1 1 -2 s -1 -1 -1 -2"/><path d="M13 7 c0 -1 1 -1 1 -2 s -1 -1 -1 -2"/></svg>`;
+      const ICON_DINNER = `<svg viewBox="0 0 24 24"><path d="M9 4 L8 11 a4 4 0 0 0 8 0 L15 4 Z"/><path d="M12 15 v5"/><path d="M9 20 h6"/><circle cx="11" cy="8" r="0.6" fill="currentColor" stroke="none"/></svg>`;
+      const ICON_PERSON = `<svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3"/><path d="M5 21 v-1 a4 4 0 0 1 4 -4 h6 a4 4 0 0 1 4 4 v1"/></svg>`;
+
       memberList.innerHTML = (household.members || []).map((m, i) => `
         <div class="member-card" data-member-index="${i}">
-          <div class="member-name">${escapeHtml(m.name)}</div>
+          <div class="member-header">
+            <span class="member-icon" aria-hidden="true">${ICON_PERSON}</span>
+            <div class="member-name">${escapeHtml(m.name)}</div>
+          </div>
 
           ${showSolem ? `
             <div class="event-block">
               <div class="event-block-head">
-                <span class="event-block-title">Solemnisation</span>
-                <span class="event-block-time">5:30 pm – 6:00 pm</span>
+                <span class="event-block-icon" aria-hidden="true">${ICON_SOLEM}</span>
+                <div class="event-block-info">
+                  <span class="event-block-title">Solemnisation</span>
+                  <span class="event-block-time">5:30 pm – 6:00 pm</span>
+                </div>
               </div>
               <div class="attend-toggle event-attend" role="radiogroup">
-                <label><input type="radio" name="solem_${i}" value="yes" /><span>Joining</span></label>
-                <label><input type="radio" name="solem_${i}" value="no"  /><span>Can't make it</span></label>
+                <label><input type="radio" name="solem_${i}" value="yes" /><span>Count Me In</span></label>
+                <label><input type="radio" name="solem_${i}" value="no"  /><span>Unable to attend</span></label>
               </div>
             </div>
           ` : ''}
@@ -3654,24 +3951,30 @@
           ${showTea ? `
             <div class="event-block">
               <div class="event-block-head">
-                <span class="event-block-title">Tea Ceremony</span>
-                <span class="event-block-time">6:00 pm – 6:30 pm</span>
+                <span class="event-block-icon" aria-hidden="true">${ICON_TEA}</span>
+                <div class="event-block-info">
+                  <span class="event-block-title">Tea Ceremony</span>
+                  <span class="event-block-time">6:00 pm – 6:30 pm</span>
+                </div>
               </div>
               <div class="attend-toggle event-attend" role="radiogroup">
-                <label><input type="radio" name="tea_${i}" value="yes" /><span>Joining</span></label>
-                <label><input type="radio" name="tea_${i}" value="no"  /><span>Can't make it</span></label>
+                <label><input type="radio" name="tea_${i}" value="yes" /><span>Count Me In</span></label>
+                <label><input type="radio" name="tea_${i}" value="no"  /><span>Unable to attend</span></label>
               </div>
             </div>
           ` : ''}
 
           <div class="event-block primary">
             <div class="event-block-head">
-              <span class="event-block-title">Dinner Reception</span>
-              <span class="event-block-time">6:00 pm onwards</span>
+              <span class="event-block-icon" aria-hidden="true">${ICON_DINNER}</span>
+              <div class="event-block-info">
+                <span class="event-block-title">Dinner Reception</span>
+                <span class="event-block-time">6:00 pm onwards</span>
+              </div>
             </div>
             <div class="attend-toggle" role="radiogroup" aria-label="Dinner attendance for ${escapeHtml(m.name)}">
-              <label><input type="radio" name="attend_${i}" value="yes" /><span>Joining us</span></label>
-              <label><input type="radio" name="attend_${i}" value="no"  /><span>Can't make it</span></label>
+              <label><input type="radio" name="attend_${i}" value="yes" /><span>Count Me In</span></label>
+              <label><input type="radio" name="attend_${i}" value="no"  /><span>Unable to attend</span></label>
             </div>
           </div>
 
