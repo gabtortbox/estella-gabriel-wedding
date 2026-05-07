@@ -112,12 +112,12 @@
 
     .nav-links {
       display: flex;
-      gap: 2.5rem;
+      gap: clamp(0.75rem, 1.25vw, 1.55rem);
       list-style: none;
     }
     .nav-links a {
       font-family: var(--sans);
-      font-size: 0.7rem;
+      font-size: 0.66rem;
       font-weight: 300;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -141,14 +141,14 @@
       text-align: center;
       position: relative;
       background: var(--sand-pale);
-      padding: clamp(6rem, 11vh, 8rem) 1.5rem clamp(1.5rem, 3vh, 2.5rem);
+      padding: clamp(7.8rem, 15vh, 10.25rem) 1.5rem clamp(1.25rem, 2.5vh, 2.2rem);
       gap: clamp(0.85rem, 1.7vh, 1.4rem);
       box-sizing: border-box;
     }
 
     /* Big title at the top of the hero — elegant script for the names */
     .hero-title {
-      font-family: 'Italianno', 'Pinyon Script', 'Allura', cursive;
+      font-family: 'Pinyon Script', 'Allura', cursive;
       font-style: normal;
       font-weight: 400;
       font-size: clamp(3.8rem, 10vw, 7rem);
@@ -186,9 +186,9 @@
     /* Hero photo — capped to fit comfortably in viewport with the rest of the hero */
     .hero-photo-card {
       position: relative;
-      max-width: clamp(260px, 44vw, 440px);
+      max-width: clamp(280px, 47vw, 500px);
       width: auto;
-      max-height: 36vh;
+      max-height: 40vh;
       overflow: hidden;
       box-shadow:
         0 6px 18px rgba(42,37,32,0.12),
@@ -198,7 +198,7 @@
     .hero-photo {
       display: block;
       max-width: 100%;
-      max-height: 36vh;
+      max-height: 40vh;
       width: auto;
       height: auto;
       object-fit: cover;
@@ -378,7 +378,7 @@
 
     /* ── SECTION BASE ── */
     section {
-      padding: 7rem 2rem;
+      padding: 4rem 2rem;
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -402,7 +402,7 @@
       width: 40px;
       height: 0.5px;
       background: var(--sand);
-      margin: 1.5rem 0 2.5rem;
+      margin: 1.15rem 0 1.8rem;
     }
 
     /* ── REVEAL ANIMATION ── */
@@ -441,7 +441,7 @@
       width: 40px;
       height: 0.5px;
       background: var(--sand);
-      margin: 1.5rem 0 2.5rem;
+      margin: 1.15rem 0 1.8rem;
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s;
@@ -451,21 +451,21 @@
 
     /* ── STORY SECTION ── */
     #story {
-      padding: 7rem 2rem;
+      padding: 4rem 2rem;
       max-width: 1200px;
       margin: 0 auto;
     }
     .story-header {
       text-align: center;
-      margin-bottom: 5rem;
+      margin-bottom: 2rem;
     }
 
     .story-spread {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2.5rem;
-      margin-bottom: 6rem;
+      gap: 2rem;
+      margin-bottom: 4rem;
     }
     /* .reverse no longer alters layout, kept for backward compatibility */
     .story-spread.reverse { direction: ltr; }
@@ -606,7 +606,7 @@
     #vision {
       background: var(--ink);
       max-width: 100%;
-      padding: 7rem 2rem;
+      padding: 3.8rem 2rem;
     }
     #vision .inner {
       max-width: 700px;
@@ -615,7 +615,7 @@
     }
     #vision .section-label { color: var(--sand); }
     #vision .section-title { color: var(--white); }
-    #vision .section-divider { background: var(--sand); margin: 1.5rem auto 2.5rem; }
+    #vision .section-divider { background: var(--sand); margin: 1.15rem auto 1.8rem; }
     #vision p {
       font-family: var(--serif);
       font-size: clamp(1.2rem, 2vw, 1.6rem);
@@ -648,7 +648,7 @@
 
     /* Ballroom sketch panel */
     .ballroom-panel {
-      padding: 7rem 2rem 5rem;
+      padding: 4rem 2rem 3.25rem;
       text-align: center;
       background: var(--white);
     }
@@ -656,7 +656,7 @@
     .ballroom-sketch {
       width: 100%;
       max-width: 700px;
-      margin: 3rem auto 0;
+      margin: 2.25rem auto 0;
       display: block;
       height: auto;
     }
@@ -672,18 +672,18 @@
     /* Dress code panel */
     .dresscode-panel {
       background: var(--ink);
-      padding: 6rem 2rem;
+      padding: 4rem 2rem;
       text-align: center;
     }
     .dresscode-panel .inner { max-width: 600px; margin: 0 auto; }
     .dresscode-panel .section-label { color: var(--sand); }
     .dresscode-panel .section-title { color: var(--white); }
-    .dresscode-panel .section-divider { background: var(--sand); margin: 1.5rem auto 2.5rem; }
+    .dresscode-panel .section-divider { background: var(--sand); margin: 1.15rem auto 1.8rem; }
     /* Dress code image — white bg removed via multiply blending */
     .dresscode-image {
       position: relative;
       max-width: 520px;
-      margin: 2.5rem auto 1.5rem;
+      margin: 2rem auto 1.25rem;
     }
     .dresscode-image img {
       display: block;
@@ -696,7 +696,7 @@
       display: flex;
       justify-content: center;
       gap: 1rem;
-      margin: 2.5rem 0 1.5rem;
+      margin: 2rem 0 1.25rem;
       flex-wrap: wrap;
     }
     .swatch {
@@ -738,11 +738,11 @@
     /* Horizontal illustrated timeline */
     .timeline-panel {
       background: var(--sand-pale);
-      padding: 4.5rem 2rem 5rem;
+      padding: 3.25rem 2rem 3.5rem;
       overflow-x: auto;
     }
     .timeline-panel .inner { max-width: 1100px; margin: 0 auto; }
-    .timeline-panel .panel-header { text-align: center; margin-bottom: 2.5rem; }
+    .timeline-panel .panel-header { text-align: center; margin-bottom: 2rem; }
     .timeline-panel .schedule-venue {
       font-size: 0.7rem;
       letter-spacing: 0.18em;
@@ -775,7 +775,7 @@
       pointer-events: none;
     }
     .h-timeline:has(.h-item[data-audience="family"].audience-show) {
-      --timeline-edge: calc(8.333% + 0.833rem);
+      --timeline-edge: calc(10% + 0.8rem);
     }
     .h-item {
       flex: 1;
@@ -837,254 +837,6 @@
       line-height: 1.6;
       max-width: 120px;
     }
-
-    /* ── YEARS TIMELINE (horizontal) ── */
-    #years {
-      position: relative;
-      padding: 5rem 0 5.5rem;
-      max-width: 100%;
-      margin: 0;
-      overflow: hidden;
-      background: var(--sand-pale);
-      isolation: isolate;
-    }
-
-    /* Silk-like animated gradient background — flowing, wave-like */
-    .years-silk {
-      position: absolute;
-      inset: -20%;
-      z-index: 0;
-      pointer-events: none;
-      overflow: hidden;
-      opacity: 0.6;
-    }
-    .years-silk::before,
-    .years-silk::after {
-      content: '';
-      position: absolute;
-      width: 140%;
-      height: 140%;
-      top: -20%; left: -20%;
-      background:
-        radial-gradient(ellipse 55% 35% at 25% 40%, rgba(200,185,154,0.6), transparent 60%),
-        radial-gradient(ellipse 45% 30% at 75% 60%, rgba(138,118,96,0.38), transparent 65%),
-        radial-gradient(ellipse 40% 25% at 50% 85%, rgba(232,221,208,0.75), transparent 60%),
-        radial-gradient(ellipse 35% 25% at 90% 15%, rgba(213,206,196,0.5), transparent 60%);
-      filter: blur(50px);
-      animation: silkFlow 32s ease-in-out infinite alternate;
-      will-change: transform;
-    }
-    .years-silk::after {
-      animation-duration: 46s;
-      animation-delay: -18s;
-      animation-direction: alternate-reverse;
-      mix-blend-mode: soft-light;
-      transform: rotate(15deg) scale(1.1);
-    }
-    @keyframes silkFlow {
-      0%   { transform: translate(0, 0) rotate(0deg) scale(1); }
-      25%  { transform: translate(2%, -1.5%) rotate(3deg) scale(1.05); }
-      50%  { transform: translate(-1.5%, 2%) rotate(-2deg) scale(1.08); }
-      75%  { transform: translate(1.5%, 1.5%) rotate(4deg) scale(1.04); }
-      100% { transform: translate(-1%, -1%) rotate(-3deg) scale(1.06); }
-    }
-
-    .years-inner {
-      position: relative;
-      z-index: 1;
-    }
-
-    .years-header {
-      text-align: center;
-      margin-bottom: 3rem;
-      padding: 0 1.5rem;
-    }
-    .years-intro {
-      font-family: var(--serif);
-      font-style: italic;
-      font-weight: 300;
-      color: var(--ink-soft);
-      max-width: 540px;
-      margin: 1rem auto 0;
-      font-size: 1rem;
-      line-height: 1.65;
-    }
-
-    /* Grid layout — all 8 years visible at once, no horizontal scroll */
-    .years-timeline {
-      position: relative;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2.5rem 1.5rem;
-      padding: 2.5rem clamp(1.5rem, 5vw, 4rem) 2rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    @media (max-width: 720px) {
-      .years-timeline {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2rem 1rem;
-      }
-    }
-
-    .year-entry {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      text-align: center;
-    }
-
-    /* Dot marker on the center line (sits between photo and year number) */
-    .year-dot {
-      position: relative;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--sand-pale);
-      border: 1.5px solid var(--sand-dark);
-      margin: 1.1rem 0 1.1rem;
-      z-index: 2;
-      flex: 0 0 auto;
-    }
-    .year-dot::before {
-      content: '';
-      position: absolute;
-      inset: -6px;
-      border-radius: 50%;
-      border: 0.5px solid var(--sand);
-      opacity: 0;
-      animation: dotPulse 2.4s ease-in-out infinite;
-    }
-    @keyframes dotPulse {
-      0%   { transform: scale(0.7); opacity: 0; }
-      50%  { opacity: 0.65; }
-      100% { transform: scale(1.8); opacity: 0; }
-    }
-
-    /* Photo card — compact vertical */
-    .year-photo-wrap {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
-    .year-photo {
-      position: relative;
-      aspect-ratio: 4/5;
-      width: 100%;
-      max-width: 220px;
-      overflow: hidden;
-      background: var(--sand-light);
-      box-shadow:
-        0 2px 6px rgba(42,37,32,0.05),
-        0 14px 32px rgba(42,37,32,0.12);
-      transition: transform 0.6s cubic-bezier(0.22,1,0.36,1),
-                  box-shadow 0.6s ease;
-      transform-origin: center bottom;
-      contain: layout paint;
-    }
-    .year-photo img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      filter: sepia(0.08) brightness(0.98);
-      transition: transform 1.4s cubic-bezier(0.22,1,0.36,1),
-                  filter 0.6s ease;
-    }
-    .year-entry:hover .year-photo {
-      transform: translateY(-8px) rotate(-1deg) scale(1.04);
-      box-shadow:
-        0 4px 12px rgba(42,37,32,0.08),
-        0 24px 50px rgba(42,37,32,0.2);
-    }
-    .year-entry:hover .year-photo img {
-      transform: scale(1.06);
-      filter: sepia(0) brightness(1);
-    }
-
-    /* Meta — just the year number */
-    .year-meta {
-      position: relative;
-      width: 100%;
-    }
-    .year-num {
-      font-family: var(--serif);
-      font-size: clamp(1.6rem, 2.4vw, 2rem);
-      font-weight: 300;
-      font-style: italic;
-      letter-spacing: 0.04em;
-      color: var(--ink);
-      line-height: 1;
-      display: block;
-    }
-
-    /* Ghost year watermark behind photo */
-    .year-ghost {
-      position: absolute;
-      top: -1.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: var(--serif);
-      font-size: clamp(5rem, 9vw, 7rem);
-      font-weight: 300;
-      color: var(--sand);
-      opacity: 0;
-      line-height: 0.85;
-      letter-spacing: -0.02em;
-      pointer-events: none;
-      user-select: none;
-      z-index: -1;
-      white-space: nowrap;
-      transition: opacity 0.5s ease;
-    }
-    .year-entry:hover .year-ghost { opacity: 0.22; }
-
-    /* Scroll reveal — stagger fade-up */
-    .year-entry .year-photo,
-    .year-entry .year-dot,
-    .year-entry .year-meta {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1),
-                  transform 0.9s cubic-bezier(0.22,1,0.36,1);
-    }
-    .year-entry .year-dot { transition-delay: 0.15s; transform: scale(0.4) translateY(0); }
-    .year-entry .year-meta { transition-delay: 0.25s; }
-    .year-entry.in-view .year-photo,
-    .year-entry.in-view .year-meta {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .year-entry.in-view .year-dot {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    /* Years container (was a horizontal scroll wrapper, now just a grid) */
-    .years-timeline-wrap { position: relative; }
-
-    /* Year dot is now just a small accent above each photo */
-    .year-dot { display: none; }
-    .years-nav  { display: none; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 820px) {
-      #years { padding: 4rem 0 4.5rem; }
-      .years-header { margin-bottom: 2rem; }
-      .years-timeline {
-        gap: 1.25rem;
-        padding: 3rem 1.25rem 1.5rem;
-      }
-      .years-timeline::before {
-        top: calc(3rem + 95px);
-        left: 1.25rem;
-        right: 1.25rem;
-      }
-      .year-entry { width: 170px; }
-      .year-photo { max-width: 170px; }
-      .year-num { font-size: 1.4rem; }
-      .years-nav { display: none; }
-    }
-
 
     /* ── DIRECTION MAPS ── */
     .dir-layout {
@@ -1262,15 +1014,15 @@
       display: flex;
       gap: 2rem;
       align-items: center;
-      padding: 1.75rem 2rem;
-      margin-bottom: 2rem;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.35rem;
       background: var(--sand-pale);
       border: 0.5px solid var(--sand-light);
       border-radius: 8px;
     }
     .qr-box {
-      width: 180px;
-      height: 180px;
+      width: 168px;
+      height: 168px;
       flex-shrink: 0;
       background: var(--white);
       border: 0.5px solid var(--sand-light);
@@ -1292,6 +1044,11 @@
       line-height: 1.6;
       padding: 1rem;
     }
+    .qr-text {
+      text-align: left;
+      flex: 1;
+      min-width: 0;
+    }
     .qr-text h4 {
       font-family: var(--serif);
       font-size: 1.25rem;
@@ -1306,13 +1063,23 @@
       margin-bottom: 0.5rem;
     }
     @media (max-width: 768px) {
-      .qr-panel { flex-direction: column; text-align: center; padding: 1.5rem; }
-      .qr-box { width: 160px; height: 160px; }
+      .qr-panel {
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+      }
+      .qr-box {
+        width: clamp(112px, 32vw, 140px);
+        height: clamp(112px, 32vw, 140px);
+      }
+      .qr-text h4 { font-size: 1.05rem; margin-bottom: 0.35rem; }
+      .qr-text p { font-size: 0.78rem; line-height: 1.55; margin-bottom: 0.25rem; }
     }
 
     /* ── GUEST INFO (TABBED) ── */
     #guests {
-      padding: 7rem 2rem;
+      padding: 4rem 2rem;
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -1372,11 +1139,11 @@
       align-items: center;
       justify-content: center;
       gap: 1.25rem;
-      padding: 2.5rem 1.5rem;
+      padding: 0.55rem 1.5rem;
       background: var(--sand-pale);
     }
     .section-sep .sep-line {
-      flex: 0 0 80px;
+      flex: 0 0 64px;
       height: 1px;
       background: var(--sand);
     }
@@ -1391,7 +1158,7 @@
 
     /* Helpers section — left-aligned header, two rows of cards: 3 + 4 */
     #helpers {
-      padding: 6rem 2rem 7rem;
+      padding: 4rem 2rem 4.25rem;
       max-width: 1100px;
       margin: 0 auto;
     }
@@ -1401,7 +1168,7 @@
       display: grid;
       grid-template-columns: repeat(12, 1fr);
       column-gap: 1rem;
-      row-gap: 2.5rem;
+      row-gap: 2rem;
       margin: 1rem auto 0;
       max-width: 920px;
       justify-items: center;
@@ -1539,7 +1306,7 @@
     #rsvp-cta {
       background: var(--sand-pale);
       max-width: 100%;
-      padding: 7rem 2rem;
+      padding: 4rem 2rem;
       text-align: center;
     }
     #rsvp-cta .inner { max-width: 600px; margin: 0 auto; }
@@ -1579,14 +1346,29 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      nav { padding: 0.35rem 0.75rem; gap: 0.5rem; }
+      nav {
+        justify-content: center;
+        padding: 0.35rem 0.75rem;
+        gap: 0.5rem;
+        min-height: 50px;
+      }
+      .nav-logo {
+        margin: 0 auto;
+      }
       .nav-logo img { height: 38px; }
       nav.scrolled .nav-logo img { height: 34px; }
-      .nav-hamburger { display: flex; }
+      .nav-hamburger {
+        display: flex;
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+      }
       .nav-links {
         position: fixed;
         top: 50px;
-        right: 0.75rem;
+        left: 0.75rem;
+        right: auto;
         flex-direction: column;
         gap: 0;
         background: var(--sand-pale);
@@ -1596,7 +1378,7 @@
         box-shadow: 0 8px 24px rgba(42,37,32,0.12);
         opacity: 0;
         transform: translateY(-8px) scale(0.96);
-        transform-origin: top right;
+        transform-origin: top left;
         pointer-events: none;
         transition: opacity 0.25s ease, transform 0.25s ease;
         min-width: 160px;
@@ -1617,23 +1399,40 @@
       }
       .nav-links a:hover { background: var(--sand-light); }
       /* Hero scaling */
-      #hero { padding: clamp(4rem, 8vh, 5rem) 1rem clamp(2rem, 4vh, 3rem); gap: 1rem; }
-      .hero-title { font-size: clamp(2.4rem, 12vw, 3.6rem); }
+      #hero {
+        min-height: 100svh;
+        justify-content: space-between;
+        padding: clamp(5.2rem, 11svh, 6.6rem) 1rem max(0.85rem, env(safe-area-inset-bottom));
+        gap: 0.55rem;
+      }
+      .hero-title { font-size: clamp(3rem, 15vw, 4.2rem); }
+      .hero-photo-card {
+        max-width: min(86vw, 370px);
+        max-height: min(38svh, 350px);
+      }
+      .hero-photo {
+        max-height: min(38svh, 350px);
+      }
+      .hero-content {
+        gap: clamp(0.5rem, 1.35svh, 0.9rem);
+      }
       .hero-meta { font-size: 0.55rem; letter-spacing: 0.18em; }
-      .countdown { gap: 1.25rem; }
+      .countdown { gap: clamp(0.9rem, 4vw, 1.25rem); }
       .countdown-num { font-size: 1.7rem; }
       .countdown-label { font-size: 0.55rem; }
       .hero-cta .btn { padding: 0.75rem 1.4rem; font-size: 0.62rem; letter-spacing: 0.18em; }
+      .scroll-indicator { margin-top: 0; }
+      .scroll-line { height: clamp(24px, 5.5svh, 36px); }
       /* Schedule — clean program layout on phones */
       .timeline-panel {
-        padding: 3.25rem 1rem 3.6rem;
+        padding: 2.8rem 1rem 3rem;
         overflow-x: visible;
         background:
           linear-gradient(180deg, rgba(253,250,246,0.46), rgba(247,241,236,0) 32%),
           var(--sand-pale);
       }
       .timeline-panel .panel-header {
-        margin-bottom: 2rem;
+        margin-bottom: 1.6rem;
         padding: 0 0.4rem;
       }
       .h-timeline {
@@ -1747,7 +1546,7 @@
       }
 
       /* Story */
-      .story-spread { gap: 1.75rem; margin-bottom: 4rem; }
+      .story-spread { gap: 1.5rem; margin-bottom: 3.25rem; }
       .story-spread-text h3 { font-size: 1.6rem; }
       .story-spread-text p { font-size: 0.95rem; line-height: 1.75; }
       .story-spread-photos { padding: 1rem 0 1.5rem; }
@@ -1783,6 +1582,7 @@
     /* Anything keyed to family-only is hidden by default; JS reveals it */
     [data-audience="family"] { display: none; }
     [data-audience="family"].audience-show { display: revert; }
+    body.family-view [data-hide-for-family] { display: none !important; }
     .h-item[data-audience="family"].audience-show { display: flex; }
     @media (max-width: 768px) {
       .h-item[data-audience="family"].audience-show { display: grid; }
@@ -1894,12 +1694,12 @@
 
     /* ── RSVP FORM ── */
     #rsvp {
-      padding: 7rem 2rem 8rem;
+      padding: 4rem 2rem 4.35rem;
       background: var(--sand-pale);
       position: relative;
     }
     #rsvp .rsvp-inner { max-width: 760px; margin: 0 auto; }
-    #rsvp .rsvp-header { text-align: center; margin-bottom: 3rem; }
+    #rsvp .rsvp-header { text-align: center; margin-bottom: 2.25rem; }
     #rsvp .deadline {
       display: inline-block;
       margin-top: 1.5rem;
@@ -2769,10 +2569,15 @@
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#story">Our Story</a></li>
-      <li><a href="#schedule">The Schedule</a></li>
+      <li><a href="#vision">Vision</a></li>
+      <li><a href="#evening">Venue</a></li>
+      <li><a href="#dresscode">Dress Code</a></li>
+      <li><a href="#schedule">Schedule</a></li>
       <li><a href="#rsvp">RSVP</a></li>
+      <li><a href="#directions">Directions</a></li>
       <li><a href="#faq">FAQ</a></li>
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#helpers">Helpers</a></li>
     </ul>
   </nav>
 
@@ -2815,7 +2620,6 @@
       </div>
 
       <div class="hero-cta">
-        <a href="#story" class="btn">Our Story</a>
         <a href="#rsvp" class="btn filled">RSVP</a>
       </div>
 
@@ -2826,250 +2630,6 @@
     </div>
 
   </div>
-
-  <!-- OUR STORY -->
-  <section id="story">
-    <div class="story-header reveal">
-      <p class="section-label">Our Story</p>
-      <h2 class="section-title">A few pages from the journey</h2>
-      <div class="section-divider center"></div>
-    </div>
-
-    <!-- Spread 01 -->
-    <div class="story-spread">
-      <div class="story-spread-text reveal-left">
-        <h3>Before We Knew</h3>
-        <p>We first met in 2018 in university. Alongside Wanqi &amp; Xavier, we became a close group of friends. Long before this became a love story, it was built on comfort, familiarity, and a quiet sense of steadiness.</p>
-      </div>
-      <div class="story-spread-photos reveal-right">
-        <div class="story-photos-track">
-          <!-- Set 1 -->
-          <div class="photo-card"><img src="assets/photos/Before1.jpeg" alt="Before we knew" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Before2.jpeg" alt="Friends first" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Before3.jpeg" alt="NTU days" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Before4.jpeg" alt="University memories" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Before5.jpeg" alt="Babies group" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Before6.jpeg" alt="Graduation days" onerror="this.style.display='none'" /></div>
-          <!-- Set 2 (clone for seamless loop) -->
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before1.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before2.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before3.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before4.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before5.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before6.jpeg" alt="" onerror="this.style.display='none'" /></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Spread 02 -->
-    <div class="story-spread reverse">
-      <div class="story-spread-text reveal-right">
-        <h3>The Routes We Shared</h3>
-        <p>As the years went on, our friendship grew through shared experiences and travel. These were not just holidays, but memories that shaped our friendship and quietly became part of the story that led us here.</p>
-      </div>
-      <div class="story-spread-photos reveal-left">
-        <div class="story-photos-track">
-          <!-- Set 1 -->
-          <div class="photo-card"><img src="assets/photos/Routes1.jpeg" alt="Routes we shared" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Routes2.jpeg" alt="Travel together" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Routes3.jpeg" alt="On the road" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Routes4.jpeg" alt="Adventures" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Routes5.jpeg" alt="Mountains and snow" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Routes6.jpeg" alt="Quiet moments" onerror="this.style.display='none'" /></div>
-          <!-- Set 2 (clone) -->
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes1.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes2.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes3.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes4.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes5.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes6.jpeg" alt="" onerror="this.style.display='none'" /></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Spread 03 -->
-    <div class="story-spread">
-      <div class="story-spread-text reveal-left">
-        <h3>Then It Became Us</h3>
-        <p>What brought us closer was not one single moment, but a series of shared interests, choices, and experiences that slowly made the story feel different.</p>
-      </div>
-      <div class="story-spread-photos reveal-right">
-        <div class="story-photos-track">
-          <!-- Set 1 -->
-          <div class="photo-card"><img src="assets/photos/Us1.jpeg" alt="Us together" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us2.jpeg" alt="Closer moments" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us3.jpeg" alt="Adventures" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us4.jpeg" alt="Diving" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us5.jpeg" alt="Beneath the surface" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us6.jpeg" alt="Underwater calm" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us7.jpeg" alt="Deep blue" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us8.jpeg" alt="Side by side" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us9.jpeg" alt="Together" onerror="this.style.display='none'" /></div>
-          <!-- Set 2 (clone) -->
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us1.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us2.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us3.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us4.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us5.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us6.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us7.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us8.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us9.jpeg" alt="" onerror="this.style.display='none'" /></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Spread 04 -->
-    <div class="story-spread reverse">
-      <div class="story-spread-text reveal-right">
-        <h3>The Next Chapter</h3>
-        <p>What began as friendship became partnership, and what grew through years of shared experiences, places, and quiet turns now brings us here.</p>
-      </div>
-      <div class="story-spread-photos reveal-left">
-        <div class="story-photos-track">
-          <!-- Set 1 -->
-          <div class="photo-card"><img src="assets/photos/NextChap1.jpeg" alt="Next chapter" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Nextchap2.jpeg" alt="Together always" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/NextChap3.jpeg" alt="Open horizons" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/NextChap4.jpeg" alt="Stories yet to come" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/NextChap5.jpeg" alt="One more page" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/NextChap6.jpeg" alt="The celebration ahead" onerror="this.style.display='none'" /></div>
-          <!-- Set 2 (clone) -->
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap1.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Nextchap2.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap3.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap4.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap5.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap6.jpeg" alt="" onerror="this.style.display='none'" /></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="section-sep" aria-hidden="true"><span class="sep-line"></span><span class="sep-diamond"></span><span class="sep-line"></span></div>
-
-  <!-- YEARS TIMELINE -->
-  <section id="years">
-    <div class="years-inner">
-      <div class="years-header reveal">
-        <p class="section-label">Us, Through the Years</p>
-        <h2 class="section-title">Eight years, one long story</h2>
-        <div class="section-divider center"></div>
-      </div>
-
-      <div class="years-timeline-wrap">
-        <div class="years-timeline" id="yearsTimeline">
-
-          <div class="year-entry" data-year="2019">
-            <div class="year-photo-wrap">
-              <div class="year-photo">
-                <img src="assets/photos/2019.jpeg" alt="Us in 2019" onerror="this.parentElement.style.background='#d5cec4'" />
-              </div>
-            </div>
-            <div class="year-dot" aria-hidden="true"></div>
-            <div class="year-meta">
-              <span class="year-ghost" aria-hidden="true">2019</span>
-              <span class="year-num">2019</span>
-            </div>
-          </div>
-
-          <div class="year-entry" data-year="2020">
-            <div class="year-photo-wrap">
-              <div class="year-photo">
-                <img src="assets/photos/2020.jpeg" alt="Us in 2020" onerror="this.parentElement.style.background='#cdc6bb'" />
-              </div>
-            </div>
-            <div class="year-dot" aria-hidden="true"></div>
-            <div class="year-meta">
-              <span class="year-ghost" aria-hidden="true">2020</span>
-              <span class="year-num">2020</span>
-            </div>
-          </div>
-
-          <div class="year-entry" data-year="2021">
-            <div class="year-photo-wrap">
-              <div class="year-photo">
-                <img src="assets/photos/2021.jpeg" alt="Us in 2021" onerror="this.parentElement.style.background='#ddd7ce'" />
-              </div>
-            </div>
-            <div class="year-dot" aria-hidden="true"></div>
-            <div class="year-meta">
-              <span class="year-ghost" aria-hidden="true">2021</span>
-              <span class="year-num">2021</span>
-            </div>
-          </div>
-
-          <div class="year-entry" data-year="2022">
-            <div class="year-photo-wrap">
-              <div class="year-photo">
-                <img src="assets/photos/2022.jpeg" alt="Us in 2022" onerror="this.parentElement.style.background='#c8c0b5'" />
-              </div>
-            </div>
-            <div class="year-dot" aria-hidden="true"></div>
-            <div class="year-meta">
-              <span class="year-ghost" aria-hidden="true">2022</span>
-              <span class="year-num">2022</span>
-            </div>
-          </div>
-
-          <div class="year-entry" data-year="2023">
-            <div class="year-photo-wrap">
-              <div class="year-photo">
-                <img src="assets/photos/2023.jpeg" alt="Us in 2023" onerror="this.parentElement.style.background='#d0c9bf'" />
-              </div>
-            </div>
-            <div class="year-dot" aria-hidden="true"></div>
-            <div class="year-meta">
-              <span class="year-ghost" aria-hidden="true">2023</span>
-              <span class="year-num">2023</span>
-            </div>
-          </div>
-
-          <div class="year-entry" data-year="2024">
-            <div class="year-photo-wrap">
-              <div class="year-photo">
-                <img src="assets/photos/2024.jpeg" alt="Us in 2024" onerror="this.parentElement.style.background='#d8d1c7'" />
-              </div>
-            </div>
-            <div class="year-dot" aria-hidden="true"></div>
-            <div class="year-meta">
-              <span class="year-ghost" aria-hidden="true">2024</span>
-              <span class="year-num">2024</span>
-            </div>
-          </div>
-
-          <div class="year-entry" data-year="2025">
-            <div class="year-photo-wrap">
-              <div class="year-photo">
-                <img src="assets/photos/2025.jpeg" alt="Us in 2025" onerror="this.parentElement.style.background='#c5bdb2'" />
-              </div>
-            </div>
-            <div class="year-dot" aria-hidden="true"></div>
-            <div class="year-meta">
-              <span class="year-ghost" aria-hidden="true">2025</span>
-              <span class="year-num">2025</span>
-            </div>
-          </div>
-
-          <div class="year-entry" data-year="2026">
-            <div class="year-photo-wrap">
-              <div class="year-photo">
-                <img src="assets/photos/2026.jpeg" alt="Us in 2026" onerror="this.parentElement.style.background='#dbd4ca'" />
-              </div>
-            </div>
-            <div class="year-dot" aria-hidden="true"></div>
-            <div class="year-meta">
-              <span class="year-ghost" aria-hidden="true">2026</span>
-              <span class="year-num">2026</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="section-sep" aria-hidden="true"><span class="sep-line"></span><span class="sep-diamond"></span><span class="sep-line"></span></div>
 
   <!-- VISION -->
   <div id="vision">
@@ -3191,7 +2751,7 @@
           </div>
 
           <!-- 6pm onwards Arrival — clinking champagne flutes -->
-          <div class="h-item">
+          <div class="h-item" data-hide-for-family>
             <div class="h-item-icon">
               <svg viewBox="0 0 32 32">
                 <path d="M11 6 L9 14 a3 3 0 0 0 6 0 L13 6 Z"/>
@@ -3302,24 +2862,6 @@
 
         <div id="memberList"></div>
 
-        <div class="household-block">
-          <h3>One last thing</h3>
-
-          <div class="household-row">
-            <div>
-              <label class="field-label">Will you / your group be driving?</label>
-              <div class="kids-toggle">
-                <label><input type="radio" name="driving" value="no" checked /><span>No</span></label>
-                <label><input type="radio" name="driving" value="yes" /><span>Yes</span></label>
-              </div>
-            </div>
-            <div id="vehiclesWrap">
-              <label class="field-label">How many vehicles?</label>
-              <input class="field-input" type="number" name="vehicles" min="1" max="10" placeholder="e.g. 1" />
-            </div>
-          </div>
-        </div>
-
         <div class="submit-row">
           <button type="submit" class="rsvp-submit" id="rsvpSubmit">Send Our RSVP</button>
         </div>
@@ -3327,74 +2869,6 @@
 
     </div>
   </section>
-  <div class="section-sep" aria-hidden="true"><span class="sep-line"></span><span class="sep-diamond"></span><span class="sep-line"></span></div>
-
-  <!-- HELPERS -->
-  <section id="helpers">
-    <div class="guests-header reveal">
-      <p class="section-label">On The Day</p>
-      <h2 class="section-title">Helpers</h2>
-      <div class="section-divider"></div>
-    </div>
-    <p class="reveal reveal-delay-1" style="font-size:1rem; color:var(--ink-soft); margin:0 0 2.5rem; line-height:1.85; max-width:640px; text-align:left;">
-      If you need help finding your way, have a question, or are unsure where to go, these are the friendly faces to look for on the day.
-    </p>
-    <div class="helpers-grid reveal reveal-delay-2">
-      <!-- Row 1: 3 helpers -->
-      <div class="helper-card">
-        <div class="helper-avatar"></div>
-        <div>
-          <p class="helper-name">Manju</p>
-          <p class="helper-role">Wedding Coordinator</p>
-        </div>
-      </div>
-      <div class="helper-card" data-helper="elsie">
-        <div class="helper-avatar"><img src="assets/photos/Elsie.jpeg" alt="Elsie Goh" onerror="this.style.display='none'" /></div>
-        <div>
-          <p class="helper-name">Elsie Goh</p>
-          <p class="helper-role">Guest support &amp; reception flow</p>
-        </div>
-      </div>
-      <div class="helper-card">
-        <div class="helper-avatar"><img src="assets/photos/Grace.jpeg" alt="Grace Chng" onerror="this.style.display='none'" /></div>
-        <div>
-          <p class="helper-name">Grace Chng</p>
-          <p class="helper-role">Guest support &amp; reception flow</p>
-        </div>
-      </div>
-
-      <!-- Row 2: 4 helpers -->
-      <div class="helper-card" data-helper="winnie">
-        <div class="helper-avatar"><img src="assets/photos/Winnie.jpeg" alt="Winnie Chau" onerror="this.style.display='none'" /></div>
-        <div>
-          <p class="helper-name">Winnie Chau</p>
-          <p class="helper-role">Reception &amp; setup</p>
-        </div>
-      </div>
-      <div class="helper-card" data-helper="guochin">
-        <div class="helper-avatar"><img src="assets/photos/GuoChin.jpeg" alt="Khoo Guo Chin" onerror="this.style.display='none'" /></div>
-        <div>
-          <p class="helper-name">Khoo Guo Chin</p>
-          <p class="helper-role">Reception &amp; setup</p>
-        </div>
-      </div>
-      <div class="helper-card">
-        <div class="helper-avatar"><img src="assets/photos/WanQi.jpeg" alt="Ang Wan Qi" onerror="this.style.display='none'" /></div>
-        <div>
-          <p class="helper-name">Ang Wan Qi</p>
-          <p class="helper-role">Setup crew</p>
-        </div>
-      </div>
-      <div class="helper-card">
-        <div class="helper-avatar"><img src="assets/photos/Xaiver.jpeg" alt="Xaiver Sim" onerror="this.style.display='none'" /></div>
-        <div>
-          <p class="helper-name">Xaiver Sim</p>
-          <p class="helper-role">Setup crew</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <div class="section-sep" aria-hidden="true"><span class="sep-line"></span><span class="sep-diamond"></span><span class="sep-line"></span></div>
 
   <!-- DIRECTIONS -->
@@ -3534,7 +3008,6 @@
       </div>
     </div>
   </section>
-
   <div class="section-sep" aria-hidden="true"><span class="sep-line"></span><span class="sep-diamond"></span><span class="sep-line"></span></div>
 
   <!-- FAQ -->
@@ -3605,6 +3078,195 @@
     </div>
   </section>
   <!-- END FAQ -->
+
+  <div class="section-sep" aria-hidden="true"><span class="sep-line"></span><span class="sep-diamond"></span><span class="sep-line"></span></div>
+
+  <!-- OUR STORY -->
+  <section id="story">
+    <div class="story-header reveal">
+      <p class="section-label">Our Story</p>
+      <h2 class="section-title">A few pages from the journey</h2>
+      <div class="section-divider center"></div>
+    </div>
+
+    <!-- Spread 01 -->
+    <div class="story-spread">
+      <div class="story-spread-text reveal-left">
+        <h3>Before We Knew</h3>
+        <p>We first met in 2018 in university. Alongside Wanqi &amp; Xavier, we became a close group of friends. Long before this became a love story, it was built on comfort, familiarity, and a quiet sense of steadiness.</p>
+      </div>
+      <div class="story-spread-photos reveal-right">
+        <div class="story-photos-track">
+          <!-- Set 1 -->
+          <div class="photo-card"><img src="assets/photos/Before1.jpeg" alt="Before we knew" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Before2.jpeg" alt="Friends first" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Before3.jpeg" alt="NTU days" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Before4.jpeg" alt="University memories" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Before5.jpeg" alt="Babies group" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Before6.jpeg" alt="Graduation days" onerror="this.style.display='none'" /></div>
+          <!-- Set 2 (clone for seamless loop) -->
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before1.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before2.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before3.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before4.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before5.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before6.jpeg" alt="" onerror="this.style.display='none'" /></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spread 02 -->
+    <div class="story-spread reverse">
+      <div class="story-spread-text reveal-right">
+        <h3>The Routes We Shared</h3>
+        <p>As the years went on, our friendship grew through shared experiences and travel. These were not just holidays, but memories that shaped our friendship and quietly became part of the story that led us here.</p>
+      </div>
+      <div class="story-spread-photos reveal-left">
+        <div class="story-photos-track">
+          <!-- Set 1 -->
+          <div class="photo-card"><img src="assets/photos/Routes1.jpeg" alt="Routes we shared" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Routes2.jpeg" alt="Travel together" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Routes3.jpeg" alt="On the road" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Routes4.jpeg" alt="Adventures" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Routes5.jpeg" alt="Mountains and snow" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Routes6.jpeg" alt="Quiet moments" onerror="this.style.display='none'" /></div>
+          <!-- Set 2 (clone) -->
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes1.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes2.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes3.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes4.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes5.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes6.jpeg" alt="" onerror="this.style.display='none'" /></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spread 03 -->
+    <div class="story-spread">
+      <div class="story-spread-text reveal-left">
+        <h3>Then It Became Us</h3>
+        <p>What brought us closer was not one single moment, but a series of shared interests, choices, and experiences that slowly made the story feel different.</p>
+      </div>
+      <div class="story-spread-photos reveal-right">
+        <div class="story-photos-track">
+          <!-- Set 1 -->
+          <div class="photo-card"><img src="assets/photos/Us1.jpeg" alt="Us together" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us2.jpeg" alt="Closer moments" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us3.jpeg" alt="Adventures" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us4.jpeg" alt="Diving" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us5.jpeg" alt="Beneath the surface" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us6.jpeg" alt="Underwater calm" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us7.jpeg" alt="Deep blue" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us8.jpeg" alt="Side by side" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Us9.jpeg" alt="Together" onerror="this.style.display='none'" /></div>
+          <!-- Set 2 (clone) -->
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us1.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us2.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us3.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us4.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us5.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us6.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us7.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us8.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us9.jpeg" alt="" onerror="this.style.display='none'" /></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spread 04 -->
+    <div class="story-spread reverse">
+      <div class="story-spread-text reveal-right">
+        <h3>The Next Chapter</h3>
+        <p>What began as friendship became partnership, and what grew through years of shared experiences, places, and quiet turns now brings us here.</p>
+      </div>
+      <div class="story-spread-photos reveal-left">
+        <div class="story-photos-track">
+          <!-- Set 1 -->
+          <div class="photo-card"><img src="assets/photos/NextChap1.jpeg" alt="Next chapter" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/Nextchap2.jpeg" alt="Together always" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/NextChap3.jpeg" alt="Open horizons" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/NextChap4.jpeg" alt="Stories yet to come" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/NextChap5.jpeg" alt="One more page" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img src="assets/photos/NextChap6.jpeg" alt="The celebration ahead" onerror="this.style.display='none'" /></div>
+          <!-- Set 2 (clone) -->
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap1.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Nextchap2.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap3.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap4.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap5.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap6.jpeg" alt="" onerror="this.style.display='none'" /></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="section-sep" aria-hidden="true"><span class="sep-line"></span><span class="sep-diamond"></span><span class="sep-line"></span></div>
+
+  <!-- HELPERS -->
+  <section id="helpers">
+    <div class="guests-header reveal">
+      <p class="section-label">On The Day</p>
+      <h2 class="section-title">Helpers</h2>
+      <div class="section-divider"></div>
+    </div>
+    <p class="reveal reveal-delay-1" style="font-size:1rem; color:var(--ink-soft); margin:0 0 2.5rem; line-height:1.85; max-width:640px; text-align:left;">
+      If you need help finding your way, have a question, or are unsure where to go, these are the friendly faces to look for on the day.
+    </p>
+    <div class="helpers-grid reveal reveal-delay-2">
+      <!-- Row 1: 3 helpers -->
+      <div class="helper-card">
+        <div class="helper-avatar"></div>
+        <div>
+          <p class="helper-name">Manju</p>
+          <p class="helper-role">Wedding Coordinator</p>
+        </div>
+      </div>
+      <div class="helper-card" data-helper="elsie">
+        <div class="helper-avatar"><img src="assets/photos/Elsie.jpeg" alt="Elsie Goh" onerror="this.style.display='none'" /></div>
+        <div>
+          <p class="helper-name">Elsie Goh</p>
+          <p class="helper-role">Guest support &amp; reception flow</p>
+        </div>
+      </div>
+      <div class="helper-card">
+        <div class="helper-avatar"><img src="assets/photos/Grace.jpeg" alt="Grace Chng" onerror="this.style.display='none'" /></div>
+        <div>
+          <p class="helper-name">Grace Chng</p>
+          <p class="helper-role">Guest support &amp; reception flow</p>
+        </div>
+      </div>
+
+      <!-- Row 2: 4 helpers -->
+      <div class="helper-card" data-helper="winnie">
+        <div class="helper-avatar"><img src="assets/photos/Winnie.jpeg" alt="Winnie Chau" onerror="this.style.display='none'" /></div>
+        <div>
+          <p class="helper-name">Winnie Chau</p>
+          <p class="helper-role">Reception &amp; setup</p>
+        </div>
+      </div>
+      <div class="helper-card" data-helper="guochin">
+        <div class="helper-avatar"><img src="assets/photos/GuoChin.jpeg" alt="Khoo Guo Chin" onerror="this.style.display='none'" /></div>
+        <div>
+          <p class="helper-name">Khoo Guo Chin</p>
+          <p class="helper-role">Reception &amp; setup</p>
+        </div>
+      </div>
+      <div class="helper-card">
+        <div class="helper-avatar"><img src="assets/photos/WanQi.jpeg" alt="Ang Wan Qi" onerror="this.style.display='none'" /></div>
+        <div>
+          <p class="helper-name">Ang Wan Qi</p>
+          <p class="helper-role">Setup crew</p>
+        </div>
+      </div>
+      <div class="helper-card">
+        <div class="helper-avatar"><img src="assets/photos/Xaiver.jpeg" alt="Xaiver Sim" onerror="this.style.display='none'" /></div>
+        <div>
+          <p class="helper-name">Xaiver Sim</p>
+          <p class="helper-role">Setup crew</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
 
 
   <!-- FOOTER -->
@@ -3705,6 +3367,7 @@
       // 2. Reveal family-only sections if applicable
       const events = CURRENT_HOUSEHOLD.events || [];
       if (events.includes('tea') || events.includes('solem')) {
+        document.body.classList.add('family-view');
         document.querySelectorAll('[data-audience="family"]').forEach(el => el.classList.add('audience-show'));
       }
 
@@ -3785,15 +3448,6 @@
         }
       });
 
-      // Household-level fields
-      if (prior.driving === 'yes' || prior.driving === 'no') {
-        const k = document.querySelector(`input[name="driving"][value="${prior.driving}"]`);
-        if (k) { k.checked = true; k.dispatchEvent(new Event('change', { bubbles: true })); }
-      }
-      if (prior.vehicles) {
-        const el = document.querySelector('input[name="vehicles"]');
-        if (el) el.value = prior.vehicles;
-      }
     }
 
     function renderRsvpForm(household) {
@@ -3881,15 +3535,6 @@
       form.classList.add('show');
     }
 
-    // Driving toggle → show vehicle count if yes
-    document.addEventListener('change', (e) => {
-      if (e.target.matches('input[name="driving"]')) {
-        const wrap = document.getElementById('vehiclesWrap');
-        const yes  = e.target.value === 'yes' && e.target.checked;
-        if (wrap) wrap.classList.toggle('show', yes);
-      }
-    });
-
     // Form submission → upsert through Apps Script (replaces prior rows for this code)
     document.getElementById('rsvpForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -3912,8 +3557,8 @@
         events: CURRENT_HOUSEHOLD.events,
         submittedAt: new Date().toISOString(),
         members,
-        driving: formData.get('driving') || 'no',
-        vehicles: formData.get('vehicles') || ''
+        driving: 'no',
+        vehicles: ''
       };
 
       const submit = document.getElementById('rsvpSubmit');
@@ -4092,36 +3737,6 @@
     } else {
       // Fallback: just keep them all running
       storyStrips.forEach(el => el.classList.add('in-view'));
-    }
-
-    // ── Years timeline: staggered reveal as each photo scrolls into the strip
-    const yearsTimeline = document.getElementById('yearsTimeline');
-    const yearEntries = document.querySelectorAll('.year-entry');
-    if (yearEntries.length) {
-      // Stagger in when the whole strip enters the viewport (vertical)
-      const stripObserver = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            yearEntries.forEach((el, i) => {
-              setTimeout(() => el.classList.add('in-view'), i * 110);
-            });
-            stripObserver.disconnect();
-          }
-        });
-      }, { threshold: 0.25 });
-      if (yearsTimeline) stripObserver.observe(yearsTimeline);
-
-      // Horizontal scroll nav arrows
-      const prev = document.querySelector('.years-nav.prev');
-      const next = document.querySelector('.years-nav.next');
-      const step = () => {
-        const first = yearsTimeline.querySelector('.year-entry');
-        if (!first) return 250;
-        const gap = parseFloat(getComputedStyle(yearsTimeline).columnGap || '32');
-        return first.getBoundingClientRect().width + gap;
-      };
-      if (prev) prev.addEventListener('click', () => yearsTimeline.scrollBy({ left: -step() * 2, behavior: 'smooth' }));
-      if (next) next.addEventListener('click', () => yearsTimeline.scrollBy({ left:  step() * 2, behavior: 'smooth' }));
     }
 
     // ── Direction sub-tabs (car / taxi / mrt)
