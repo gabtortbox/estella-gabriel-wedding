@@ -23,7 +23,7 @@
     :root {
       --sand: #c4ab94;
       --sand-light: #ecdfd2;
-      --sand-pale: #f7f1ec;
+      --sand-pale: #FAEBD7;
       --sand-dark: #8c7460;
       --ink: #2c2520;
       --ink-soft: #5d5046;
@@ -77,13 +77,13 @@
       text-decoration: none;
     }
     .nav-logo img {
-      height: 48px;
+      height: 64px;
       width: auto;
       mix-blend-mode: multiply;  /* makes the JPEG's white bg disappear into the page bg */
       opacity: 0.95;
       transition: opacity 0.3s, height 0.3s;
     }
-    nav.scrolled .nav-logo img { opacity: 1; height: 42px; }
+    nav.scrolled .nav-logo img { opacity: 1; height: 56px; }
     .nav-logo img:hover { opacity: 1; }
     /* Hamburger button — only visible on mobile */
     .nav-hamburger {
@@ -138,12 +138,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: flex-start;
       text-align: center;
       position: relative;
       background: var(--sand-pale);
-      padding: clamp(7.8rem, 15vh, 10.25rem) 1.5rem clamp(1.25rem, 2.5vh, 2.2rem);
-      gap: clamp(0.85rem, 1.7vh, 1.4rem);
+      min-height: 100svh;
+      padding: clamp(9.1rem, 15vh, 11.3rem) 1.5rem clamp(1rem, 2vh, 1.7rem);
+      gap: 0;
       box-sizing: border-box;
+      overflow: hidden;
     }
 
     /* Big title at the top of the hero — elegant script for the names */
@@ -151,7 +154,7 @@
       font-family: 'Pinyon Script', 'Allura', cursive;
       font-style: normal;
       font-weight: 400;
-      font-size: clamp(3.8rem, 10vw, 7rem);
+      font-size: clamp(3.3rem, 8.5vw, 6rem);
       line-height: 0.95;
       letter-spacing: 0.005em;
       color: var(--ink);
@@ -167,8 +170,7 @@
 
     /* Hero contents only animate in once the envelope is finished */
     .hero-photo-card,
-    .hero-meta,
-    .hero-divider,
+    .hero-date-scratch,
     .countdown,
     .hero-cta,
     .scroll-indicator {
@@ -177,31 +179,32 @@
     /* Hero photo card fades in immediately so it cross-fades with the dissolving envelope letter */
     body.hero-ready .hero-photo-card  { animation: fadeIn 1.1s ease 0s forwards; }
     body.hero-ready .hero-title       { animation: fadeUp 1.1s cubic-bezier(0.22,1,0.36,1) 0.4s forwards; }
-    body.hero-ready .hero-meta        { animation: fadeUp 0.9s ease 0.9s forwards; }
-    body.hero-ready .hero-divider     { animation: fadeUp 0.9s ease 1.0s forwards; }
-    body.hero-ready .countdown        { animation: fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.1s forwards; }
-    body.hero-ready .hero-cta         { animation: fadeUp 0.9s ease 1.3s forwards; }
-    body.hero-ready .scroll-indicator { animation: fadeIn 0.9s ease 1.6s forwards; }
+    body.hero-ready .hero-date-scratch { animation: fadeUp 0.9s ease 0.9s forwards; }
+    body.hero-ready .hero-cta         { animation: fadeUp 0.9s ease 1.15s forwards; }
+    body.hero-ready .scroll-indicator { animation: fadeIn 0.9s ease 1.35s forwards; }
+    body.hero-date-revealed .countdown {
+      animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) forwards;
+      pointer-events: auto;
+    }
 
     /* Hero photo — capped to fit comfortably in viewport with the rest of the hero */
     .hero-photo-card {
       position: relative;
-      max-width: clamp(280px, 47vw, 500px);
+      max-width: clamp(300px, 50vw, 560px);
       width: auto;
-      max-height: 40vh;
-      overflow: hidden;
-      box-shadow:
-        0 6px 18px rgba(42,37,32,0.12),
-        0 22px 48px rgba(42,37,32,0.16);
+      max-height: 40svh;
+      margin: clamp(2.6rem, 4.8vh, 3.8rem) 0;
+      overflow: visible;
     }
 
     .hero-photo {
       display: block;
       max-width: 100%;
-      max-height: 40vh;
+      max-height: 40svh;
       width: auto;
       height: auto;
       object-fit: cover;
+      filter: contrast(1.04);
     }
 
     @keyframes heroReveal {
@@ -255,7 +258,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: clamp(1rem, 2.5vh, 1.5rem);
+      gap: clamp(0.7rem, 1.55vh, 1.1rem);
     }
 
     .hero-names {
@@ -292,11 +295,173 @@
       margin: 0 auto;
     }
 
+    .hero-date-scratch {
+      position: relative;
+      z-index: 5;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(90px, 1fr));
+      gap: clamp(0.75rem, 2.2vw, 1.65rem);
+      width: min(520px, 94vw);
+      justify-items: center;
+      align-items: center;
+      margin: 0 auto;
+    }
+    .scratch-card {
+      position: relative;
+      width: clamp(104px, 10.5vw, 140px);
+      height: clamp(96px, 9.8vw, 128px);
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      cursor: crosshair;
+      overflow: hidden;
+      -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath fill='black' d='M50 94 C40 82 8 67 8 44 C8 26 19 13 32 13 C42 13 48 20 50 31 C52 20 58 13 68 13 C81 13 92 26 92 44 C92 67 60 82 50 94 Z'/%3E%3C/svg%3E");
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath fill='black' d='M50 94 C40 82 8 67 8 44 C8 26 19 13 32 13 C42 13 48 20 50 31 C52 20 58 13 68 13 C81 13 92 26 92 44 C92 67 60 82 50 94 Z'/%3E%3C/svg%3E");
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      mask-position: center;
+      filter: drop-shadow(0 10px 18px rgba(116,29,34,0.24));
+      touch-action: none;
+    }
+    .scratch-card:focus-visible {
+      outline: 2px solid var(--sand-dark);
+      outline-offset: 4px;
+    }
+    .scratch-reveal {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.2rem;
+      background:
+        radial-gradient(circle at 50% 38%, rgba(255,255,255,0.98), rgba(255,232,228,0.94) 42%, rgba(240,178,172,0.86) 100%);
+      color: var(--ink);
+      box-shadow: inset 0 0 0 1px rgba(180,49,58,0.14);
+    }
+    .scratch-value {
+      font-family: var(--serif);
+      font-size: clamp(1.55rem, 3vw, 2.2rem);
+      font-weight: 300;
+      font-variant-numeric: tabular-nums lining-nums;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+    .scratch-label {
+      font-family: var(--sans);
+      font-size: clamp(0.48rem, 0.8vw, 0.62rem);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sand-dark);
+    }
+    .scratch-card canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      transition: opacity 0.45s ease;
+      touch-action: none;
+    }
+    .scratch-card.scratched {
+      cursor: default;
+      filter: drop-shadow(0 14px 24px rgba(116,29,34,0.24));
+      transform: translateY(-2px) scale(1.03);
+    }
+    .scratch-card.scratched .scratch-reveal {
+      background:
+        radial-gradient(circle at 50% 34%, rgba(255,255,255,0.98), rgba(255,210,207,0.98) 38%, rgba(218,108,116,0.94) 100%);
+      box-shadow:
+        inset 0 0 0 1px rgba(180,49,58,0.24),
+        inset 0 -10px 24px rgba(180,49,58,0.18);
+    }
+    .scratch-card.scratched canvas {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .hero-confetti {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .confetti-piece {
+      position: absolute;
+      top: -16px;
+      left: var(--x);
+      width: var(--w);
+      height: var(--h);
+      border-radius: 2px;
+      background: var(--c);
+      opacity: 0.95;
+      transform: translate3d(0, 0, 0) rotate(0deg);
+      animation: confettiFall var(--dur) cubic-bezier(0.18,0.78,0.28,1) forwards;
+      animation-delay: var(--delay);
+    }
+    @keyframes confettiFall {
+      0% { transform: translate3d(0, -20px, 0) rotate(0deg); opacity: 0; }
+      8% { opacity: 1; }
+      100% { transform: translate3d(var(--drift), 105svh, 0) rotate(var(--rot)); opacity: 0; }
+    }
+
+    .tap-heart-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 10050;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .tap-heart {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: var(--size);
+      height: var(--size);
+      background: var(--heart-color);
+      border-radius: 2px;
+      opacity: 0;
+      transform: translate(-50%, -50%) rotate(45deg) scale(0.2);
+      animation: tapHeartBurst var(--dur) cubic-bezier(0.18,0.78,0.28,1) forwards;
+      filter: drop-shadow(0 4px 7px rgba(116,29,34,0.18));
+    }
+    .tap-heart::before,
+    .tap-heart::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: inherit;
+    }
+    .tap-heart::before { left: -50%; top: 0; }
+    .tap-heart::after { left: 0; top: -50%; }
+    @keyframes tapHeartBurst {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(45deg) scale(0.15);
+      }
+      12% {
+        opacity: 0.95;
+      }
+      100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(calc(45deg + var(--spin))) scale(0.95);
+      }
+    }
+
     /* ── COUNTDOWN ── */
     .countdown {
       display: flex;
       gap: 2.5rem;
       margin: 0;
+      transform: translateY(14px);
+      pointer-events: none;
     }
     .countdown-unit {
       display: flex;
@@ -604,40 +769,45 @@
 
     /* ── VISION ── */
     #vision {
-      background: var(--ink);
+      background: var(--sand-pale);
       max-width: 100%;
-      padding: 3.8rem 2rem;
+      padding: clamp(4.4rem, 8vw, 6.6rem) 2rem;
     }
     #vision .inner {
-      max-width: 700px;
+      max-width: 940px;
       margin: 0 auto;
       text-align: center;
     }
-    #vision .section-label { color: var(--sand); }
-    #vision .section-title { color: var(--white); }
-    #vision .section-divider { background: var(--sand); margin: 1.15rem auto 1.8rem; }
-    #vision p {
+    .vision-statement {
       font-family: var(--serif);
-      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      font-size: clamp(1.65rem, 4.2vw, 3.55rem);
       font-weight: 300;
-      font-style: italic;
-      color: var(--sand-light);
-      line-height: 1.8;
+      font-style: normal;
+      line-height: 1.16;
+      letter-spacing: 0;
+      margin: 0 auto;
     }
-    #vision .vision-words {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-      margin-top: 2.5rem;
+    .vision-line {
+      --progress: 0;
+      display: block;
+      color: rgba(44,37,32,0.18);
+      background:
+        linear-gradient(90deg,
+          var(--ink) calc(var(--progress) * 100%),
+          rgba(44,37,32,0.18) 0);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: background 0.12s linear;
     }
-    #vision .vision-word {
-      font-family: var(--sans);
-      font-size: 0.65rem;
-      font-weight: 300;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--sand);
+    .vision-line:first-child {
+      color: rgba(140,116,96,0.28);
+      background:
+        linear-gradient(90deg,
+          var(--sand-dark) calc(var(--progress) * 100%),
+          rgba(140,116,96,0.28) 0);
+      -webkit-background-clip: text;
+      background-clip: text;
     }
 
     /* ── EVENING SECTION ── */
@@ -656,7 +826,7 @@
     .ballroom-sketch {
       width: 100%;
       max-width: 700px;
-      margin: 2.25rem auto 0;
+      margin: 0.85rem auto 0;
       display: block;
       height: auto;
     }
@@ -679,7 +849,7 @@
     .dresscode-panel .section-label { color: var(--sand); }
     .dresscode-panel .section-title { color: var(--white); }
     .dresscode-panel .section-divider { background: var(--sand); margin: 1.15rem auto 1.8rem; }
-    /* Dress code image — white bg removed via multiply blending */
+    /* Dress code image — transparent PNG so it sits cleanly on the dark panel */
     .dresscode-image {
       position: relative;
       max-width: 520px;
@@ -689,7 +859,6 @@
       display: block;
       width: 100%;
       height: auto;
-      mix-blend-mode: multiply;       /* white pixels disappear into the page bg */
     }
 
     .dresscode-swatches {
@@ -1083,7 +1252,22 @@
       max-width: 1200px;
       margin: 0 auto;
     }
-    .guests-header { margin-bottom: 3rem; }
+    .guests-header {
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+    .guests-header .section-divider {
+      margin-left: auto;
+      margin-right: auto;
+      transform-origin: center;
+    }
+    #directions > div:not(.guests-header),
+    #faq > .reveal,
+    #helpers > p {
+      max-width: 920px;
+      margin-left: auto;
+      margin-right: auto;
+    }
     .tab-nav {
       display: flex;
       gap: 0;
@@ -1156,14 +1340,14 @@
       box-shadow: 0 0 0 3px var(--sand-pale), 0 0 0 4px var(--sand-light);
     }
 
-    /* Helpers section — left-aligned header, two rows of cards: 3 + 4 */
+    /* Helpers section — centered header, two rows of cards: 3 + 4 */
     #helpers {
       padding: 4rem 2rem 4.25rem;
       max-width: 1100px;
       margin: 0 auto;
     }
-    #helpers .guests-header { text-align: left; }
-    #helpers > p { margin-left: 0; margin-right: 0; max-width: 720px; text-align: left; }
+    #helpers .guests-header { text-align: center; }
+    #helpers > p { max-width: 680px; text-align: center; }
     .helpers-grid {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
@@ -1355,8 +1539,8 @@
       .nav-logo {
         margin: 0 auto;
       }
-      .nav-logo img { height: 38px; }
-      nav.scrolled .nav-logo img { height: 34px; }
+      .nav-logo img { height: 54px; }
+      nav.scrolled .nav-logo img { height: 48px; }
       .nav-hamburger {
         display: flex;
         position: absolute;
@@ -1401,28 +1585,37 @@
       /* Hero scaling */
       #hero {
         min-height: 100svh;
-        justify-content: space-between;
-        padding: clamp(5.2rem, 11svh, 6.6rem) 1rem max(0.85rem, env(safe-area-inset-bottom));
-        gap: 0.55rem;
+        justify-content: flex-start;
+        padding: clamp(7.1rem, 13svh, 8.5rem) 1rem max(0.85rem, env(safe-area-inset-bottom));
+        gap: 0;
       }
-      .hero-title { font-size: clamp(3rem, 15vw, 4.2rem); }
+      .hero-title { font-size: clamp(2.7rem, 13vw, 3.65rem); }
       .hero-photo-card {
-        max-width: min(86vw, 370px);
-        max-height: min(38svh, 350px);
+        max-width: min(90vw, 410px);
+        max-height: min(40svh, 380px);
+        margin: clamp(1.05rem, 2.6svh, 1.8rem) 0;
       }
       .hero-photo {
-        max-height: min(38svh, 350px);
+        max-height: min(40svh, 380px);
       }
       .hero-content {
         gap: clamp(0.5rem, 1.35svh, 0.9rem);
       }
-      .hero-meta { font-size: 0.55rem; letter-spacing: 0.18em; }
+      .hero-date-scratch {
+        width: min(390px, 96vw);
+        gap: clamp(0.45rem, 2.2vw, 0.85rem);
+      }
+      .scratch-card {
+        width: clamp(94px, 29vw, 120px);
+        height: clamp(86px, 27vw, 110px);
+      }
       .countdown { gap: clamp(0.9rem, 4vw, 1.25rem); }
       .countdown-num { font-size: 1.7rem; }
       .countdown-label { font-size: 0.55rem; }
       .hero-cta .btn { padding: 0.75rem 1.4rem; font-size: 0.62rem; letter-spacing: 0.18em; }
       .scroll-indicator { margin-top: 0; }
       .scroll-line { height: clamp(24px, 5.5svh, 36px); }
+      .ballroom-sketch { margin-top: 1.1rem; }
       /* Schedule — clean program layout on phones */
       .timeline-panel {
         padding: 2.8rem 1rem 3rem;
@@ -2110,8 +2303,8 @@
       --ivory:       var(--white);
       --paper:       var(--sand-pale);
       --paper-edge:  var(--sand-light);
-      --wax:         var(--sand-dark);
-      --wax-light:   var(--sand);
+      --wax:         #4a3528;
+      --wax-light:   #7a5b48;
     }
 
     .env-overlay {
@@ -2119,18 +2312,60 @@
       inset: 0;
       z-index: 9999;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: clamp(1rem, 2.6vh, 2rem);
       perspective: 1800px;
       perspective-origin: 50% 50%;
       pointer-events: auto;
       overflow: hidden;
       background:
-        linear-gradient(135deg, rgba(253,250,246,0.56), transparent 34%),
-        linear-gradient(205deg, rgba(196,171,148,0.18), transparent 42%),
-        repeating-linear-gradient(90deg, rgba(140,116,96,0.018) 0, rgba(140,116,96,0.018) 1px, transparent 1px, transparent 8px),
+        radial-gradient(ellipse at 50% 36%, rgba(253,250,246,0.52), transparent 48%),
+        linear-gradient(135deg, rgba(196,171,148,0.16), transparent 38%),
+        linear-gradient(205deg, rgba(140,116,96,0.12), transparent 46%),
+        repeating-linear-gradient(90deg, rgba(140,116,96,0.02) 0, rgba(140,116,96,0.02) 1px, transparent 1px, transparent 8px),
         var(--sand-pale);
       transition: background 1s ease;
+    }
+
+    .env-kicker {
+      position: relative;
+      z-index: 4;
+      font-family: var(--sans);
+      font-size: clamp(0.72rem, 1.7vw, 0.92rem);
+      font-weight: 300;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: var(--sand-dark);
+      text-align: center;
+      pointer-events: none;
+      transition: opacity 0.5s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    .env-title {
+      position: relative;
+      z-index: 4;
+      font-family: 'Pinyon Script', 'Allura', cursive;
+      font-size: clamp(3.1rem, 9vw, 6.2rem);
+      font-weight: 400;
+      line-height: 0.9;
+      color: var(--ink);
+      text-align: center;
+      letter-spacing: 0.005em;
+      text-shadow: 0 10px 34px rgba(140,116,96,0.22);
+      pointer-events: none;
+      transition: opacity 0.5s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1);
+    }
+    .env-title span {
+      color: var(--sand);
+      font-size: 0.9em;
+      margin: 0 0.05em;
+    }
+    .env-overlay.opening .env-kicker,
+    .env-overlay.opening .env-title {
+      opacity: 0;
+      transform: translateY(-10px);
     }
 
     /* Soft paper stage behind the envelope */
@@ -2142,11 +2377,11 @@
       border: 1px solid rgba(140,116,96,0.12);
       border-radius: clamp(18px, 4vmin, 34px);
       background:
-        linear-gradient(180deg, rgba(253,250,246,0.68), rgba(247,241,236,0.18)),
-        radial-gradient(ellipse at 50% 42%, rgba(255,250,230,0.76), transparent 58%);
+        linear-gradient(180deg, rgba(253,250,246,0.42), rgba(236,223,210,0.14)),
+        radial-gradient(ellipse at 50% 42%, rgba(196,171,148,0.24), transparent 58%);
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.55),
-        0 28px 90px rgba(140,116,96,0.1);
+        inset 0 1px 0 rgba(255,255,255,0.36),
+        0 28px 90px rgba(140,116,96,0.14);
     }
     .env-bloom::before,
     .env-bloom::after {
@@ -2178,7 +2413,7 @@
       position: absolute;
       width: 7px;
       height: 7px;
-      color: rgba(140,116,96,0.42);
+      color: rgba(140,116,96,0.32);
       opacity: 0.34;
       animation: sparkTwinkle 4.5s ease-in-out infinite;
     }
@@ -2208,7 +2443,7 @@
       transition:
         transform 1.15s cubic-bezier(0.22,1,0.36,1),
         filter 1.15s ease;
-      filter: drop-shadow(0 30px 48px rgba(140,116,96,0.2));
+      filter: drop-shadow(0 30px 48px rgba(140,116,96,0.24));
     }
     .env-overlay:not(.opening) .envelope {
       animation: envSettle 0.9s cubic-bezier(0.22,1,0.36,1) both,
@@ -2266,8 +2501,8 @@
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(150deg, transparent 0 49.6%, rgba(140,116,96,0.18) 50%, transparent 50.4%),
-        linear-gradient(210deg, transparent 0 49.6%, rgba(255,255,255,0.42) 50%, transparent 50.4%),
+        linear-gradient(33.3deg, transparent 0 49.7%, rgba(140,116,96,0.2) 50%, transparent 50.3%),
+        linear-gradient(146.7deg, transparent 0 49.7%, rgba(255,255,255,0.42) 50%, transparent 50.3%),
         linear-gradient(0deg, rgba(140,116,96,0.08), transparent 46%);
       opacity: 0.9;
       pointer-events: none;
@@ -2304,23 +2539,6 @@
       color: var(--ink-soft);
       font-weight: 300;
     }
-    .env-address-divider {
-      display: block;
-      width: 36px;
-      height: 1px;
-      margin: 0.7rem auto;
-      background: var(--sand-dark);
-      opacity: 0.5;
-    }
-    .env-address-script {
-      display: block;
-      font-family: 'Italianno', 'Pinyon Script', 'Allura', cursive;
-      font-weight: 400;
-      font-size: clamp(2rem, 5.2vmin, 2.8rem);
-      line-height: 1;
-      color: var(--ink);
-      letter-spacing: 0.01em;
-    }
     .env-overlay.opening .env-address {
       opacity: 0;
       transform: translate(-50%, 10px);
@@ -2343,7 +2561,7 @@
     .env-flap {
       position: absolute;
       top: -1px; left: 0; right: 0;
-      height: 52%;
+      height: 50%;
       z-index: 6;
       background:
         linear-gradient(180deg, rgba(253,250,246,0.96), rgba(236,223,210,0.98) 58%, rgba(196,171,148,0.96));
@@ -2377,15 +2595,15 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%,-50%);
-      width: clamp(46px, 9vmin, 64px);
-      height: clamp(46px, 9vmin, 64px);
+      width: clamp(52px, 9.5vmin, 72px);
+      height: clamp(52px, 9.5vmin, 72px);
       border-radius: 50%;
       background:
-        radial-gradient(circle at 35% 30%, var(--wax-light) 0%, var(--wax) 62%, var(--ink-soft) 100%);
+        radial-gradient(circle at 32% 28%, #9a7862 0%, var(--wax-light) 34%, var(--wax) 72%, #2b1d16 100%);
       box-shadow:
-        0 3px 10px rgba(90,72,58,0.34),
-        inset 0 2px 4px rgba(255,255,255,0.25),
-        inset 0 -3px 6px rgba(70,54,44,0.36);
+        0 8px 18px rgba(43,29,22,0.34),
+        inset 0 2px 4px rgba(255,255,255,0.18),
+        inset 0 -4px 8px rgba(35,22,16,0.48);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -2400,7 +2618,7 @@
       inset: -3px;
       border-radius: 50%;
       background:
-        radial-gradient(circle at 50% 50%, transparent 60%, rgba(140,116,96,0.36) 64%, transparent 72%);
+        radial-gradient(circle at 50% 50%, transparent 58%, rgba(43,29,22,0.5) 63%, transparent 73%);
       filter: blur(1px);
     }
     .env-seal-letters {
@@ -2421,10 +2639,9 @@
     }
 
     .env-prompt {
-      position: absolute;
-      bottom: clamp(2rem, 7vh, 5rem);
-      left: 50%;
-      transform: translateX(-50%);
+      position: relative;
+      margin-top: clamp(0.1rem, 0.9vh, 0.7rem);
+      transform: none;
       z-index: 20;
       font-family: var(--sans);
       font-size: 0.72rem;
@@ -2434,8 +2651,8 @@
       pointer-events: auto;
       cursor: pointer;
       padding: 0.95rem 2rem;
-      background: rgba(253,250,246,0.72);
-      border: 1px solid rgba(140,116,96,0.24);
+      background: rgba(253,250,246,0.32);
+      border: 1px solid rgba(140,116,96,0.22);
       border-radius: 100px;
       display: flex;
       flex-direction: row;
@@ -2447,10 +2664,10 @@
       transition: all 0.3s ease;
     }
     .env-prompt:hover {
-      color: var(--ink);
+      color: var(--sand-dark);
       letter-spacing: 0.38em;
-      background: rgba(253,250,246,0.9);
-      transform: translateX(-50%) translateY(-2px);
+      background: rgba(253,250,246,0.48);
+      transform: translateY(-2px);
     }
     .env-prompt-chevron {
       width: 12px; height: 12px;
@@ -2460,8 +2677,8 @@
       opacity: 0.7;
     }
     @keyframes envPromptGlow {
-      0%,100% { box-shadow: 0 8px 24px rgba(140,116,96,0.11); }
-      50%     { box-shadow: 0 12px 34px rgba(140,116,96,0.18); }
+      0%,100% { box-shadow: 0 8px 24px rgba(0,0,0,0.16); }
+      50%     { box-shadow: 0 12px 34px rgba(0,0,0,0.28); }
     }
     .env-overlay.opening .env-prompt {
       opacity: 0;
@@ -2490,11 +2707,12 @@
 
     @media (max-width: 640px) {
       .env-bloom { inset: 0.8rem; border-radius: 22px; }
+      .env-kicker { font-size: 0.68rem; letter-spacing: 0.26em; }
+      .env-title { font-size: clamp(2.8rem, 14vw, 3.9rem); }
       .envelope { width: clamp(278px, 84vw, 360px); }
       .env-overlay.opening .envelope,
       .env-overlay.opening .envelope:hover { transform: translateY(0) scale(1); }
       .env-prompt {
-        bottom: 2rem;
         font-size: 0.66rem;
         letter-spacing: 0.26em;
         padding: 0.82rem 1.45rem;
@@ -2528,6 +2746,9 @@
       <span class="env-spark" style="top:6%;  right:38%; animation-delay: -1.9s;"></span>
     </div>
 
+    <div class="env-kicker">We are getting married</div>
+    <div class="env-title">Gabriel <span>&amp;</span> Estella</div>
+
     <!-- The envelope -->
     <div class="envelope" id="envelopeShape">
       <div class="env-body">
@@ -2539,15 +2760,13 @@
 
         <div class="env-address">
           <span class="env-address-to">for our beloved guest</span>
-          <span class="env-address-divider"></span>
-          <span class="env-address-script">Gabriel &amp; Estella</span>
         </div>
       </div>
 
       <div class="env-flap">
-        <div class="env-seal">
-          <span class="env-seal-letters">G&nbsp;&amp;&nbsp;E</span>
-        </div>
+      </div>
+      <div class="env-seal">
+        <span class="env-seal-letters">G&nbsp;&amp;&nbsp;E</span>
       </div>
     </div>
 
@@ -2569,27 +2788,24 @@
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#vision">Vision</a></li>
-      <li><a href="#evening">Venue</a></li>
-      <li><a href="#dresscode">Dress Code</a></li>
       <li><a href="#schedule">Schedule</a></li>
       <li><a href="#rsvp">RSVP</a></li>
       <li><a href="#directions">Directions</a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li><a href="#story">Our Story</a></li>
-      <li><a href="#helpers">Helpers</a></li>
     </ul>
   </nav>
 
   <!-- HERO -->
   <div id="hero">
+    <div class="hero-confetti" id="heroConfetti" aria-hidden="true"></div>
+
     <!-- Big title at the top -->
     <h1 class="hero-title">Gabriel <span class="amp">&amp;</span> Estella</h1>
 
     <!-- Hero photo as a picture card -->
     <div class="hero-photo-card">
       <img
-        src="assets/photos/hero.jpeg"
+        src="assets/photos/hero-transparent.png"
         alt="Gabriel and Estella at Lake Tekapo, New Zealand"
         class="hero-photo"
       />
@@ -2597,8 +2813,29 @@
 
     <!-- Details, countdown, buttons -->
     <div class="hero-content">
-      <p class="hero-meta">11 July 2027 &nbsp;·&nbsp; Oasia Resort Sentosa</p>
-      <div class="hero-divider"></div>
+      <div class="hero-date-scratch" id="dateScratch" aria-label="Scratch the hearts to reveal the wedding date">
+        <button class="scratch-card" type="button" data-reveal="11" data-label="Day" aria-label="Scratch to reveal the wedding day">
+          <span class="scratch-reveal">
+            <span class="scratch-value">11</span>
+            <span class="scratch-label">Day</span>
+          </span>
+          <canvas aria-hidden="true"></canvas>
+        </button>
+        <button class="scratch-card" type="button" data-reveal="July" data-label="Month" aria-label="Scratch to reveal the wedding month">
+          <span class="scratch-reveal">
+            <span class="scratch-value">July</span>
+            <span class="scratch-label">Month</span>
+          </span>
+          <canvas aria-hidden="true"></canvas>
+        </button>
+        <button class="scratch-card" type="button" data-reveal="2027" data-label="Year" aria-label="Scratch to reveal the wedding year">
+          <span class="scratch-reveal">
+            <span class="scratch-value">2027</span>
+            <span class="scratch-label">Year</span>
+          </span>
+          <canvas aria-hidden="true"></canvas>
+        </button>
+      </div>
 
       <div class="countdown" id="countdown" aria-label="Countdown to wedding">
         <div class="countdown-unit">
@@ -2634,11 +2871,12 @@
   <!-- VISION -->
   <div id="vision">
     <div class="inner">
-      <p class="section-label reveal">Our Vision</p>
-      <h2 class="section-title reveal reveal-delay-1">A simple wish for the day</h2>
-      <div class="section-divider reveal reveal-delay-1"></div>
-      <p class="reveal reveal-delay-2">
-        We just want this evening to feel warm, relaxed and unhurried. Good vibes, yummy food, endless conversations, with everyone present and all of us enjoying the night together.
+      <p class="vision-statement reveal" aria-label="Our vision for the night: an evening that is warm, relaxed and unhurried, filled with good vibes, yummy food and endless conversations">
+        <span class="vision-line">Our vision for the night:</span>
+        <span class="vision-line">an evening that is warm,</span>
+        <span class="vision-line">relaxed and unhurried,</span>
+        <span class="vision-line">filled with good vibes, yummy food</span>
+        <span class="vision-line">and endless conversations.</span>
       </p>
     </div>
   </div>
@@ -2658,7 +2896,7 @@
 
         <!-- Venue sketch (uploaded image) -->
         <img class="ballroom-sketch reveal reveal-delay-2"
-             src="assets/photos/OasiaSketch.png"
+             src="assets/photos/OasiaSketch-cropped.png"
              alt="Sketch of Oasia Resort Sentosa — the Aloes Ballroom"
              loading="lazy" />
 
@@ -2672,7 +2910,7 @@
         <h2 class="section-title reveal reveal-delay-1">Formal but Funky</h2>
         <div class="section-divider reveal reveal-delay-1"></div>
         <div class="dresscode-image reveal reveal-delay-2">
-          <img src="assets/photos/dresscode.jpeg" alt="Dress code style guide" onerror="this.parentElement.style.display='none'" />
+          <img src="assets/photos/dresscode-transparent.png" alt="Dress code style guide" onerror="this.parentElement.style.display='none'" />
         </div>
 
         <div class="dresscode-swatches reveal reveal-delay-3">
@@ -2891,7 +3129,6 @@
         <div class="qr-text">
           <h4>Sentosa Entry QR Code</h4>
           <p>Scan or save this QR code to enter Sentosa for free on the day.</p>
-          <p style="font-size:0.78rem; color:var(--sand-dark); margin-top:0.4rem;">Tip: screenshot it in advance so you have it ready at the gantry.</p>
         </div>
       </div>
 
@@ -3208,7 +3445,7 @@
       <h2 class="section-title">Helpers</h2>
       <div class="section-divider"></div>
     </div>
-    <p class="reveal reveal-delay-1" style="font-size:1rem; color:var(--ink-soft); margin:0 0 2.5rem; line-height:1.85; max-width:640px; text-align:left;">
+    <p class="reveal reveal-delay-1" style="font-size:1rem; color:var(--ink-soft); margin:0 auto 2.5rem; line-height:1.85; max-width:640px; text-align:center;">
       If you need help finding your way, have a question, or are unsure where to go, these are the friendly faces to look for on the day.
     </p>
     <div class="helpers-grid reveal reveal-delay-2">
@@ -3283,13 +3520,28 @@
         return;
       }
 
+      function unlockPageScroll() {
+        document.documentElement.classList.remove('doors-locked');
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+        document.documentElement.style.height = '';
+        document.body.style.height = '';
+      }
+
+      function skipEnvelope() {
+        overlay.style.display = 'none';
+        overlay.setAttribute('aria-hidden', 'true');
+        overlay.classList.remove('opening', 'closing');
+        document.body.classList.remove('doors-revealing');
+        unlockPageScroll();
+        document.body.classList.add('hero-ready');
+      }
+
       // If reduced motion OR deep-link (#hash), skip the whole thing
       const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const hasHash = window.location.hash && window.location.hash.length > 1;
       if (reduced || hasHash) {
-        overlay.style.display = 'none';
-        document.documentElement.classList.remove('doors-locked');
-        document.body.classList.add('hero-ready');
+        skipEnvelope();
         return;
       }
 
@@ -3302,7 +3554,7 @@
 
         // Allow scrolling once the reveal is underway
         setTimeout(() => {
-          document.documentElement.classList.remove('doors-locked');
+          unlockPageScroll();
         }, 1800);
 
         // Let the envelope open, then reveal the site
@@ -3315,8 +3567,17 @@
           if (ev.animationName === 'envFade') {
             overlay.remove();
             document.body.classList.remove('doors-revealing');
+            unlockPageScroll();
           }
         });
+
+        // Failsafe: never leave the invitation in a scroll-locked state.
+        setTimeout(() => {
+          document.body.classList.add('hero-ready');
+          document.body.classList.remove('doors-revealing');
+          unlockPageScroll();
+          if (overlay.isConnected) overlay.remove();
+        }, 4200);
       }
 
       // Any interaction on the overlay opens the envelope
@@ -3326,6 +3587,9 @@
       overlay.addEventListener('touchstart', openEnvelope, { passive: true });
       window.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') openEnvelope();
+      });
+      window.addEventListener('hashchange', () => {
+        if (window.location.hash && window.location.hash.length > 1) skipEnvelope();
       });
       // Nudge the prompt after 6s of inactivity
       setTimeout(() => {
@@ -3712,8 +3976,201 @@
         document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
       }
     }
-    updateCountdown(true);
+    updateCountdown(false);
     setInterval(() => updateCountdown(false), 1000);
+
+    // ── Tiny heart burst on every tap / click
+    (function initTapHeartBursts() {
+      const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const layer = document.createElement('div');
+      layer.className = 'tap-heart-layer';
+      layer.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(layer);
+
+      const colors = ['#b4313a', '#d94f5a', '#f3bbb2', '#c46a70', '#7f1f29'];
+
+      document.addEventListener('pointerdown', (event) => {
+        if (event.pointerType === 'mouse' && event.button !== 0) return;
+        const count = reduced ? 4 : 7;
+        for (let i = 0; i < count; i++) {
+          const heart = document.createElement('span');
+          heart.className = 'tap-heart';
+          const angle = (Math.PI * 2 * i) / count + Math.random() * 0.55;
+          const distance = reduced ? 16 + Math.random() * 16 : 24 + Math.random() * 38;
+          heart.style.setProperty('--x', `${event.clientX}px`);
+          heart.style.setProperty('--y', `${event.clientY}px`);
+          heart.style.setProperty('--dx', `${Math.cos(angle) * distance}px`);
+          heart.style.setProperty('--dy', `${Math.sin(angle) * distance - 12}px`);
+          heart.style.setProperty('--spin', `${(Math.random() > 0.5 ? 1 : -1) * (40 + Math.random() * 110)}deg`);
+          heart.style.setProperty('--size', `${7 + Math.random() * 6}px`);
+          heart.style.setProperty('--dur', `${reduced ? 0.48 + Math.random() * 0.16 : 0.72 + Math.random() * 0.28}s`);
+          heart.style.setProperty('--heart-color', colors[Math.floor(Math.random() * colors.length)]);
+          layer.appendChild(heart);
+          heart.addEventListener('animationend', () => heart.remove(), { once: true });
+        }
+      }, { passive: true });
+    })();
+
+    // ── Hero date scratch cards + confetti reveal
+    (function initHeroDateScratch() {
+      const cards = Array.from(document.querySelectorAll('.scratch-card'));
+      const confettiLayer = document.getElementById('heroConfetti');
+      if (!cards.length) {
+        document.body.classList.add('hero-date-revealed');
+        return;
+      }
+
+      const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let dateRevealed = false;
+
+      function heartPath(ctx, w, h) {
+        ctx.beginPath();
+        ctx.moveTo(0.50 * w, 0.94 * h);
+        ctx.bezierCurveTo(0.40 * w, 0.82 * h, 0.08 * w, 0.67 * h, 0.08 * w, 0.44 * h);
+        ctx.bezierCurveTo(0.08 * w, 0.26 * h, 0.19 * w, 0.13 * h, 0.32 * w, 0.13 * h);
+        ctx.bezierCurveTo(0.42 * w, 0.13 * h, 0.48 * w, 0.20 * h, 0.50 * w, 0.31 * h);
+        ctx.bezierCurveTo(0.52 * w, 0.20 * h, 0.58 * w, 0.13 * h, 0.68 * w, 0.13 * h);
+        ctx.bezierCurveTo(0.81 * w, 0.13 * h, 0.92 * w, 0.26 * h, 0.92 * w, 0.44 * h);
+        ctx.bezierCurveTo(0.92 * w, 0.67 * h, 0.60 * w, 0.82 * h, 0.50 * w, 0.94 * h);
+        ctx.closePath();
+      }
+
+      function revealDate() {
+        if (dateRevealed) return;
+        dateRevealed = true;
+        document.body.classList.add('hero-date-revealed');
+        countUpDone = false;
+        updateCountdown(true);
+        launchConfetti();
+      }
+
+      function maybeRevealDate() {
+        if (cards.every(card => card.classList.contains('scratched'))) revealDate();
+      }
+
+      function launchConfetti() {
+        if (!confettiLayer || reduced) return;
+        const colors = ['#b4313a', '#d94f5a', '#f3bbb2', '#c4ab94', '#fdfaf6', '#7a5b48'];
+        confettiLayer.innerHTML = '';
+        for (let i = 0; i < 96; i++) {
+          const piece = document.createElement('span');
+          piece.className = 'confetti-piece';
+          piece.style.setProperty('--x', `${Math.random() * 100}%`);
+          piece.style.setProperty('--w', `${5 + Math.random() * 7}px`);
+          piece.style.setProperty('--h', `${8 + Math.random() * 12}px`);
+          piece.style.setProperty('--c', colors[Math.floor(Math.random() * colors.length)]);
+          piece.style.setProperty('--drift', `${(Math.random() - 0.5) * 260}px`);
+          piece.style.setProperty('--rot', `${(Math.random() > 0.5 ? 1 : -1) * (240 + Math.random() * 520)}deg`);
+          piece.style.setProperty('--dur', `${2.3 + Math.random() * 1.9}s`);
+          piece.style.setProperty('--delay', `${Math.random() * 0.75}s`);
+          confettiLayer.appendChild(piece);
+        }
+        setTimeout(() => { confettiLayer.innerHTML = ''; }, 5200);
+      }
+
+      cards.forEach(card => {
+        const canvas = card.querySelector('canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        let drawing = false;
+        let coveredPixels = 1;
+        let checkQueued = false;
+
+        function drawCover() {
+          const rect = card.getBoundingClientRect();
+          const dpr = window.devicePixelRatio || 1;
+          canvas.width = Math.max(1, Math.round(rect.width * dpr));
+          canvas.height = Math.max(1, Math.round(rect.height * dpr));
+          canvas.style.width = `${rect.width}px`;
+          canvas.style.height = `${rect.height}px`;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          ctx.clearRect(0, 0, rect.width, rect.height);
+          ctx.globalCompositeOperation = 'source-over';
+          heartPath(ctx, rect.width, rect.height);
+          const grad = ctx.createRadialGradient(rect.width * 0.34, rect.height * 0.24, 4, rect.width * 0.5, rect.height * 0.52, rect.width * 0.66);
+          grad.addColorStop(0, '#e46368');
+          grad.addColorStop(0.48, '#bd303a');
+          grad.addColorStop(1, '#7f1f29');
+          ctx.fillStyle = grad;
+          ctx.fill();
+          ctx.save();
+          heartPath(ctx, rect.width, rect.height);
+          ctx.clip();
+          ctx.fillStyle = 'rgba(255,255,255,0.24)';
+          ctx.font = `${Math.max(9, rect.width * 0.09)}px Arial`;
+          ctx.letterSpacing = '2px';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('SCRATCH', rect.width / 2, rect.height * 0.54);
+          ctx.restore();
+
+          const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+          coveredPixels = 0;
+          for (let i = 3; i < data.length; i += 4) {
+            if (data[i] > 20) coveredPixels++;
+          }
+        }
+
+        function scratchAt(event) {
+          if (card.classList.contains('scratched')) return;
+          const rect = canvas.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
+          const radius = Math.max(14, rect.width * 0.16);
+          ctx.globalCompositeOperation = 'destination-out';
+          ctx.beginPath();
+          ctx.arc(x, y, radius, 0, Math.PI * 2);
+          ctx.fill();
+          if (!checkQueued) {
+            checkQueued = true;
+            requestAnimationFrame(checkProgress);
+          }
+        }
+
+        function checkProgress() {
+          checkQueued = false;
+          if (card.classList.contains('scratched')) return;
+          const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+          let remaining = 0;
+          for (let i = 3; i < data.length; i += 4) {
+            if (data[i] > 20) remaining++;
+          }
+          if (remaining / coveredPixels < 0.32) {
+            card.classList.add('scratched');
+            maybeRevealDate();
+          }
+        }
+
+        canvas.addEventListener('pointerdown', (event) => {
+          event.preventDefault();
+          drawing = true;
+          canvas.setPointerCapture(event.pointerId);
+          scratchAt(event);
+        });
+        canvas.addEventListener('pointermove', (event) => {
+          if (!drawing) return;
+          event.preventDefault();
+          scratchAt(event);
+        });
+        const stopDrawing = () => { drawing = false; };
+        canvas.addEventListener('pointerup', stopDrawing);
+        canvas.addEventListener('pointercancel', stopDrawing);
+        canvas.addEventListener('pointerleave', stopDrawing);
+
+        card.addEventListener('keydown', (event) => {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          card.classList.add('scratched');
+          maybeRevealDate();
+        });
+
+        drawCover();
+        window.addEventListener('resize', () => {
+          if (!card.classList.contains('scratched')) drawCover();
+        });
+      });
+    })();
 
     // ── Scroll reveal (fade-up, slide-left, slide-right, dividers)
     const allReveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .section-divider');
@@ -3726,6 +4183,46 @@
       });
     }, { threshold: 0.1 });
     allReveals.forEach(el => revealObserver.observe(el));
+
+    // ── Vision statement: colour-fill each line as the section scrolls into view
+    (function initVisionScrollText() {
+      const vision = document.getElementById('vision');
+      const lines = Array.from(document.querySelectorAll('.vision-line'));
+      if (!vision || !lines.length) return;
+
+      const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) {
+        lines.forEach(line => line.style.setProperty('--progress', '1'));
+        return;
+      }
+
+      let ticking = false;
+      function clamp(value) {
+        return Math.max(0, Math.min(1, value));
+      }
+      function updateVisionLines() {
+        ticking = false;
+        const rect = vision.getBoundingClientRect();
+        const viewport = window.innerHeight || document.documentElement.clientHeight;
+        const sectionProgress = clamp((viewport * 0.82 - rect.top) / (rect.height * 0.72));
+        const total = lines.length;
+        lines.forEach((line, index) => {
+          const lineStart = index / total;
+          const lineEnd = (index + 0.82) / total;
+          const lineProgress = clamp((sectionProgress - lineStart) / (lineEnd - lineStart));
+          line.style.setProperty('--progress', lineProgress.toFixed(3));
+        });
+      }
+      function requestUpdate() {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(updateVisionLines);
+        }
+      }
+      updateVisionLines();
+      window.addEventListener('scroll', requestUpdate, { passive: true });
+      window.addEventListener('resize', requestUpdate);
+    })();
 
     // ── Pause story photo marquees when off-screen (saves a lot of CPU/GPU)
     const storyStrips = document.querySelectorAll('.story-spread-photos');
