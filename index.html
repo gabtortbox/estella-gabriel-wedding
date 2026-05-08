@@ -23,7 +23,7 @@
     :root {
       --sand: #c4ab94;
       --sand-light: #ecdfd2;
-      --sand-pale: #FAEBD7;
+      --sand-pale: #F6EEE3;
       --sand-dark: #8c7460;
       --ink: #2c2520;
       --ink-soft: #5d5046;
@@ -32,7 +32,25 @@
       --sans: 'Jost', sans-serif;
     }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 92px;
+      overflow-x: hidden;
+    }
+
+    #hero,
+    #vision,
+    #evening,
+    #dresscode,
+    #schedule,
+    #rsvp,
+    #directions,
+    #faq,
+    #story,
+    #our-story,
+    #helpers {
+      scroll-margin-top: 92px;
+    }
 
     /* ── PROGRESS BAR ── */
     #progress-bar {
@@ -53,6 +71,7 @@
       font-size: 1.075rem;        /* bump from 16px → ~17.2px */
       line-height: 1.7;
       overflow-x: hidden;
+      max-width: 100%;
     }
 
     /* ── NAV ── */
@@ -313,6 +332,8 @@
       padding: 0;
       border: 0;
       border-radius: 0;
+      appearance: none;
+      -webkit-appearance: none;
       background: transparent;
       cursor: crosshair;
       overflow: hidden;
@@ -326,6 +347,7 @@
       mask-position: center;
       filter: drop-shadow(0 10px 18px rgba(116,29,34,0.24));
       touch-action: none;
+      -webkit-tap-highlight-color: transparent;
     }
     .scratch-card:focus-visible {
       outline: 2px solid var(--sand-dark);
@@ -363,10 +385,12 @@
       position: absolute;
       inset: 0;
       z-index: 2;
+      display: block;
       width: 100%;
       height: 100%;
       transition: opacity 0.45s ease;
       touch-action: none;
+      -webkit-tap-highlight-color: transparent;
     }
     .scratch-card.scratched {
       cursor: default;
@@ -771,19 +795,23 @@
     #vision {
       background: var(--sand-pale);
       max-width: 100%;
-      padding: clamp(4.4rem, 8vw, 6.6rem) 2rem;
+      min-height: clamp(315px, 48svh, 455px);
+      padding: clamp(1.9rem, 3.8vw, 3rem) 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     #vision .inner {
-      max-width: 940px;
+      max-width: 880px;
       margin: 0 auto;
       text-align: center;
     }
     .vision-statement {
       font-family: var(--serif);
-      font-size: clamp(1.65rem, 4.2vw, 3.55rem);
+      font-size: clamp(1.76rem, 4.15vw, 3.58rem);
       font-weight: 300;
       font-style: normal;
-      line-height: 1.16;
+      line-height: 1.18;
       letter-spacing: 0;
       margin: 0 auto;
     }
@@ -820,7 +848,7 @@
     .ballroom-panel {
       padding: 4rem 2rem 3.25rem;
       text-align: center;
-      background: var(--white);
+      background: var(--sand-pale);
     }
     .ballroom-panel .inner { max-width: 900px; margin: 0 auto; }
     .ballroom-sketch {
@@ -841,15 +869,15 @@
 
     /* Dress code panel */
     .dresscode-panel {
-      background: var(--ink);
+      background: var(--sand-pale);
       padding: 4rem 2rem;
       text-align: center;
     }
     .dresscode-panel .inner { max-width: 600px; margin: 0 auto; }
-    .dresscode-panel .section-label { color: var(--sand); }
-    .dresscode-panel .section-title { color: var(--white); }
+    .dresscode-panel .section-label { color: var(--sand-dark); }
+    .dresscode-panel .section-title { color: var(--ink); }
     .dresscode-panel .section-divider { background: var(--sand); margin: 1.15rem auto 1.8rem; }
-    /* Dress code image — transparent PNG so it sits cleanly on the dark panel */
+    /* Dress code image — transparent PNG so it sits cleanly on the panel */
     .dresscode-image {
       position: relative;
       max-width: 520px;
@@ -880,7 +908,7 @@
     .swatch-circle {
       width: 48px; height: 48px;
       border-radius: 50%;
-      border: 0.5px solid rgba(255,255,255,0.15);
+      border: 1px solid rgba(42,37,32,0.26);
       box-shadow: 0 2px 6px rgba(42,37,32,0.08);
       transition: box-shadow 0.3s ease, transform 0.3s ease;
     }
@@ -893,14 +921,14 @@
       font-size: 0.6rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
+      color: var(--sand-dark);
     }
     .dresscode-note {
       font-family: var(--serif);
       font-size: 1.1rem;
       font-style: italic;
       font-weight: 300;
-      color: var(--sand-light);
+      color: var(--ink-soft);
       line-height: 1.8;
     }
 
@@ -1167,6 +1195,29 @@
     .dir-qr-note strong { color: var(--ink); font-weight: 400; }
 
     @media (max-width: 768px) {
+      html { scroll-padding-top: 76px; }
+      #hero,
+      #vision,
+      #evening,
+      #dresscode,
+      #schedule,
+      #rsvp,
+      #directions,
+      #faq,
+      #story,
+      #our-story,
+      #helpers {
+        scroll-margin-top: 76px;
+      }
+      .story-spread-photos {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+      }
+      .reveal-left,
+      .reveal-right {
+        transform: translateY(32px);
+      }
       .dir-layout { grid-template-columns: 1fr; height: auto; }
       .dir-transport-tabs { flex-direction: row; border-right: none; border-bottom: 0.5px solid var(--sand-light); }
       .dir-btn { border-left: none; border-bottom: 2px solid transparent; padding: 0.85rem 1rem; }
@@ -1602,12 +1653,14 @@
         gap: clamp(0.5rem, 1.35svh, 0.9rem);
       }
       .hero-date-scratch {
-        width: min(390px, 96vw);
-        gap: clamp(0.45rem, 2.2vw, 0.85rem);
+        width: min(310px, 88vw);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: clamp(0.3rem, 1.8vw, 0.62rem);
       }
       .scratch-card {
-        width: clamp(94px, 29vw, 120px);
-        height: clamp(86px, 27vw, 110px);
+        width: clamp(74px, 24vw, 94px);
+        height: clamp(68px, 22vw, 86px);
+        filter: drop-shadow(0 6px 11px rgba(116,29,34,0.16));
       }
       .countdown { gap: clamp(0.9rem, 4vw, 1.25rem); }
       .countdown-num { font-size: 1.7rem; }
@@ -1620,9 +1673,7 @@
       .timeline-panel {
         padding: 2.8rem 1rem 3rem;
         overflow-x: visible;
-        background:
-          linear-gradient(180deg, rgba(253,250,246,0.46), rgba(247,241,236,0) 32%),
-          var(--sand-pale);
+        background: var(--sand-pale);
       }
       .timeline-panel .panel-header {
         margin-bottom: 1.6rem;
@@ -1809,7 +1860,7 @@
     /* Tea Ceremony + Solemnisation panels (family only) */
     .ceremony-panel {
       padding: 4rem 2rem 4rem;
-      background: var(--white);
+      background: var(--sand-pale);
       position: relative;
     }
     .ceremony-panel + .ceremony-panel { padding-top: 3.5rem; }
@@ -2374,7 +2425,7 @@
       inset: clamp(1rem, 4vmin, 2.5rem);
       pointer-events: none;
       z-index: 0;
-      border: 1px solid rgba(140,116,96,0.12);
+      border: 0;
       border-radius: clamp(18px, 4vmin, 34px);
       background:
         linear-gradient(180deg, rgba(253,250,246,0.42), rgba(236,223,210,0.14)),
@@ -2382,26 +2433,6 @@
       box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.36),
         0 28px 90px rgba(140,116,96,0.14);
-    }
-    .env-bloom::before,
-    .env-bloom::after {
-      content: '';
-      position: absolute;
-      pointer-events: none;
-    }
-    .env-bloom::before {
-      inset: 12%;
-      border-top: 1px solid rgba(140,116,96,0.18);
-      border-bottom: 1px solid rgba(140,116,96,0.08);
-      transform: skewY(-3deg);
-    }
-    .env-bloom::after {
-      width: min(62vw, 620px);
-      height: 1px;
-      left: 50%;
-      bottom: 20%;
-      transform: translateX(-50%);
-      background: linear-gradient(90deg, transparent, rgba(140,116,96,0.22), transparent);
     }
     .env-sparkles {
       position: absolute;
@@ -2868,6 +2899,8 @@
 
   </div>
 
+  <div class="section-sep" aria-hidden="true"><span class="sep-line"></span><span class="sep-diamond"></span><span class="sep-line"></span></div>
+
   <!-- VISION -->
   <div id="vision">
     <div class="inner">
@@ -2880,6 +2913,8 @@
       </p>
     </div>
   </div>
+
+  <div class="section-sep" aria-hidden="true"><span class="sep-line"></span><span class="sep-diamond"></span><span class="sep-line"></span></div>
 
   <!-- EVENING: BALLROOM + DRESS CODE + ILLUSTRATED TIMELINE -->
   <div id="evening">
@@ -2902,6 +2937,8 @@
 
       </div>
     </div>
+
+    <div class="section-sep" aria-hidden="true"><span class="sep-line"></span><span class="sep-diamond"></span><span class="sep-line"></span></div>
 
     <!-- Dress code -->
     <div class="dresscode-panel" id="dresscode">
@@ -2926,10 +2963,6 @@
             <div class="swatch-circle" style="background:#4a8fc9;"></div>
             <span class="swatch-name">Vivid</span>
           </div>
-          <div class="swatch" data-tint="#f4c2c2">
-            <div class="swatch-circle" style="background:#f4c2c2;"></div>
-            <span class="swatch-name">Blush</span>
-          </div>
           <div class="swatch" data-tint="#c4d5b0">
             <div class="swatch-circle" style="background:#c4d5b0;"></div>
             <span class="swatch-name">Sage</span>
@@ -2940,10 +2973,12 @@
           </div>
         </div>
         <p class="dresscode-note reveal reveal-delay-3" style="margin-top:2rem; font-size:0.95rem;">
-          <strong style="color:var(--sand);">P.S.</strong> The venue can get cold, so we'd recommend bringing a jacket along.
+          <strong style="color:var(--sand-dark);">P.S.</strong> The venue can get cold, so we'd recommend bringing a jacket along.
         </p>
       </div>
     </div>
+
+    <div class="section-sep" aria-hidden="true"><span class="sep-line"></span><span class="sep-diamond"></span><span class="sep-line"></span></div>
 
     <!-- Illustrated horizontal timeline -->
     <div class="timeline-panel" id="schedule">
@@ -3071,9 +3106,6 @@
         <p class="section-label">RSVP</p>
         <h2 class="section-title">We would be so happy<br />to celebrate with you.</h2>
         <div class="section-divider center"></div>
-        <p style="font-family:var(--serif); font-style:italic; color:var(--ink-soft); max-width:480px; margin:1.5rem auto 0; line-height:1.75;">
-          Please let us know if you'll be joining us, and share any details we should know before the day.
-        </p>
         <div class="deadline">Kindly respond by 31 January 2027</div>
 
         <div class="rsvp-notes">
@@ -4204,11 +4236,11 @@
         ticking = false;
         const rect = vision.getBoundingClientRect();
         const viewport = window.innerHeight || document.documentElement.clientHeight;
-        const sectionProgress = clamp((viewport * 0.82 - rect.top) / (rect.height * 0.72));
+        const sectionProgress = clamp((viewport * 0.86 - rect.top) / (viewport * 0.52));
         const total = lines.length;
         lines.forEach((line, index) => {
           const lineStart = index / total;
-          const lineEnd = (index + 0.82) / total;
+          const lineEnd = (index + 0.68) / total;
           const lineProgress = clamp((sectionProgress - lineStart) / (lineEnd - lineStart));
           line.style.setProperty('--progress', lineProgress.toFixed(3));
         });
