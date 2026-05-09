@@ -30,7 +30,8 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Italianno&family=Jost:wght@200;300;400&family=Pinyon+Script&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="assets/photos/hero.jpeg" fetchpriority="high" />
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&family=Pinyon+Script&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -651,6 +652,20 @@
       padding: 4rem 2rem;
       max-width: 1200px;
       margin: 0 auto;
+    }
+    .ballroom-panel,
+    .dresscode-panel,
+    .timeline-panel,
+    #rsvp,
+    #directions,
+    #faq,
+    #helpers {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 900px;
+    }
+    #story {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 3600px;
     }
     .section-label {
       font-family: var(--sans);
@@ -2513,7 +2528,7 @@
         radial-gradient(ellipse at 88% 76%, rgba(255,248,231,0.62) 0 9%, rgba(166,130,78,0.34) 27%, transparent 45%),
         linear-gradient(118deg, transparent 0 18%, rgba(255,250,236,0.56) 28%, rgba(161,125,71,0.26) 38%, transparent 55%),
         linear-gradient(296deg, transparent 0 25%, rgba(255,250,236,0.52) 36%, rgba(150,113,62,0.28) 47%, transparent 66%);
-      filter: blur(8px);
+      filter: blur(5px);
       opacity: 0.96;
       transform: rotate(-3deg) scale(1.04);
     }
@@ -2858,8 +2873,8 @@
       animation: siteReveal 1.6s cubic-bezier(0.22,1,0.36,1) forwards;
     }
     @keyframes siteReveal {
-      from { opacity: 0.7; filter: blur(4px); }
-      to   { opacity: 1;   filter: blur(0); }
+      from { opacity: 0.7; }
+      to   { opacity: 1; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -2938,7 +2953,7 @@
   <!-- NAV -->
   <nav id="nav">
     <a href="#hero" class="nav-logo">
-      <img src="assets/photos/logo.jpeg" alt="E&G" onerror="this.style.display='none'" />
+      <img loading="eager" decoding="async" src="assets/photos/logo.jpeg" alt="E&G" onerror="this.style.display='none'" />
     </a>
     <button class="nav-hamburger" id="navHamburger" type="button" aria-label="Open menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -2960,10 +2975,12 @@
 
     <!-- Hero photo as a picture card -->
     <div class="hero-photo-card">
-      <img
-        src="assets/photos/hero-transparent.png"
+      <img loading="eager" decoding="async" fetchpriority="high"
+        src="assets/photos/hero.jpeg"
         alt="Gabriel and Estella at Lake Tekapo, New Zealand"
         class="hero-photo"
+        width="1280"
+        height="1024"
       />
     </div>
 
@@ -3056,7 +3073,7 @@
         </p>
 
         <!-- Venue sketch (uploaded image) -->
-        <img class="ballroom-sketch reveal reveal-delay-2"
+        <img fetchpriority="low" decoding="async" class="ballroom-sketch reveal reveal-delay-2"
              src="assets/photos/OasiaSketch-cropped.png"
              alt="Sketch of Oasia Resort Sentosa — the Aloes Ballroom"
              loading="lazy" />
@@ -3073,7 +3090,7 @@
         <h2 class="section-title reveal reveal-delay-1">Formal but Funky</h2>
         <div class="section-divider reveal reveal-delay-1"></div>
         <div class="dresscode-image reveal reveal-delay-2">
-          <img src="assets/photos/dresscode-transparent.png" alt="Dress code style guide" onerror="this.parentElement.style.display='none'" />
+          <img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/dresscode-transparent.png" alt="Dress code style guide" onerror="this.parentElement.style.display='none'" />
         </div>
 
         <div class="dresscode-swatches reveal reveal-delay-3">
@@ -3281,7 +3298,7 @@
       <div class="qr-panel">
         <div class="qr-box">
           <!-- Replace the src below with your QR code image (assets/photos/sentosa-qr.png) when ready -->
-          <img src="assets/photos/sentosa-qr.png" alt="Sentosa entry QR code"
+          <img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/sentosa-qr.png" alt="Sentosa entry QR code"
                onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=&quot;qr-placeholder&quot;>QR code<br/>coming soon</div>'" />
         </div>
         <div class="qr-text">
@@ -3493,19 +3510,19 @@
       <div class="story-spread-photos reveal-right">
         <div class="story-photos-track">
           <!-- Set 1 -->
-          <div class="photo-card"><img src="assets/photos/Before1.jpeg" alt="Before we knew" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Before2.jpeg" alt="Friends first" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Before3.jpeg" alt="NTU days" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Before4.jpeg" alt="University memories" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Before5.jpeg" alt="Babies group" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Before6.jpeg" alt="Graduation days" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Before1.jpeg" alt="Before we knew" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Before2.jpeg" alt="Friends first" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Before3.jpeg" alt="NTU days" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Before4.jpeg" alt="University memories" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Before5.jpeg" alt="Babies group" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Before6.jpeg" alt="Graduation days" onerror="this.style.display='none'" /></div>
           <!-- Set 2 (clone for seamless loop) -->
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before1.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before2.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before3.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before4.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before5.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Before6.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Before1.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Before2.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Before3.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Before4.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Before5.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Before6.jpeg" alt="" onerror="this.style.display='none'" /></div>
         </div>
       </div>
     </div>
@@ -3519,19 +3536,19 @@
       <div class="story-spread-photos reveal-left">
         <div class="story-photos-track">
           <!-- Set 1 -->
-          <div class="photo-card"><img src="assets/photos/Routes1.jpeg" alt="Routes we shared" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Routes2.jpeg" alt="Travel together" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Routes3.jpeg" alt="On the road" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Routes4.jpeg" alt="Adventures" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Routes5.jpeg" alt="Mountains and snow" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Routes6.jpeg" alt="Quiet moments" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Routes1.jpeg" alt="Routes we shared" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Routes2.jpeg" alt="Travel together" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Routes3.jpeg" alt="On the road" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Routes4.jpeg" alt="Adventures" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Routes5.jpeg" alt="Mountains and snow" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Routes6.jpeg" alt="Quiet moments" onerror="this.style.display='none'" /></div>
           <!-- Set 2 (clone) -->
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes1.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes2.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes3.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes4.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes5.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Routes6.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Routes1.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Routes2.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Routes3.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Routes4.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Routes5.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Routes6.jpeg" alt="" onerror="this.style.display='none'" /></div>
         </div>
       </div>
     </div>
@@ -3545,25 +3562,25 @@
       <div class="story-spread-photos reveal-right">
         <div class="story-photos-track">
           <!-- Set 1 -->
-          <div class="photo-card"><img src="assets/photos/Us1.jpeg" alt="Us together" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us2.jpeg" alt="Closer moments" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us3.jpeg" alt="Adventures" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us4.jpeg" alt="Diving" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us5.jpeg" alt="Beneath the surface" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us6.jpeg" alt="Underwater calm" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us7.jpeg" alt="Deep blue" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us8.jpeg" alt="Side by side" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Us9.jpeg" alt="Together" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us1.jpeg" alt="Us together" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us2.jpeg" alt="Closer moments" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us3.jpeg" alt="Adventures" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us4.jpeg" alt="Diving" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us5.jpeg" alt="Beneath the surface" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us6.jpeg" alt="Underwater calm" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us7.jpeg" alt="Deep blue" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us8.jpeg" alt="Side by side" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us9.jpeg" alt="Together" onerror="this.style.display='none'" /></div>
           <!-- Set 2 (clone) -->
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us1.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us2.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us3.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us4.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us5.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us6.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us7.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us8.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Us9.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us1.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us2.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us3.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us4.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us5.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us6.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us7.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us8.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Us9.jpeg" alt="" onerror="this.style.display='none'" /></div>
         </div>
       </div>
     </div>
@@ -3577,19 +3594,19 @@
       <div class="story-spread-photos reveal-left">
         <div class="story-photos-track">
           <!-- Set 1 -->
-          <div class="photo-card"><img src="assets/photos/NextChap1.jpeg" alt="Next chapter" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/Nextchap2.jpeg" alt="Together always" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/NextChap3.jpeg" alt="Open horizons" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/NextChap4.jpeg" alt="Stories yet to come" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/NextChap5.jpeg" alt="One more page" onerror="this.style.display='none'" /></div>
-          <div class="photo-card"><img src="assets/photos/NextChap6.jpeg" alt="The celebration ahead" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/NextChap1.jpeg" alt="Next chapter" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Nextchap2.jpeg" alt="Together always" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/NextChap3.jpeg" alt="Open horizons" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/NextChap4.jpeg" alt="Stories yet to come" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/NextChap5.jpeg" alt="One more page" onerror="this.style.display='none'" /></div>
+          <div class="photo-card"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/NextChap6.jpeg" alt="The celebration ahead" onerror="this.style.display='none'" /></div>
           <!-- Set 2 (clone) -->
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap1.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/Nextchap2.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap3.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap4.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap5.jpeg" alt="" onerror="this.style.display='none'" /></div>
-          <div class="photo-card" aria-hidden="true"><img src="assets/photos/NextChap6.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/NextChap1.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Nextchap2.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/NextChap3.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/NextChap4.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/NextChap5.jpeg" alt="" onerror="this.style.display='none'" /></div>
+          <div class="photo-card" aria-hidden="true"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/NextChap6.jpeg" alt="" onerror="this.style.display='none'" /></div>
         </div>
       </div>
     </div>
@@ -3616,14 +3633,14 @@
         </div>
       </div>
       <div class="helper-card" data-helper="elsie">
-        <div class="helper-avatar"><img src="assets/photos/Elsie.jpeg" alt="Elsie Goh" onerror="this.style.display='none'" /></div>
+        <div class="helper-avatar"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Elsie.jpeg" alt="Elsie Goh" onerror="this.style.display='none'" /></div>
         <div>
           <p class="helper-name">Elsie Goh</p>
           <p class="helper-role">Guest support &amp; reception flow</p>
         </div>
       </div>
       <div class="helper-card">
-        <div class="helper-avatar"><img src="assets/photos/Grace.jpeg" alt="Grace Chng" onerror="this.style.display='none'" /></div>
+        <div class="helper-avatar"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Grace.jpeg" alt="Grace Chng" onerror="this.style.display='none'" /></div>
         <div>
           <p class="helper-name">Grace Chng</p>
           <p class="helper-role">Guest support &amp; reception flow</p>
@@ -3632,28 +3649,28 @@
 
       <!-- Row 2: 4 helpers -->
       <div class="helper-card" data-helper="winnie">
-        <div class="helper-avatar"><img src="assets/photos/Winnie.jpeg" alt="Winnie Chau" onerror="this.style.display='none'" /></div>
+        <div class="helper-avatar"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Winnie.jpeg" alt="Winnie Chau" onerror="this.style.display='none'" /></div>
         <div>
           <p class="helper-name">Winnie Chau</p>
           <p class="helper-role">Reception &amp; setup</p>
         </div>
       </div>
       <div class="helper-card" data-helper="guochin">
-        <div class="helper-avatar"><img src="assets/photos/GuoChin.jpeg" alt="Khoo Guo Chin" onerror="this.style.display='none'" /></div>
+        <div class="helper-avatar"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/GuoChin.jpeg" alt="Khoo Guo Chin" onerror="this.style.display='none'" /></div>
         <div>
           <p class="helper-name">Khoo Guo Chin</p>
           <p class="helper-role">Reception &amp; setup</p>
         </div>
       </div>
       <div class="helper-card">
-        <div class="helper-avatar"><img src="assets/photos/WanQi.jpeg" alt="Ang Wan Qi" onerror="this.style.display='none'" /></div>
+        <div class="helper-avatar"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/WanQi.jpeg" alt="Ang Wan Qi" onerror="this.style.display='none'" /></div>
         <div>
           <p class="helper-name">Ang Wan Qi</p>
           <p class="helper-role">Setup crew</p>
         </div>
       </div>
       <div class="helper-card">
-        <div class="helper-avatar"><img src="assets/photos/Xaiver.jpeg" alt="Xaiver Sim" onerror="this.style.display='none'" /></div>
+        <div class="helper-avatar"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Xaiver.jpeg" alt="Xaiver Sim" onerror="this.style.display='none'" /></div>
         <div>
           <p class="helper-name">Xaiver Sim</p>
           <p class="helper-role">Setup crew</p>
@@ -4036,8 +4053,11 @@
 
     // ── Nav scroll + active link highlight
     const nav = document.getElementById('nav');
-    const sections = document.querySelectorAll('section[id], div[id]');
+    const sections = ['schedule', 'rsvp', 'directions', 'faq']
+      .map(id => document.getElementById(id))
+      .filter(Boolean);
     const navLinks = document.querySelectorAll('.nav-links a');
+    let activeNavId = '';
 
     function updateNav() {
       const scrollY = window.scrollY;
@@ -4048,10 +4068,12 @@
       sections.forEach(sec => {
         if (scrollY >= sec.offsetTop - 120) current = sec.id;
       });
-      navLinks.forEach(a => {
-        a.classList.remove('active');
-        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
-      });
+      if (current !== activeNavId) {
+        activeNavId = current;
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+        });
+      }
 
       // (Hero parallax removed — was conflicting with kenBurns animation, causing scroll jitter)
 
@@ -4069,6 +4091,7 @@
         });
       }
     }, { passive: true });
+    updateNav();
 
     // ── Mobile nav: hamburger toggle
     (function() {
