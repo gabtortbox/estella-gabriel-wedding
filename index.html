@@ -2234,34 +2234,10 @@
     .member-header {
       display: flex;
       align-items: center;
-      gap: 0.7rem;
       padding-bottom: 0.85rem;
       border-bottom: 1px dashed rgba(200,185,154,0.5);
       margin-bottom: 0.85rem;
     }
-    .member-icon {
-      width: 34px; height: 34px;
-      border-radius: 50%;
-      background: var(--sand-pale);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: background 0.3s ease;
-    }
-    .member-icon svg {
-      width: 18px; height: 18px;
-      stroke: var(--sand-dark);
-      fill: none;
-      stroke-width: 1.4;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      transition: stroke 0.3s ease;
-    }
-    .member-card.attending .member-icon { background: #e3ecd2; }
-    .member-card.attending .member-icon svg { stroke: #6a8545; }
-    .member-card.declining .member-icon { background: #f0e0d6; }
-    .member-card.declining .member-icon svg { stroke: #b08a7a; }
     .member-card .member-name {
       font-family: var(--serif);
       font-style: italic;
@@ -3933,12 +3909,10 @@
       const ICON_SOLEM = `<svg viewBox="0 0 24 24"><circle cx="9" cy="14" r="4.5"/><circle cx="15" cy="14" r="4.5"/><path d="M7 9 L9 11"/><path d="M17 9 L15 11"/></svg>`;
       const ICON_TEA   = `<svg viewBox="0 0 24 24"><path d="M5 10 h12 v6 a3 3 0 0 1 -3 3 H8 a3 3 0 0 1 -3 -3 z"/><path d="M17 11 h2 a2 2 0 0 1 0 4 h-2"/><path d="M19 21 H4"/><path d="M9 7 c0 -1 1 -1 1 -2 s -1 -1 -1 -2"/><path d="M13 7 c0 -1 1 -1 1 -2 s -1 -1 -1 -2"/></svg>`;
       const ICON_DINNER = `<svg viewBox="0 0 24 24"><path d="M9 4 L8 11 a4 4 0 0 0 8 0 L15 4 Z"/><path d="M12 15 v5"/><path d="M9 20 h6"/><circle cx="11" cy="8" r="0.6" fill="currentColor" stroke="none"/></svg>`;
-      const ICON_PERSON = `<svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3"/><path d="M5 21 v-1 a4 4 0 0 1 4 -4 h6 a4 4 0 0 1 4 4 v1"/></svg>`;
 
       memberList.innerHTML = (household.members || []).map((m, i) => `
         <div class="member-card" data-member-index="${i}">
           <div class="member-header">
-            <span class="member-icon" aria-hidden="true">${ICON_PERSON}</span>
             <div class="member-name">${escapeHtml(m.name)}</div>
           </div>
 
