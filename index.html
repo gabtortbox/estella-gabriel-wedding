@@ -30,7 +30,7 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="image" href="assets/photos/hero.jpeg" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/photos/hero-cutout.webp" type="image/webp" fetchpriority="high" />
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&family=Pinyon+Script&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -220,11 +220,6 @@
     body.hero-ready .hero-date-scratch { animation: fadeUp 0.9s ease 0.9s forwards; }
     body.hero-ready .hero-cta         { animation: fadeUp 0.9s ease 1.15s forwards; }
     body.hero-ready .scroll-indicator { animation: fadeIn 0.9s ease 1.35s forwards; }
-    body.hero-date-revealed .countdown {
-      animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) forwards;
-      pointer-events: auto;
-    }
-
     /* Hero photo — capped to fit comfortably in viewport with the rest of the hero */
     .hero-photo-card {
       position: relative;
@@ -234,6 +229,7 @@
       margin: clamp(2.6rem, calc(var(--hero-height) * 0.048), 3.8rem) 0;
       overflow: visible;
     }
+    .hero-photo-card picture { display: block; }
 
     .hero-photo {
       display: block;
@@ -534,9 +530,17 @@
       display: flex;
       gap: 2.5rem;
       margin: 0;
-      max-height: 0;
+      height: clamp(3.35rem, 5.2vw, 4.5rem);
       overflow: hidden;
-      transform: translateY(14px);
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition:
+        opacity 0.55s ease,
+        transform 0.55s cubic-bezier(0.22,1,0.36,1),
+        visibility 0s linear 0.55s;
       border: 0;
       outline: 0;
       box-shadow: none;
@@ -544,7 +548,11 @@
       pointer-events: none;
     }
     body.hero-date-revealed .countdown {
-      max-height: 4.5rem;
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      transition-delay: 0s;
+      pointer-events: auto;
     }
     .countdown-unit {
       display: flex;
@@ -971,7 +979,7 @@
       padding: 4rem 2rem;
       text-align: center;
     }
-    .dresscode-panel .inner { max-width: 600px; margin: 0 auto; }
+    .dresscode-panel .inner { max-width: 720px; margin: 0 auto; }
     .dresscode-panel .section-label { color: var(--sand-dark); }
     .dresscode-panel .section-title { color: var(--ink); }
     .dresscode-panel .section-divider { background: var(--sand); margin: 1.15rem auto 1.8rem; }
@@ -2975,13 +2983,16 @@
 
     <!-- Hero photo as a picture card -->
     <div class="hero-photo-card">
-      <img loading="eager" decoding="async" fetchpriority="high"
-        src="assets/photos/hero.jpeg"
-        alt="Gabriel and Estella at Lake Tekapo, New Zealand"
-        class="hero-photo"
-        width="1280"
-        height="1024"
-      />
+      <picture>
+        <source srcset="assets/photos/hero-cutout.webp" type="image/webp" />
+        <img loading="eager" decoding="async" fetchpriority="high"
+          src="assets/photos/hero-cutout.png"
+          alt="Gabriel and Estella at Lake Tekapo, New Zealand"
+          class="hero-photo"
+          width="1280"
+          height="1024"
+        />
+      </picture>
     </div>
 
     <!-- Details, countdown, buttons -->
@@ -3094,25 +3105,45 @@
         </div>
 
         <div class="dresscode-swatches reveal reveal-delay-3">
-          <div class="swatch" data-tint="#e8446b">
-            <div class="swatch-circle" style="background:#e8446b;"></div>
-            <span class="swatch-name">Bold</span>
+          <div class="swatch" data-tint="#d64242">
+            <div class="swatch-circle" style="background:#d64242;"></div>
+            <span class="swatch-name">Red</span>
           </div>
-          <div class="swatch" data-tint="#f2a93b">
-            <div class="swatch-circle" style="background:#f2a93b;"></div>
-            <span class="swatch-name">Bright</span>
+          <div class="swatch" data-tint="#e86cae">
+            <div class="swatch-circle" style="background:#e86cae;"></div>
+            <span class="swatch-name">Pink</span>
           </div>
-          <div class="swatch" data-tint="#4a8fc9">
-            <div class="swatch-circle" style="background:#4a8fc9;"></div>
-            <span class="swatch-name">Vivid</span>
+          <div class="swatch" data-tint="#ff7a6b">
+            <div class="swatch-circle" style="background:#ff7a6b;"></div>
+            <span class="swatch-name">Coral</span>
+          </div>
+          <div class="swatch" data-tint="#f2a23a">
+            <div class="swatch-circle" style="background:#f2a23a;"></div>
+            <span class="swatch-name">Orange</span>
+          </div>
+          <div class="swatch" data-tint="#f3d66b">
+            <div class="swatch-circle" style="background:#f3d66b;"></div>
+            <span class="swatch-name">Yellow</span>
+          </div>
+          <div class="swatch" data-tint="#59a96a">
+            <div class="swatch-circle" style="background:#59a96a;"></div>
+            <span class="swatch-name">Green</span>
           </div>
           <div class="swatch" data-tint="#c4d5b0">
             <div class="swatch-circle" style="background:#c4d5b0;"></div>
             <span class="swatch-name">Sage</span>
           </div>
+          <div class="swatch" data-tint="#4a8fc9">
+            <div class="swatch-circle" style="background:#4a8fc9;"></div>
+            <span class="swatch-name">Blue</span>
+          </div>
           <div class="swatch" data-tint="#d4c5e8">
             <div class="swatch-circle" style="background:#d4c5e8;"></div>
             <span class="swatch-name">Lavender</span>
+          </div>
+          <div class="swatch" data-tint="#8f63b8">
+            <div class="swatch-circle" style="background:#8f63b8;"></div>
+            <span class="swatch-name">Purple</span>
           </div>
         </div>
         <p class="dresscode-note reveal reveal-delay-3" style="margin-top:2rem; font-size:0.95rem;">
@@ -3351,7 +3382,7 @@
               <div class="dir-step"><div class="dir-step-num">1</div><p>Drive into Sentosa via <strong>Sentosa Gateway</strong>. Use our QR code above for complimentary island entry.</p></div>
               <div class="dir-step"><div class="dir-step-num">2</div><p>Follow signs to <strong>Oasia Resort Sentosa</strong>. Drive up to the hotel entrance and hand your keys to the valet team.</p></div>
               <div class="dir-step"><div class="dir-step-num">3</div><p>Head inside and take the <strong>lift or escalator down to Level 1</strong>. The wedding will be at the <strong>Aloes Ballroom</strong>.</p></div>
-              <div class="dir-qr-note">🅿️ <strong>Valet is complimentary for all guests.</strong> Drive straight to Oasia Resort Sentosa and the valet team will take care of the rest. If you'd rather self-park, see the Self-Park option.</div>
+              <div class="dir-qr-note">🅿️ <strong>Valet is complimentary but limited.</strong> Slots at Oasia are available on a <strong>first come, first served</strong> basis. If valet is full, please use the Self-Park option at Village Hotel Sentosa.</div>
             </div>
           </div>
 
@@ -3371,7 +3402,7 @@
               <div class="dir-step"><div class="dir-step-num">2</div><p>Park at <strong>Village Hotel Sentosa</strong> car park. We've been allocated parking coupons equivalent to <strong>20% of our guaranteed attendance</strong>, available on a <strong>first come, first served</strong> basis for self-park guests.</p></div>
               <div class="dir-step"><div class="dir-step-num">3</div><p>Follow signs to <strong>Oasia Resort Sentosa</strong>. It's a short walk from Village Hotel for the celebration.</p></div>
               <div class="dir-step"><div class="dir-step-num">4</div><p>Head inside and take the <strong>lift or escalator down to Level 1</strong>. The wedding will be at the <strong>Aloes Ballroom</strong>.</p></div>
-              <div class="dir-qr-note">🎟️ <strong>Tip:</strong> if you'd rather avoid self-parking altogether, valet at Oasia is complimentary for all guests.</div>
+              <div class="dir-qr-note">🎟️ <strong>Tip:</strong> valet at Oasia is complimentary but limited, and slots are available on a <strong>first come, first served</strong> basis.</div>
             </div>
           </div>
 
@@ -3434,7 +3465,7 @@
       <!-- ═══ Group: RSVP & Guest List ═══ -->
       <div class="faq-item">
         <div class="faq-question">When is the RSVP deadline?</div>
-        <div class="faq-answer">Please RSVP by <strong>31 January 2027</strong>, about two months before the wedding. This helps us finalise numbers with the venue.</div>
+        <div class="faq-answer">Please RSVP by <strong>31 January 2027</strong>. This helps us finalise numbers with the venue.</div>
       </div>
       <div class="faq-item">
         <div class="faq-question">Can I update my RSVP later?</div>
@@ -3476,7 +3507,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-question">Can we park at the venue?</div>
-        <div class="faq-answer"><strong>Valet at Oasia Resort Sentosa</strong> is complimentary for <strong>all guests</strong>. Drive straight to Oasia and the valet team will take care of the rest. <br/><br/>If you'd rather <strong>self-park</strong>, the closest car park is at <strong>Village Hotel Sentosa</strong>, a short walk to Oasia. We've been allocated parking coupons equivalent to <strong>20% of our guaranteed attendance</strong>, available on a <strong>first come, first served</strong> basis for self-park guests.</div>
+        <div class="faq-answer"><strong>Valet at Oasia Resort Sentosa</strong> is complimentary but limited, with slots available on a <strong>first come, first served</strong> basis. Drive straight to Oasia and the valet team will assist if slots are still available.<br/><br/>If you'd rather <strong>self-park</strong>, or if valet is full, the closest car park is at <strong>Village Hotel Sentosa</strong>, a short walk to Oasia. We've been allocated parking coupons equivalent to <strong>20% of our guaranteed attendance</strong>, available on a <strong>first come, first served</strong> basis for self-park guests.</div>
       </div>
       <div class="faq-item">
         <div class="faq-question">Where can I find nearby accommodation?</div>
