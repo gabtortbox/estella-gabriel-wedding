@@ -9,8 +9,17 @@
     (function() {
       var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       var hasHash = window.location.hash && window.location.hash.length > 1;
-      if (!reduced && !hasHash) {
+      // The opening is lovely once and wearing by the fourth visit, and the
+      // guests most likely to return are the ones coming back to edit an answer.
+      window.GE_SEEN_KEY = 'ge-envelope-seen';
+      var seenEnvelope = false;
+      try { seenEnvelope = localStorage.getItem(window.GE_SEEN_KEY) === '1'; } catch (e) { /* private window */ }
+      window.GE_SEEN = seenEnvelope;
+      if (!reduced && !hasHash && !seenEnvelope) {
         document.documentElement.classList.add('doors-locked');
+        // A reload otherwise restores the previous scroll position, which can
+        // land the guest past the hero and make the envelope release itself.
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
       }
 
       function setStableHeroHeight() {
@@ -31,7 +40,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" as="image" href="assets/photos/hero-cutout.webp" type="image/webp" fetchpriority="high" />
-  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&family=Pinyon+Script&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&family=Pinyon+Script&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -187,7 +196,7 @@
 
     /* Big title at the top of the hero — elegant script for the names */
     .hero-title {
-      font-family: 'Pinyon Script', 'Allura', cursive;
+      font-family: 'Pinyon Script', cursive;
       font-style: normal;
       font-weight: 400;
       font-size: clamp(3.3rem, 8.5vw, 6rem);
@@ -375,14 +384,9 @@
       mask-repeat: no-repeat;
       -webkit-mask-position: center;
       mask-position: center;
-      filter: drop-shadow(0 10px 18px rgba(116,29,34,0.24));
+      filter: drop-shadow(0 10px 18px rgba(138,106,50,0.26));
       touch-action: none;
       -webkit-tap-highlight-color: transparent;
-    }
-    .scratch-card:focus,
-    .scratch-card:focus-visible {
-      outline: none;
-      box-shadow: none;
     }
     .scratch-reveal {
       position: absolute;
@@ -498,7 +502,7 @@
       opacity: 0;
       transform: translate(-50%, -50%) rotate(45deg) scale(0.2);
       animation: tapHeartBurst var(--dur) cubic-bezier(0.18,0.78,0.28,1) forwards;
-      filter: drop-shadow(0 4px 7px rgba(116,29,34,0.18));
+      filter: drop-shadow(0 4px 7px rgba(131,71,63,0.18));
     }
     .tap-heart::before,
     .tap-heart::after {
@@ -624,14 +628,17 @@
       border-color: var(--ink);
       color: var(--ink);
     }
+    /* Rests on the palette's soft brown rather than near-black, so the hero CTA
+       sits with the seal and the scratch hearts instead of shouting over them.
+       Hover deepens; it used to lighten, which read backwards. */
     .btn.filled {
-      background: var(--ink);
+      background: var(--sand-dark);
       color: var(--white);
-      border-color: var(--ink);
+      border-color: var(--sand-dark);
     }
     .btn.filled:hover {
-      background: var(--sand-dark);
-      border-color: var(--sand-dark);
+      background: var(--ink);
+      border-color: var(--ink);
       color: var(--white);
     }
     /* non-hero buttons (used outside of hero) */
@@ -1000,24 +1007,111 @@
         drop-shadow(-0.12px 0 0 rgba(44,37,32,0.34));
     }
 
-    .dresscode-swatches {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin: 2rem 0 1.25rem;
-      flex-wrap: wrap;
+    /* Garment silhouettes sit below the original ink, with independent fills. */
+    .dresscode-colours {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      fill-opacity: 0.75;
     }
+    .dresscode-colours g { transition: fill 0.25s ease; }
+    .dresscode-image img { position: relative; z-index: 1; }
+    .dresscode-editors {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem;
+      margin: 2rem 0 0.5rem;
+    }
+    .dresscode-look { min-width: 0; border: 0; padding: 0; text-align: left; }
+    .dresscode-look legend { width: 100%; margin-bottom: 0.5rem; font: italic 400 1.5rem/1.2 var(--serif); }
+    .dresscode-look-choice { position: relative; display: flex; width: 100%; cursor: pointer; }
+    .dresscode-look-choice input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+    .dresscode-look-choice span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-width: 0;
+      min-height: 44px;
+      padding: 0.5rem 1.1rem;
+      border: 1px solid var(--sand);
+      border-radius: 0;
+      color: var(--ink-soft);
+      font: 400 0.9rem/1.5 var(--sans);
+    }
+    .dresscode-look-choice input:checked + span { background: var(--ink-soft); border-color: var(--ink-soft); color: var(--white); }
+    .dresscode-look-choice input:focus-visible + span { outline: 2px solid var(--ink-soft); outline-offset: 4px; }
+    .dresscode-look[data-active="false"] legend { color: var(--ink-soft); }
+    .dresscode-look-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .dresscode-look-fields label { display: block; color: var(--ink-soft); font: 400 0.75rem/1.5 var(--sans); }
+    .dresscode-piece, .dresscode-finish {
+      min-height: 44px;
+      width: 100%;
+      max-width: 100%;
+      padding: 0.5rem 1.75rem 0.5rem 0.5rem;
+      border: 0;
+      border-bottom: 1px solid var(--sand);
+      border-radius: 0;
+      background: transparent;
+      font: 400 0.88rem/1.5 var(--sans);
+      color: var(--ink);
+      cursor: pointer;
+    }
+    .dresscode-reset {
+      min-height: 44px;
+      border: 0;
+      padding: 0.5rem 0;
+      background: transparent;
+      color: var(--ink-soft);
+      font: 400 0.85rem/1.5 var(--sans);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      cursor: pointer;
+    }
+    .dresscode-reset:disabled { opacity: 0.45; cursor: default; }
+    .dresscode-swatch-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    .dresscode-piece:focus-visible, .dresscode-finish:focus-visible, .dresscode-reset:focus-visible, .swatch:focus-visible {
+      outline: 2px solid var(--ink-soft);
+      outline-offset: 5px;
+    }
+    .dresscode-swatches {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 0.55rem 0.15rem;
+      max-width: 560px;
+      margin: 1rem auto 0.5rem;
+    }
+    .dresscode-palette-heading { margin-top: 1.5rem; color: var(--ink-soft); font: 400 0.85rem/1.6 var(--sans); }
+    .dresscode-palette-heading strong { margin-left: 0.35rem; color: var(--ink); font-weight: 400; }
+    .dresscode-neutrals { display: contents; }
     .swatch {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 0;
+      padding: 0;
+      background: none;
+      font: inherit;
+      color: inherit;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.25rem;
+      min-width: 44px;
+      min-height: 56px;
       cursor: pointer;
       transition: transform 0.3s ease;
     }
     .swatch:hover { transform: translateY(-3px); }
+    .swatch[aria-pressed="true"] { transform: translateY(-3px); }
+    .swatch[aria-pressed="true"] .swatch-circle {
+      outline: 2px solid var(--ink);
+      outline-offset: 3px;
+    }
     .swatch-circle {
-      width: 48px; height: 48px;
+      width: 32px; height: 32px;
       border-radius: 50%;
       border: 1px solid rgba(42,37,32,0.26);
       box-shadow: 0 2px 6px rgba(42,37,32,0.08);
@@ -1029,10 +1123,16 @@
     }
     .swatch-name {
       font-family: var(--sans);
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--sand-dark);
+      font-size: 0.65rem;
+      letter-spacing: 0;
+      color: var(--ink-soft);
+    }
+    @media (max-width: 768px) {
+      .dresscode-editors { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; }
+    }
+    @media (max-width: 389px) {
+      .dresscode-swatches { display: flex; flex-wrap: wrap; justify-content: center; }
+      .dresscode-swatches .swatch { flex: 0 0 calc((100% - 0.6rem) / 5); }
     }
     .dresscode-note {
       font-family: var(--serif);
@@ -1042,8 +1142,11 @@
       color: var(--ink-soft);
       line-height: 1.8;
     }
+    @media (prefers-reduced-motion: reduce) {
+      .dresscode-colours g { transition: none; }
+    }
 
-    /* Horizontal illustrated timeline */
+    /* Illustrated timeline */
     .timeline-panel {
       background: var(--sand-pale);
       padding: 3.25rem 2rem 3.5rem;
@@ -1051,13 +1154,6 @@
     }
     .timeline-panel .inner { max-width: 1100px; margin: 0 auto; }
     .timeline-panel .panel-header { text-align: center; margin-bottom: 2rem; }
-    .timeline-panel .schedule-venue {
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--sand-dark);
-      margin-top: 0.5rem;
-    }
 
     .h-timeline {
       display: flex;
@@ -1068,25 +1164,21 @@
       padding: 0 1rem;
       --timeline-edge: calc(12.5% + 0.75rem);
     }
-    .h-item {
-      width: 0;            /* let flex distribute equal width using flex:1 below */
-    }
     .h-timeline::before {
       content: '';
       position: absolute;
-      top: 32px;             /* exact centre of the 64px icon circles */
+      top: 32px;
       left: var(--timeline-edge);
       right: var(--timeline-edge);
       height: 1px;
       background: var(--sand);
-      transform: translateY(-50%);   /* centres the 1px line precisely on y=32 */
+      transform: translateY(-50%);
       pointer-events: none;
-    }
-    .h-timeline:has(.h-item[data-audience="family"].audience-show) {
-      --timeline-edge: calc(10% + 0.8rem);
     }
     .h-item {
       flex: 1;
+      width: 0;
+      min-width: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1148,80 +1240,75 @@
       line-height: 1.6;
       max-width: 120px;
     }
+    @media (min-width: 769px) {
+      .h-item-seating .h-item-desc { width: 100%; max-width: 190px; }
+    }
 
     /* ── DIRECTION MAPS ── */
     .dir-layout {
       display: grid;
-      grid-template-columns: 180px 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 0;
-      border: 0.5px solid var(--sand-light);
-      border-radius: 8px;
-      overflow: hidden;
-      height: 520px;
     }
 
     .dir-transport-tabs {
       display: flex;
-      flex-direction: column;
-      border-right: 0.5px solid var(--sand-light);
-      background: var(--sand-pale);
-      overflow: hidden;
+      border-bottom: 1px solid var(--sand);
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
     }
     .dir-btn {
       font-family: var(--sans);
-      font-size: 0.68rem;
-      font-weight: 300;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-size: 0.92rem;
+      font-weight: 400;
+      letter-spacing: 0;
       color: var(--ink-soft);
       background: none;
       border: none;
-      border-left: 2px solid transparent;
-      padding: 1.25rem 1.2rem;
+      border-bottom: 2px solid transparent;
+      padding: 1rem 0.5rem;
+      min-height: 64px;
+      min-width: 0;
+      flex: 1;
       cursor: pointer;
       text-align: left;
       transition: color 0.2s, background 0.2s, border-color 0.2s;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 0.65rem;
       line-height: 1.4;
     }
-    .dir-btn + .dir-btn { border-top: 0.5px solid var(--sand-light); }
-    .dir-btn svg { width: 22px; height: 22px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-    .dir-btn:hover { color: var(--ink); background: rgba(200,185,154,0.12); }
-    .dir-btn.active { color: var(--ink); background: var(--white); border-left-color: var(--sand-dark); font-weight: 400; }
+    .dir-btn svg { width: 28px; height: 28px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .dir-btn:hover { color: var(--ink); }
+    .dir-btn.active { color: var(--ink); border-bottom-color: var(--ink-soft); }
+    .dir-btn:focus-visible, .car-toggle-btn:focus-visible { outline: 2px solid var(--ink-soft); outline-offset: 3px; }
 
     /* All panels — hidden by default, fill right column exactly */
-    .dir-panel { display: none; overflow: hidden; }
+    .dir-panel { display: none; min-width: 0; }
     .dir-panel.active {
       display: grid;
       grid-template-columns: 1.15fr 1fr;
-      height: 100%;
-      overflow: hidden;
+      min-height: 440px;
     }
 
     /* Car panel overrides: flex column (toggle bar + subpanel below) */
     #dir-car.dir-panel.active {
       display: flex;
       flex-direction: column;
-      height: 100%;
-      overflow: hidden;
     }
 
     /* Car subpanel fills remaining height after toggle row */
     .car-toggle-row {
-      padding: 0.9rem 1.4rem 0.75rem;
-      border-bottom: 0.5px solid var(--sand-light);
-      background: var(--white);
+      padding: 0 0 1rem;
       flex-shrink: 0;
     }
-    .car-subpanel { display: none; overflow: hidden; }
+    .car-subpanel { display: none; }
     .car-subpanel.active {
       display: grid;
       grid-template-columns: 1.15fr 1fr;
       flex: 1;
-      min-height: 0;
-      overflow: hidden;
+      min-height: 440px;
     }
 
     /* Map column — fills its grid cell completely */
@@ -1246,21 +1333,21 @@
       display: flex;
       background: var(--sand-pale);
       border: 0.5px solid var(--sand-light);
-      border-radius: 20px;
+      border-radius: 4px;
       padding: 3px;
       width: fit-content;
     }
     .car-toggle-btn {
       font-family: var(--sans);
-      font-size: 0.65rem;
-      font-weight: 300;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0;
       color: var(--ink-soft);
       background: none;
       border: none;
-      border-radius: 16px;
-      padding: 0.35rem 1rem;
+      border-radius: 2px;
+      padding: 0.5rem 1rem;
+      min-height: 44px;
       cursor: pointer;
       transition: background 0.2s, color 0.2s;
       white-space: nowrap;
@@ -1268,19 +1355,17 @@
     .car-toggle-btn.active {
       background: var(--white);
       color: var(--ink);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
 
     /* Directions text panel */
     .dir-info {
-      padding: 1.75rem;
+      padding: 1.5rem 1.75rem;
       border-left: 0.5px solid var(--sand-light);
-      overflow-y: auto;
-      height: 100%;
+      min-width: 0;
     }
     .dir-info h4 {
       font-family: var(--serif);
-      font-size: 1.1rem;
+      font-size: 1.5rem;
       font-weight: 400;
       color: var(--ink);
       margin-bottom: 1.1rem;
@@ -1288,12 +1373,10 @@
     .dir-info strong { color: var(--ink); font-weight: 400; }
     .dir-step { display: flex; gap: 0.8rem; align-items: flex-start; margin-bottom: 0.9rem; }
     .dir-step-num {
-      width: 21px; height: 21px;
-      border-radius: 50%;
-      background: var(--sand-light);
+      width: 21px; min-height: 24px;
       flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-family: var(--serif); font-size: 0.72rem; color: var(--sand-dark);
+      font-family: var(--serif); font-size: 1.15rem; color: var(--sand-dark);
       margin-top: 0.15rem;
     }
     .dir-step p { margin: 0; font-size: 0.84rem; line-height: 1.75; color: var(--ink-soft); }
@@ -1333,14 +1416,13 @@
         transform: translateY(32px);
       }
       .dir-layout { grid-template-columns: 1fr; height: auto; }
-      .dir-transport-tabs { flex-direction: row; border-right: none; border-bottom: 0.5px solid var(--sand-light); }
-      .dir-btn { border-left: none; border-bottom: 2px solid transparent; padding: 0.85rem 1rem; }
-      .dir-btn.active { border-left-color: transparent; border-bottom-color: var(--sand-dark); }
+      .dir-btn { flex-direction: column; font-size: 0.78rem; text-align: center; padding: 0.75rem 0.2rem; min-height: 92px; }
       .dir-panel.active,
-      #dir-car.dir-panel.active { grid-template-columns: 1fr; height: auto; }
-      .car-subpanel.active { grid-template-columns: 1fr; }
+      #dir-car.dir-panel.active { grid-template-columns: 1fr; height: auto; min-height: 0; }
+      .car-subpanel.active { grid-template-columns: 1fr; min-height: 0; }
       .dir-map-wrap { min-height: 260px; height: 260px; }
       .dir-map-wrap iframe { position: static; height: 260px; }
+      .dir-info { border-left: 0; border-top: 1px solid var(--sand-light); padding: 1.5rem 0; }
     }
 
     /* ── QR CODE PANEL ── */
@@ -1348,11 +1430,10 @@
       display: flex;
       gap: 2rem;
       align-items: center;
-      padding: 1.25rem 1.5rem;
+      padding: 1.25rem 0;
       margin-bottom: 1.35rem;
-      background: var(--sand-pale);
-      border: 0.5px solid var(--sand-light);
-      border-radius: 8px;
+      border-top: 1px solid var(--sand-light);
+      border-bottom: 1px solid var(--sand-light);
     }
     .qr-box {
       width: 168px;
@@ -1401,7 +1482,7 @@
         flex-direction: row;
         align-items: center;
         gap: 1rem;
-        padding: 1rem;
+        padding: 1rem 0;
       }
       .qr-box {
         width: clamp(112px, 32vw, 140px);
@@ -1795,7 +1876,7 @@
       .scratch-card {
         width: clamp(74px, 24vw, 94px);
         height: clamp(68px, 22vw, 86px);
-        filter: drop-shadow(0 6px 11px rgba(116,29,34,0.16));
+        filter: drop-shadow(0 6px 11px rgba(138,106,50,0.18));
       }
       .countdown { gap: clamp(0.9rem, 4vw, 1.25rem); }
       .countdown-num { font-size: 1.7rem; }
@@ -1823,17 +1904,7 @@
         margin: 0 auto;
         padding: 0 0 0 0.65rem;
       }
-      .h-timeline::before {
-        display: none;
-        top: 1.35rem;
-        bottom: 1.35rem;
-        left: 39px;
-        right: auto;
-        width: 1px;
-        height: auto;
-        background: linear-gradient(to bottom, transparent, var(--sand) 12%, var(--sand) 88%, transparent);
-        transform: none;
-      }
+      .h-timeline::before { display: none; }
 
       .h-item {
         display: grid;
@@ -1856,18 +1927,11 @@
         background: rgba(253,250,246,0.46);
         box-shadow: 0 10px 30px rgba(42,37,32,0.035);
       }
-      .h-item:first-child,
-      .h-item:last-child { padding-top: 0.6rem; padding-bottom: 0.6rem; }
 
       .h-item-icon {
         grid-area: icon;
         width: 52px;
         height: 52px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        background: var(--white);
         border: 0.5px solid var(--sand);
         align-self: center;
         justify-self: end;
@@ -1880,35 +1944,21 @@
         width: 24px;
         height: 24px;
         stroke-width: 1.2;
-        stroke: var(--sand-dark);
-        fill: none;
       }
 
-      /* Match desktop styling: time is the serif headline, event is the small uppercase caption */
       .h-item-time {
         grid-area: time;
         margin: 0.05rem 0 0;
-        font-family: var(--serif);
-        font-style: normal;
         font-size: 1.22rem;
-        font-weight: 400;
         letter-spacing: 0;
-        text-transform: none;
-        color: var(--ink);
         line-height: 1.15;
       }
-      .h-item-time::after { content: ''; margin: 0; }
 
       .h-item-event {
         grid-area: event;
         margin: 0;
-        font-family: var(--sans);
-        font-style: normal;
         font-size: 0.58rem;
-        font-weight: 300;
         letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: var(--sand-dark);
         line-height: 1.4;
       }
 
@@ -1973,31 +2023,6 @@
     .h-item[data-audience="family"].audience-show { display: flex; }
     @media (max-width: 768px) {
       .h-item[data-audience="family"].audience-show { display: grid; }
-    }
-
-    /* Personalised greeting banner */
-    .invite-greeting {
-      background: linear-gradient(180deg, var(--sand-pale), var(--sand-light));
-      padding: 1.5rem 2rem;
-      text-align: center;
-      border-bottom: 1px solid rgba(200,185,154,0.4);
-      display: none;
-    }
-    .invite-greeting.show { display: block; }
-    .invite-greeting .hello {
-      font-family: var(--sans);
-      font-size: 0.7rem;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--ink-soft);
-      margin-bottom: 0.4rem;
-    }
-    .invite-greeting .who {
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: clamp(1.4rem, 2.2vw, 1.8rem);
-      color: var(--ink);
-      font-weight: 300;
     }
 
     /* Tea Ceremony + Solemnisation panels (family only) */
@@ -2101,6 +2126,66 @@
       color: var(--ink);
     }
 
+    /* Personalised greeting — revealed once the invite code resolves */
+    .invite-greeting {
+      max-width: 540px;
+      margin: 0 auto;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      text-align: center;
+      transition: opacity 0.5s ease, max-height 0.5s ease, margin 0.5s ease;
+    }
+    .invite-greeting.show {
+      max-height: 200px;
+      opacity: 1;
+      margin: 0 auto 2.5rem;
+    }
+    .invite-greeting-label {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--sand-dark);
+      margin-bottom: 0.75rem;
+    }
+    .invite-greeting-who {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.9rem;
+      line-height: 1.3;
+      color: var(--ink);
+    }
+
+    /* Lookup in flight — the Apps Script call takes a couple of seconds */
+    .rsvp-status {
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+      text-align: center;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--ink-soft);
+    }
+    .rsvp-spinner {
+      display: block;
+      width: 26px;
+      height: 26px;
+      margin: 0 auto 1.1rem;
+      border: 1px solid var(--sand-light);
+      border-top-color: var(--sand-dark);
+      border-radius: 50%;
+      animation: rsvp-spin 0.9s linear infinite;
+    }
+    @keyframes rsvp-spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      .rsvp-spinner { animation-duration: 2.6s; }
+      .invite-greeting { transition: none; }
+    }
+
     /* "No invite" / public preview state */
     .rsvp-public {
       background: var(--white);
@@ -2143,6 +2228,72 @@
       font-weight: 400;
       font-style: normal;
       letter-spacing: 0.02em;
+    }
+
+    .saved-reply {
+      margin: 0 0 2.5rem;
+      padding: 1.5rem 0 0.5rem;
+      border-top: 2px solid var(--sand-dark);
+      border-bottom: 1px solid var(--sand);
+      scroll-margin-top: 16px;
+    }
+    .saved-reply[hidden], .saved-reply [hidden], .rsvp-request[hidden], .rsvp-reload[hidden] { display: none; }
+    .saved-reply-summary { margin: 1rem 0 0.5rem; font: 400 0.85rem/1.6 var(--sans); color: var(--ink-soft); }
+    .rsvp-request { margin: 1.5rem 0; padding: 1.25rem 0; border-block: 1px solid var(--sand); color: var(--ink); }
+    .rsvp-request h3 { font: 500 1.5rem/1.3 var(--serif); margin-bottom: 0.6rem; }
+    .rsvp-request p { font: 400 0.9rem/1.7 var(--sans); overflow-wrap: anywhere; }
+    .rsvp-request-members { margin-top: 0.75rem; }
+    .rsvp-request-members p { margin-top: 0.35rem; }
+    .rsvp-reload { margin: 1rem auto; }
+    .saved-reply-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--sand-light);
+    }
+    .saved-reply h3 { font: italic 400 1.85rem/1.3 var(--serif); }
+    .saved-reply time {
+      max-width: 215px;
+      font: 400 0.78rem/1.6 var(--sans);
+      color: var(--ink-soft);
+      text-align: right;
+    }
+    .saved-reply-member {
+      display: grid;
+      grid-template-columns: minmax(130px, 0.7fr) minmax(0, 1.6fr);
+      gap: 1.5rem;
+      padding: 1.35rem 0;
+    }
+    .saved-reply-member + .saved-reply-member { border-top: 1px solid var(--sand-light); }
+    .saved-reply-member h4 { font: 500 1.45rem/1.4 var(--serif); overflow-wrap: anywhere; }
+    .saved-reply-details { min-width: 0; }
+    .saved-reply-details > div {
+      display: grid;
+      grid-template-columns: 135px minmax(0, 1fr);
+      gap: 0.75rem;
+      margin: 0.35rem 0;
+      font: 400 0.88rem/1.6 var(--sans);
+    }
+    .saved-reply-details > div:first-child { margin-top: 0; }
+    .saved-reply-details > div:last-child { margin-bottom: 0; }
+    .saved-reply-details dt { color: var(--ink-soft); }
+    .saved-reply-details dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .saved-reply-unsaved {
+      margin: 0 0 0.85rem;
+      padding-left: 0.75rem;
+      border-left: 2px solid var(--sand-dark);
+      color: var(--ink-soft);
+      font: 400 0.85rem/1.6 var(--sans);
+    }
+
+    @media (max-width: 768px) {
+      .saved-reply-heading { align-items: flex-start; gap: 0.5rem; }
+      .saved-reply time { max-width: none; flex-basis: 100%; text-align: left; }
+      .saved-reply-member { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
+      .saved-reply-details > div { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 0.6rem; }
     }
 
     /* Event block — per-event rsvp segment with icon + title + toggle */
@@ -2452,6 +2603,53 @@
       margin-right: 0.5rem;
       vertical-align: middle;
     }
+    .rsvp-calendar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.9rem;
+      margin: 2rem auto 0;
+      padding-top: 1.75rem;
+      border-top: 1px solid rgba(196,171,148,0.45);
+      max-width: 420px;
+    }
+    .rsvp-calendar[hidden] { display: none; }
+    .rsvp-calendar-label {
+      margin: 0;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--ink-soft);
+    }
+    .rsvp-calendar-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center; }
+    .cal-btn {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border: 0.5px solid var(--sand-dark);
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .cal-btn:hover { background: var(--sand-dark); color: var(--white); }
+
+    /* Same banner, used when the RSVP could not be saved or is incomplete. */
+    .rsvp-saved-banner.error {
+      background: #f7e6e0;
+      border-color: #a8563f;
+      color: #7d3323;
+    }
+    .rsvp-saved-banner.error .check { background: #a8563f; }
+    /* Marks the guest we still need an answer for, once we've scrolled to them. */
+    .member-card.needs-answer {
+      outline: 2px solid #a8563f;
+      outline-offset: 3px;
+    }
 
     @media (max-width: 640px) {
       .ceremony-panel { padding: 5rem 1.5rem; }
@@ -2542,7 +2740,7 @@
     .env-title {
       position: relative;
       z-index: 4;
-      font-family: 'Pinyon Script', 'Allura', cursive;
+      font-family: 'Pinyon Script', cursive;
       font-size: clamp(3.1rem, 9vw, 6.2rem);
       font-weight: 400;
       line-height: 0.9;
@@ -2709,9 +2907,14 @@
       font-family: var(--serif);
       font-style: italic;
       font-size: clamp(0.85rem, 1.7vmin, 1.05rem);
-      color: rgba(102,76,41,0.54);
+      /* --ink-soft at 0.85 reaches ~4.8:1 on --paper; the old rgba(102,76,41,.54)
+         was ~2.5:1, well under the 4.5:1 AA floor for text this size. */
+      color: rgba(93,80,70,0.85);
       font-weight: 300;
+      transition: opacity 0.45s ease;
     }
+    /* Held mid-swap while the generic wording is exchanged for the guest's name */
+    .env-address-to.swapping { opacity: 0; }
     .env-overlay.opening .env-address {
       opacity: 0;
       transform: translate(-50%, 10px);
@@ -2783,7 +2986,7 @@
       filter: blur(0.45px);
     }
     .env-seal-letters {
-      font-family: 'Pinyon Script', 'Allura', cursive;
+      font-family: 'Pinyon Script', cursive;
       font-style: normal;
       font-weight: 400;
       font-size: clamp(1rem, 2vmin, 1.34rem);
@@ -2880,6 +3083,45 @@
       }
       .env-spark:nth-child(n+8) { display: none; }
     }
+
+    /* ── KEYBOARD FOCUS ──
+       One visible indicator for everything. The only :focus-visible rule that
+       used to exist removed the outline, so nobody navigating by keyboard could
+       see where they were in the RSVP form. */
+    :focus-visible {
+      outline: 2px solid var(--sand-dark);
+      outline-offset: 3px;
+    }
+    /* The hearts are mask-clipped, so an outline gets cut away with everything
+       else outside the silhouette. drop-shadow survives the mask, so focus reads
+       as a halo in the shape of the heart itself. */
+    .scratch-card:focus-visible {
+      outline: none;
+      filter:
+        drop-shadow(0 10px 18px rgba(138,106,50,0.26))
+        drop-shadow(0 0 2px var(--sand-dark))
+        drop-shadow(0 0 2px var(--sand-dark));
+    }
+
+    /* Only appears for guests who have already been through the envelope. */
+    .replay-link {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 0;
+      background: none;
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sand-dark);
+      cursor: pointer;
+      padding: 0.6rem 0.2rem 0;
+      opacity: 0.75;
+      transition: opacity 0.3s ease;
+    }
+    .replay-link:hover { opacity: 1; }
+    .replay-link[hidden] { display: none; }
   </style>
 </head>
 <body>
@@ -2914,7 +3156,7 @@
     <div class="envelope" id="envelopeShape">
       <div class="env-body">
         <div class="env-address">
-          <span class="env-address-to">for our beloved guest</span>
+          <span class="env-address-to" id="envAddressTo">for our beloved guest</span>
         </div>
       </div>
 
@@ -3078,51 +3320,176 @@
         <div class="section-divider reveal reveal-delay-1"></div>
         <div class="dresscode-image reveal reveal-delay-2">
           <img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/dresscode-transparent.png" alt="Dress code style guide" onerror="this.parentElement.style.display='none'" />
+          <svg class="dresscode-colours" viewBox="0 0 1280 1024" aria-hidden="true" focusable="false">
+            <defs>
+              <mask id="dresscode-heel-guard" maskUnits="userSpaceOnUse" x="0" y="0" width="1280" height="1024" style="mask-type:luminance">
+                <rect width="1280" height="1024" fill="white" />
+                <ellipse cx="337" cy="938" rx="12" ry="4" fill="black" />
+                <ellipse cx="455" cy="949" rx="14" ry="4" fill="black" />
+              </mask>
+              <pattern id="dresscode-dots" width="24" height="24" patternUnits="userSpaceOnUse">
+                <circle cx="6" cy="6" r="4" fill="#fdfaf6" stroke="#5d5046" stroke-opacity="0.35" stroke-width="1" />
+                <circle cx="18" cy="18" r="4" fill="#fdfaf6" stroke="#5d5046" stroke-opacity="0.35" stroke-width="1" />
+              </pattern>
+              <pattern id="dresscode-stripes" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(22)">
+                <path d="M4 0V20" stroke="#fdfaf6" stroke-width="5" />
+                <path d="M8 0V20" stroke="#5d5046" stroke-opacity="0.3" stroke-width="1" />
+              </pattern>
+            </defs>
+            <g data-piece="dress" fill="transparent">
+              <g id="dresscode-shape-dress">
+              <path d="M408 177 422 183 406 211Q443 241 462 283L438 357 347 347Q344 320 339 299 333 283 341 268L383 211Z M373 193 384 207 378 219 368 200Z" />
+              <path d="M347 346 439 357 438 371 345 358Z M345 358Q321 379 307 439C292 485 296 531 282 592Q271 648 254 688L268 702Q270 714 252 736L225 776Q249 778 256 792L224 828 235 845 207 881Q232 878 241 889 232 900 243 904L272 901Q282 900 280 909 300 921 315 910L329 905 329 897 346 894 350 880 338 874 348 864 354 852Q330 842 343 827L380 806Q361 801 367 783L390 760Q404 747 391 736L374 726Q364 717 370 707L397 693Q404 683 395 669L380 651Q373 638 384 626L404 609Q397 602 404 594L421 579Q431 569 415 552L405 542Q398 536 406 529L435 502Q441 493 424 477L416 474 435 460 420 440Q426 399 417 369Z" />
+              <path d="M417 369 439 371 426 400Z M439 372Q449 409 454 449L454 479 450 493 453 538 460 549 454 563 459 624 476 626 493 697 507 749 540 832Q545 845 522 858L515 865 532 881Q537 889 515 890L494 885Q487 892 476 890L470 878 478 869Q492 857 482 840L476 822 474 794 472 765 469 735 468 707 460 671 444 625 421 610 421 580Q429 570 415 551L405 538 437 501Q438 494 423 476L435 459 420 439 426 399Z" />
+              </g>
+            </g>
+            <g data-piece="jacket" fill="transparent">
+              <g id="dresscode-shape-jacket">
+              <path d="M770 190 830 167 842 152 839 186 840 203 839 335Q837 360 826 380L799 426Q775 433 761 459L755 439Q743 396 734 357 730 345 734 330L764 208Z M906 153 919 168 975 191Q986 222 985 286L982 330Q993 343 988 378L981 443 954 424Q944 413 942 395L925 368 916 329 912 199 913 182Z" />
+              </g>
+            </g>
+            <g data-piece="shirt" fill="transparent">
+              <g id="dresscode-shape-shirt">
+              <path d="M844 153 853 188 845 194 878 237 897 198 892 188 905 150 915 180 923 199 911 196 915 329Q918 365 939 393 912 400 882 400L810 399 815 385Q835 361 839 335L840 203 832 210 832 188Z" />
+              </g>
+            </g>
+            <g data-piece="trousers" fill="transparent">
+              <g id="dresscode-shape-trousers">
+              <path d="M810 398Q865 408 940 396L958 451 945 648Q941 681 930 706L892 830 851 812 880 701Q882 683 891 664L880 647 872 511 851 620 847 741 849 853 826 866 804 860Q794 792 795 730L791 571 790 504 785 470Z" />
+              </g>
+            </g>
+            <g data-piece="heels" fill="transparent">
+              <g id="dresscode-shape-heels" mask="url(#dresscode-heel-guard)">
+                <path d="M356 854Q371 855 386 846L389 854Q372 862 357 863Z M320 932Q337 925 355 935L357 940Q339 931 322 937Z M316 939Q337 947 359 938L362 941Q343 950 317 945Z M357 936Q364 912 389 896L392 898Q372 918 362 940Z M390 897 397 892 395 932 389 932Z M447 857 472 851 474 860 448 866Z M470 863 475 865 478 893 475 930 472 933 473 894Z M438 937Q456 929 475 939L476 945Q456 936 437 944Z M435 948Q452 959 476 948L474 955Q452 966 433 955Z" />
+              </g>
+            </g>
+            <g data-piece="bag" fill="transparent" color="transparent">
+              <g id="dresscode-shape-bag">
+              <path d="M453 562 506 541 530 586 532 601 480 627 457 624Z" />
+              <path d="M464 555 459 523Q470 504 488 508L500 541" fill="none" stroke="currentColor" stroke-width="5" />
+              </g>
+            </g>
+            <g data-piece="shoes" fill="transparent">
+              <g id="dresscode-shape-shoes">
+              <path d="M810 902Q821 897 837 892L844 899 844 919Q846 944 833 960 815 970 797 964 785 960 787 946L792 924 800 908Z M851 859 869 870 879 859 890 860 897 876 905 892 929 905Q946 913 943 927 927 936 908 928L874 914Q859 903 848 895L841 886 841 871Z" />
+              </g>
+            </g>
+            <g data-fabric-piece="dress" fill="transparent"><use href="#dresscode-shape-dress" /></g>
+            <g data-fabric-piece="jacket" fill="transparent"><use href="#dresscode-shape-jacket" /></g>
+            <g data-fabric-piece="shirt" fill="transparent"><use href="#dresscode-shape-shirt" /></g>
+            <g data-fabric-piece="trousers" fill="transparent"><use href="#dresscode-shape-trousers" /></g>
+            <g data-fabric-piece="heels" fill="transparent"><use href="#dresscode-shape-heels" /></g>
+            <g data-fabric-piece="bag" fill="transparent" color="transparent"><use href="#dresscode-shape-bag" /></g>
+            <g data-fabric-piece="shoes" fill="transparent"><use href="#dresscode-shape-shoes" /></g>
+          </svg>
         </div>
 
-        <div class="dresscode-swatches reveal reveal-delay-3">
-          <div class="swatch" data-tint="#d64242">
+        <div class="dresscode-editors">
+          <fieldset class="dresscode-look" data-look="her">
+            <legend><label class="dresscode-look-choice"><input type="radio" name="dresscodeActiveOutfit" value="her" data-look-select checked /><span>Her outfit</span></label></legend>
+            <div class="dresscode-look-fields">
+              <label for="dresscodeHerPiece">Piece
+                <select class="dresscode-piece" id="dresscodeHerPiece" data-piece-select aria-label="Her outfit piece">
+                <option value="dress">Dress</option>
+                <option value="heels">Heels</option>
+                <option value="bag">Bag</option>
+                </select>
+              </label>
+              <label for="dresscodeHerFinish">Finish
+                <select class="dresscode-finish" id="dresscodeHerFinish" data-finish-select aria-label="Her outfit finish">
+                  <option value="plain">Plain</option>
+                  <option value="dots">Polka dots</option>
+                  <option value="stripes">Stripes</option>
+                </select>
+              </label>
+            </div>
+          </fieldset>
+          <fieldset class="dresscode-look" data-look="his">
+            <legend><label class="dresscode-look-choice"><input type="radio" name="dresscodeActiveOutfit" value="his" data-look-select /><span>His outfit</span></label></legend>
+            <div class="dresscode-look-fields">
+              <label for="dresscodeHisPiece">Piece
+                <select class="dresscode-piece" id="dresscodeHisPiece" data-piece-select aria-label="His outfit piece">
+                <option value="jacket">Jacket</option>
+                <option value="trousers">Trousers</option>
+                <option value="shirt">Shirt</option>
+                <option value="shoes">Shoes</option>
+                </select>
+              </label>
+              <label for="dresscodeHisFinish">Finish
+                <select class="dresscode-finish" id="dresscodeHisFinish" data-finish-select aria-label="His outfit finish">
+                  <option value="plain">Plain</option>
+                  <option value="dots">Polka dots</option>
+                  <option value="stripes">Stripes</option>
+                </select>
+              </label>
+            </div>
+          </fieldset>
+        </div>
+        <p class="dresscode-palette-heading">Colour for <strong id="dresscodeColourTarget">her dress</strong></p>
+        <div class="dresscode-swatches" id="dresscodeSwatches" role="group" aria-label="Her outfit, Dress colour">
+          <button type="button" class="swatch" data-tint="#d64242" aria-pressed="false">
             <div class="swatch-circle" style="background:#d64242;"></div>
             <span class="swatch-name">Red</span>
-          </div>
-          <div class="swatch" data-tint="#e86cae">
+          </button>
+          <button type="button" class="swatch" data-tint="#e86cae" aria-pressed="false">
             <div class="swatch-circle" style="background:#e86cae;"></div>
             <span class="swatch-name">Pink</span>
-          </div>
-          <div class="swatch" data-tint="#ff7a6b">
+          </button>
+          <button type="button" class="swatch" data-tint="#ff7a6b" aria-pressed="false">
             <div class="swatch-circle" style="background:#ff7a6b;"></div>
             <span class="swatch-name">Coral</span>
-          </div>
-          <div class="swatch" data-tint="#f2a23a">
+          </button>
+          <button type="button" class="swatch" data-tint="#f2a23a" aria-pressed="false">
             <div class="swatch-circle" style="background:#f2a23a;"></div>
             <span class="swatch-name">Orange</span>
-          </div>
-          <div class="swatch" data-tint="#f3d66b">
+          </button>
+          <button type="button" class="swatch" data-tint="#f3d66b" aria-pressed="false">
             <div class="swatch-circle" style="background:#f3d66b;"></div>
             <span class="swatch-name">Yellow</span>
-          </div>
-          <div class="swatch" data-tint="#59a96a">
+          </button>
+          <button type="button" class="swatch" data-tint="#59a96a" aria-pressed="false">
             <div class="swatch-circle" style="background:#59a96a;"></div>
             <span class="swatch-name">Green</span>
-          </div>
-          <div class="swatch" data-tint="#c4d5b0">
+          </button>
+          <button type="button" class="swatch" data-tint="#c4d5b0" aria-pressed="false">
             <div class="swatch-circle" style="background:#c4d5b0;"></div>
             <span class="swatch-name">Sage</span>
-          </div>
-          <div class="swatch" data-tint="#4a8fc9">
+          </button>
+          <button type="button" class="swatch" data-tint="#4a8fc9" aria-pressed="false">
             <div class="swatch-circle" style="background:#4a8fc9;"></div>
             <span class="swatch-name">Blue</span>
-          </div>
-          <div class="swatch" data-tint="#d4c5e8">
+          </button>
+          <button type="button" class="swatch" data-tint="#d4c5e8" aria-pressed="false">
             <div class="swatch-circle" style="background:#d4c5e8;"></div>
             <span class="swatch-name">Lavender</span>
-          </div>
-          <div class="swatch" data-tint="#8f63b8">
+          </button>
+          <button type="button" class="swatch" data-tint="#8f63b8" aria-pressed="false">
             <div class="swatch-circle" style="background:#8f63b8;"></div>
             <span class="swatch-name">Purple</span>
+          </button>
+          <div class="dresscode-neutrals">
+            <button type="button" class="swatch" data-tint="#f7f2e6" aria-pressed="false">
+              <div class="swatch-circle" style="background:#f7f2e6;"></div>
+              <span class="swatch-name">Ivory</span>
+            </button>
+            <button type="button" class="swatch" data-tint="#273e62" aria-pressed="false">
+              <div class="swatch-circle" style="background:#273e62;"></div>
+              <span class="swatch-name">Navy</span>
+            </button>
+            <button type="button" class="swatch" data-tint="#45494c" aria-pressed="false">
+              <div class="swatch-circle" style="background:#45494c;"></div>
+              <span class="swatch-name">Charcoal</span>
+            </button>
+            <button type="button" class="swatch" data-tint="#2d918b" aria-pressed="false">
+              <div class="swatch-circle" style="background:#2d918b;"></div>
+              <span class="swatch-name">Teal</span>
+            </button>
           </div>
         </div>
+        <button class="dresscode-reset" id="dresscodeReset" type="button" disabled>Reset outfits</button>
+        <p class="dresscode-swatch-status" id="dresscodeColourStatus" role="status" aria-live="polite"></p>
         <p class="dresscode-note reveal reveal-delay-3" style="margin-top:2rem; font-size:0.95rem;">
+          Something you already own and feel comfortable in is absolutely welcome. There's no need to buy a new outfit for us.<br /><br />
           <strong style="color:var(--sand-dark);">P.S.</strong> The venue can get cold, so we'd recommend bringing a jacket along.
         </p>
       </div>
@@ -3141,24 +3508,8 @@
 
         <div class="h-timeline">
 
-          <!-- 5.30pm Solemnisation (family only) — interlocking rings -->
+          <!-- 5.30pm Tea Ceremony (family only) -->
           <div class="h-item reveal" style="--item:0" data-audience="family">
-            <div class="h-item-icon">
-              <svg viewBox="0 0 32 32">
-                <circle cx="12" cy="18" r="6.5"/>
-                <circle cx="20" cy="18" r="6.5"/>
-                <path d="M9 9 L12 11.5"/>
-                <path d="M23 9 L20 11.5"/>
-                <circle cx="12" cy="18" r="0.6" fill="currentColor" stroke="none"/>
-              </svg>
-            </div>
-            <p class="h-item-time">5.30 pm</p>
-            <p class="h-item-event">Solemnisation</p>
-            <p class="h-item-desc">The legal vows, with our closest by our side.</p>
-          </div>
-
-          <!-- 6pm Tea Ceremony (family only) — round teacup with steam -->
-          <div class="h-item reveal" style="--item:1" data-audience="family">
             <div class="h-item-icon">
               <svg viewBox="0 0 32 32">
                 <path d="M8 13.5h13v6a4 4 0 0 1-4 4h-5a4 4 0 0 1-4-4v-6z"/>
@@ -3168,13 +3519,13 @@
                 <path d="M15.5 9.5c0-1.2 1-1.2 1-2.4s-1-1.2-1-2.4"/>
               </svg>
             </div>
-            <p class="h-item-time">6 pm</p>
+            <p class="h-item-time">5.30 pm</p>
             <p class="h-item-event">Tea Ceremony</p>
             <p class="h-item-desc">Honouring our families with traditional tea.</p>
           </div>
 
           <!-- 6pm onwards Arrival — clinking champagne flutes -->
-          <div class="h-item reveal" style="--item:2" data-hide-for-family>
+          <div class="h-item reveal" style="--item:0" data-hide-for-family>
             <div class="h-item-icon">
               <svg viewBox="0 0 32 32">
                 <path d="M11 6 L9 14 a3 3 0 0 0 6 0 L13 6 Z"/>
@@ -3193,8 +3544,8 @@
             <p class="h-item-desc">Drinks, canapés, and warm hellos.</p>
           </div>
 
-          <!-- 6.45pm Be Seated — chair with a heart -->
-          <div class="h-item reveal" style="--item:3">
+          <!-- 6.30pm Take your seats, chair with a heart -->
+          <div class="h-item h-item-seating reveal" style="--item:1">
             <div class="h-item-icon">
               <svg viewBox="0 0 32 32">
                 <rect x="8" y="16" width="16" height="6" rx="1.5"/>
@@ -3203,13 +3554,13 @@
                 <path d="M16 11.5 c-1 -1.6 -3.5 -0.6 -3.5 1.2 c0 1.5 3.5 3 3.5 3 s3.5 -1.5 3.5 -3 c0 -1.8 -2.5 -2.8 -3.5 -1.2 z" fill="currentColor" stroke="none" opacity="0.65"/>
               </svg>
             </div>
-            <p class="h-item-time">6.45 pm</p>
-            <p class="h-item-event">Be Seated</p>
-            <p class="h-item-desc">Walk-in will begin shortly. <strong>Do not be late!</strong></p>
+            <p class="h-item-time">6.30 pm</p>
+            <p class="h-item-event">Take your seats</p>
+            <p class="h-item-desc">Please be seated by 6.30 pm so everyone is settled for our walk-in.</p>
           </div>
 
-          <!-- 8.30pm Fun begins — music note with sparkle -->
-          <div class="h-item reveal" style="--item:4">
+          <!-- 9pm Fun begins, music note with sparkle -->
+          <div class="h-item h-item-party reveal" style="--item:2">
             <div class="h-item-icon">
               <svg viewBox="0 0 32 32">
                 <path d="M14 6 v15" stroke-width="1.4"/>
@@ -3221,13 +3572,13 @@
                 <path d="M27 22 l1.5 1 M27 22 l-1 -1.5 M27 22 l-1.5 1.5 M27 22 l1 -1.5" stroke-width="0.9"/>
               </svg>
             </div>
-            <p class="h-item-time">8.30 pm</p>
+            <p class="h-item-time">9 pm</p>
             <p class="h-item-event">The Fun Begins</p>
             <p class="h-item-desc">Music, drinks, desserts, conversations.</p>
           </div>
 
           <!-- 10.30pm End — moon with stars -->
-          <div class="h-item reveal" style="--item:5">
+          <div class="h-item reveal" style="--item:3">
             <div class="h-item-icon">
               <svg viewBox="0 0 32 32">
                 <path d="M22 9 a8 8 0 1 0 1 14 a7 7 0 0 1 -1 -14 z"/>
@@ -3254,14 +3605,27 @@
     <div class="rsvp-inner">
       <div class="rsvp-header reveal">
         <p class="section-label">RSVP</p>
+        <!-- Personalised greeting (shown once a valid invite code resolves) -->
+        <div class="invite-greeting" id="inviteGreeting">
+          <p class="invite-greeting-label">Reserved for</p>
+          <p class="invite-greeting-who" id="inviteWho"></p>
+        </div>
+
         <h2 class="section-title">We would be so happy<br />to celebrate with you.</h2>
         <div class="section-divider center"></div>
+        <div class="deadline">Kindly respond by 31 January 2027</div>
+      </div>
 
-        <div class="rsvp-notes">
-          <p>Remember to click <strong>"Save"</strong> once you're done. You can return to this same link anytime to update your answers.</p>
-          <p><strong>An adults-only celebration.</strong> We've planned the evening with our grown-up loved ones in mind, so we kindly ask that little ones stay home for the night.</p>
-          <div class="deadline">Kindly respond by 31 January 2027</div>
-        </div>
+      <!-- Lookup in flight (shown while the guest list is being checked) -->
+      <div class="rsvp-status" id="rsvpLoading" style="display:none;">
+        <span class="rsvp-spinner" aria-hidden="true"></span>
+        <p>Finding your invitation...</p>
+      </div>
+
+      <!-- Shown when the invite code does not resolve -->
+      <div class="rsvp-public" id="rsvpNotFound" style="display:none;">
+        <h3>We couldn&rsquo;t find your invitation.</h3>
+        <p id="rsvpNotFoundMsg"></p>
       </div>
 
       <!-- Public preview (shown when no valid invite code is present) -->
@@ -3270,6 +3634,22 @@
         <p>This page is personalised for each guest. If you've received an invitation from us, please use the unique link we sent you to RSVP. If you can't find it, just message Gabriel or Estella and we'll resend it.</p>
       </div>
 
+      <section class="saved-reply" id="rsvpSavedReply" aria-labelledby="savedReplyTitle" hidden>
+        <div class="saved-reply-heading">
+          <h3 id="savedReplyTitle">Your saved reply</h3>
+          <time id="savedReplyTime" hidden></time>
+        </div>
+        <p class="saved-reply-summary" id="savedReplySummary"></p>
+        <div id="savedReplyMembers"></div>
+        <p class="saved-reply-unsaved" id="savedReplyUnsaved" role="status" hidden>Unsaved changes</p>
+      </section>
+
+      <section class="rsvp-request" id="rsvpChangeRequest" aria-labelledby="rsvpRequestTitle" role="status" hidden>
+        <h3 id="rsvpRequestTitle">Your change request</h3>
+        <p id="rsvpRequestMessage"></p>
+        <div class="rsvp-request-members" id="rsvpRequestMembers"></div>
+      </section>
+
       <!-- Dynamic form (rendered when ?inv=<code> is present) -->
       <form id="rsvpForm" autocomplete="off" novalidate>
         <div id="rsvpReturningNote" style="display:none; text-align:center; margin-bottom:1.5rem; font-family:var(--serif); font-style:italic; color:var(--ink-soft); font-size:0.95rem;">
@@ -3277,15 +3657,33 @@
         </div>
 
         <div id="rsvpSavedBanner" class="rsvp-saved-banner">
-          <span class="check">✓</span> Saved! You can keep editing or close this page. We'll have the latest version.
+          <span class="check" id="rsvpBannerIcon">✓</span> <span id="rsvpBannerMsg">Saved! You can keep editing or close this page. We'll have the latest version.</span>
         </div>
+        <button type="button" class="cal-btn rsvp-reload" id="rsvpReload" hidden>Reload invitation</button>
 
         <div id="memberList"></div>
 
         <div class="submit-row">
           <button type="submit" class="rsvp-submit" id="rsvpSubmit">Send Our RSVP</button>
         </div>
+        <div class="rsvp-notes">
+          <p>You can return to this same link anytime to update your answers. Changes after the RSVP deadline, or after a seat has been released, may need our confirmation.</p>
+        </div>
+
+        <!-- Shown once at least one guest in the household is coming -->
+        <div class="rsvp-calendar" id="rsvpCalendar" hidden>
+          <p class="rsvp-calendar-label">Put it in your calendar</p>
+          <div class="rsvp-calendar-actions">
+            <button type="button" class="cal-btn" id="calDownload">Apple &amp; Outlook</button>
+            <a class="cal-btn" id="calGoogle" href="#" target="_blank" rel="noopener">Google Calendar</a>
+          </div>
+        </div>
       </form>
+
+      <div class="rsvp-notes">
+        <p><strong>Seats reserved with love.</strong> Our invitation is for the guests named on this RSVP, and we've reserved a seat for each of you. We're unable to accommodate additional guests. Thank you for understanding.</p>
+        <p><strong>An adults-only celebration.</strong> We've planned the evening with our grown-up loved ones in mind, so we kindly ask that little ones stay home for the night.</p>
+      </div>
 
     </div>
   </section>
@@ -3316,18 +3714,18 @@
 
       <div class="dir-layout">
 
-        <!-- Vertical transport sidebar -->
-        <div class="dir-transport-tabs">
-          <button class="dir-btn active" data-dir="car">
-            <svg viewBox="0 0 32 32"><path d="M6 21 L6 14 a2 2 0 0 1 0.5 -1.4 L9 9 a2.5 2.5 0 0 1 2 -1 h10 a2.5 2.5 0 0 1 2 1 l2.5 3.6 a2 2 0 0 1 0.5 1.4 V21 z"/><circle cx="10" cy="22" r="2.2"/><circle cx="22" cy="22" r="2.2"/><path d="M9 13 L23 13" stroke-opacity="0.6"/><path d="M11 9.5 q1 -1 2 -1 h6 q1 0 2 1" stroke-opacity="0"/><circle cx="12" cy="17.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+        <!-- Transport symbols from Lucide, see assets/icons/LUCIDE-LICENSE.txt. -->
+        <div class="dir-transport-tabs" role="group" aria-label="Travel options">
+          <button class="dir-btn active" data-dir="car" aria-pressed="true" aria-controls="dir-car">
+            <svg viewBox="0 0 24 24" aria-hidden="true" data-icon="car-front"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"/><path d="M7 14h.01M17 14h.01"/><rect width="18" height="8" x="3" y="10" rx="2"/><path d="M5 18v2M19 18v2"/></svg>
             By Car
           </button>
-          <button class="dir-btn" data-dir="taxi">
-            <svg viewBox="0 0 32 32"><rect x="14" y="3" width="4" height="3" rx="0.5"/><path d="M5 21 L5 14 a2 2 0 0 1 0.5 -1.4 L8 9 a2.5 2.5 0 0 1 2 -1 h12 a2.5 2.5 0 0 1 2 1 l2.5 3.6 a2 2 0 0 1 0.5 1.4 V21 z"/><circle cx="9" cy="22" r="2.2"/><circle cx="23" cy="22" r="2.2"/><path d="M8 13 L24 13" stroke-opacity="0.6"/><path d="M12 16 h8" stroke-width="1.6"/></svg>
+          <button class="dir-btn" data-dir="taxi" aria-pressed="false" aria-controls="dir-taxi">
+            <svg viewBox="0 0 24 24" aria-hidden="true" data-icon="car-taxi-front"><path d="M10 2h4m7 6-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"/><path d="M7 14h.01M17 14h.01"/><rect width="18" height="8" x="3" y="10" rx="2"/><path d="M5 18v2M19 18v2"/></svg>
             By Taxi / PHV
           </button>
-          <button class="dir-btn" data-dir="mrt">
-            <svg viewBox="0 0 32 32"><rect x="6" y="4" width="20" height="20" rx="3.5"/><path d="M6 14 h20" stroke-opacity="0.6"/><circle cx="12" cy="9" r="0.9" fill="currentColor" stroke="none"/><circle cx="20" cy="9" r="0.9" fill="currentColor" stroke="none"/><circle cx="11.5" cy="19.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="20.5" cy="19.5" r="1.4" fill="currentColor" stroke="none"/><path d="M11 24 L8.5 28"/><path d="M21 24 L23.5 28"/></svg>
+          <button class="dir-btn" data-dir="mrt" aria-pressed="false" aria-controls="dir-mrt">
+            <svg viewBox="0 0 24 24" aria-hidden="true" data-icon="tram-front"><rect width="16" height="16" x="4" y="3" rx="2"/><path d="M4 11h16M12 3v8m-4 8-2 3m12 0-2-3M8 15h.01M16 15h.01"/></svg>
             By MRT &amp; Monorail
           </button>
         </div>
@@ -3337,9 +3735,9 @@
 
           <!-- Compact pill toggle -->
           <div class="car-toggle-row">
-            <div class="car-toggle">
-              <button class="car-toggle-btn active" data-car="valet">Valet Drop-off</button>
-              <button class="car-toggle-btn" data-car="selfpark">Self-Park</button>
+            <div class="car-toggle" role="group" aria-label="Parking option">
+              <button class="car-toggle-btn active" data-car="valet" aria-pressed="true" aria-controls="car-valet">Valet Drop-off</button>
+              <button class="car-toggle-btn" data-car="selfpark" aria-pressed="false" aria-controls="car-selfpark">Self-Park</button>
             </div>
           </div>
 
@@ -3449,7 +3847,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-question">Can I bring a +1?</div>
-        <div class="faq-answer">We've kept the guest list small and intentional, so the names on your invite are the seats we have for you. If you have a special circumstance, please reach out to us directly and we'll do our best.</div>
+        <div class="faq-answer">We've kept the guest list small and intentional, so the names on your invite are the seats we have for you. We're unable to accommodate additional guests. Thank you for understanding.</div>
       </div>
       <div class="faq-item">
         <div class="faq-question">Are children welcome?</div>
@@ -3459,11 +3857,11 @@
       <!-- ═══ Group: On the day ═══ -->
       <div class="faq-item">
         <div class="faq-question">When should I arrive?</div>
-        <div class="faq-answer">You're welcome to arrive anytime from <strong>6 pm</strong> onwards for drinks and mingling. Please be seated by <strong>6:45 pm</strong> as the walk-in begins shortly after.</div>
+        <div class="faq-answer">Family, please arrive by <strong>5.30 pm</strong> for the tea ceremony. All other guests are welcome from <strong>6 pm</strong> for drinks and mingling.<br/><br/><strong>Everyone should be SEATED by 6.30 pm.</strong> This is the time to be in your seat, not the time to arrive at the venue. Please allow time to make your way to the ballroom and settle in before the walk-in.</div>
       </div>
       <div class="faq-item">
         <div class="faq-question">What should I wear?</div>
-        <div class="faq-answer">The vibe is <strong>formal but funky</strong>, loud <em>or</em> pastel colours, depending on our florals (we'll confirm closer to the day). The venue can get cold, so we'd recommend bringing a jacket along. See the full details on the <a href="#dresscode">dress code</a> section.</div>
+        <div class="faq-answer">The vibe is <strong>formal but funky</strong>, loud <em>or</em> pastel colours, depending on our florals (we'll confirm closer to the day). Something you already own and feel comfortable in is absolutely welcome. There's no need to buy a new outfit for us. The venue can get cold, so we'd recommend bringing a jacket along. See the full details on the <a href="#dresscode">dress code</a> section.</div>
       </div>
 
       <!-- ═══ Group: Food & Drink ═══ -->
@@ -3473,7 +3871,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-question">Will there be drinks?</div>
-        <div class="faq-answer">Yes! We're planning to serve <strong>red &amp; white wines, gin, vodka</strong> and a few other options. You're also welcome to <strong>bring your own</strong>, corkage is waived (to be confirmed). If you have a favourite bottle you'd like to share with us, bring it along.</div>
+        <div class="faq-answer">Yes! We're planning to serve <strong>red &amp; white wines, gin, vodka</strong> and a few other options. You're also welcome to bring a favourite bottle to share, with <strong>free corkage for DUTY PAID wines and spirits</strong>.</div>
       </div>
 
       <!-- ═══ Group: Getting there & staying ═══ -->
@@ -3691,6 +4089,7 @@
   <!-- FOOTER -->
   <footer>
     <p>Gabriel &amp; Estella &nbsp;·&nbsp; 11 July 2027 &nbsp;·&nbsp; Oasia Resort Sentosa, Singapore</p>
+    <button type="button" class="replay-link" id="replayEnvelope" hidden>Replay the opening</button>
   </footer>
 
   <script>
@@ -3722,15 +4121,28 @@
       // If reduced motion OR deep-link (#hash), skip the whole thing
       const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const hasHash = window.location.hash && window.location.hash.length > 1;
-      if (reduced || hasHash) {
+      if (reduced || hasHash || window.GE_SEEN) {
         skipEnvelope();
+        if (window.GE_SEEN) showReplayLink();
         return;
+      }
+
+      // Offers the opening back rather than forcing it on every visit.
+      function showReplayLink() {
+        const link = document.getElementById('replayEnvelope');
+        if (!link) return;
+        link.hidden = false;
+        link.addEventListener('click', function () {
+          try { localStorage.removeItem(window.GE_SEEN_KEY); } catch (e) { /* non-fatal */ }
+          window.location.replace(window.location.pathname + window.location.search);
+        });
       }
 
       let opened = false;
       function openEnvelope() {
         if (opened) return;
         opened = true;
+        try { localStorage.setItem(window.GE_SEEN_KEY, '1'); } catch (e) { /* non-fatal */ }
         overlay.classList.add('opening');
         document.body.classList.add('doors-revealing');
 
@@ -3787,20 +4199,137 @@
     const RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyLh5eGRXSoLtA5zuCLt1iYcVkqdituew1c35RU-pvo-kj-qVB_tAwqDLd6FxADsmZU/exec';
     let CURRENT_HOUSEHOLD = null;
     let CURRENT_PRIOR = null;
+    let CURRENT_PENDING = null;
+    let RSVP_ATTEMPT = null;
+
+    function normaliseReplyMembers(household, members) {
+      const events = household.events || [];
+      const answer = value => value === 'yes' || value === 'no' ? value : 'pending';
+      return (household.members || []).map(guest => {
+        const saved = (members || []).find(member => guest.id ? member.id === guest.id : String(member.name).trim() === String(guest.name).trim()) || {};
+        return {
+          id: guest.id,
+          name: String(guest.name),
+          attending: answer(saved.attending),
+          dietary: String(saved.dietary || ''),
+          notes: String(saved.notes || ''),
+          tea: events.includes('tea') ? answer(saved.tea) : ''
+        };
+      });
+    }
+
+    function readRsvpMembers(form) {
+      const data = new FormData(form);
+      return (CURRENT_HOUSEHOLD.members || []).map((member, index) => ({
+        id: member.id,
+        name: member.name,
+        attending: data.get(`attend_${index}`) || 'pending',
+        dietary: data.get(`diet_${index}`) || '',
+        notes: data.get(`notes_${index}`) || '',
+        tea: data.get(`tea_${index}`) || ''
+      }));
+    }
+
+    function updateSavedReplyDirtyState() {
+      const status = document.getElementById('savedReplyUnsaved');
+      const form = document.getElementById('rsvpForm');
+      if (!status || !form || !CURRENT_HOUSEHOLD || !(CURRENT_PENDING || CURRENT_PRIOR)) return;
+      const saved = normaliseReplyMembers(CURRENT_HOUSEHOLD, (CURRENT_PENDING || CURRENT_PRIOR).members);
+      const current = normaliseReplyMembers(CURRENT_HOUSEHOLD, readRsvpMembers(form));
+      status.hidden = JSON.stringify(saved) === JSON.stringify(current);
+    }
+
+    function renderSavedReply(prior) {
+      const panel = document.getElementById('rsvpSavedReply');
+      const list = document.getElementById('savedReplyMembers');
+      const time = document.getElementById('savedReplyTime');
+      if (!panel || !list || !time || !CURRENT_HOUSEHOLD) return;
+      if (!prior || !Array.isArray(prior.members) || !prior.members.length) {
+        panel.hidden = true;
+        return;
+      }
+      const events = CURRENT_HOUSEHOLD.events || [];
+      const status = value => value === 'yes' ? 'Attending' : value === 'no' ? 'Not attending' : 'Not yet answered';
+      list.innerHTML = normaliseReplyMembers(CURRENT_HOUSEHOLD, prior.members).map(member => {
+        const details = [];
+        if (events.includes('tea')) details.push(['Tea ceremony', status(member.tea)]);
+        details.push(['Dinner reception', status(member.attending)]);
+        if (member.attending === 'yes') details.push(['Dietary notes', member.dietary || 'Not provided']);
+        if (member.notes) details.push(['Message', member.notes]);
+        return `<div class="saved-reply-member"><h4>${escapeHtml(member.name)}</h4><dl class="saved-reply-details">${details.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl></div>`;
+      }).join('');
+      const summary = document.getElementById('savedReplySummary');
+      if (summary) {
+        const members = normaliseReplyMembers(CURRENT_HOUSEHOLD, prior.members);
+        const count = value => members.filter(m => m.attending === value).length;
+        summary.textContent = `${count('yes')} attending · ${count('no')} unable to attend` + (count('pending') ? ` · ${count('pending')} awaiting reply` : '');
+      }
+      const savedAt = prior.submittedAt ? new Date(prior.submittedAt) : null;
+      time.hidden = !savedAt || Number.isNaN(savedAt.getTime());
+      if (!time.hidden) {
+        time.dateTime = savedAt.toISOString();
+        time.textContent = 'Last saved ' + new Intl.DateTimeFormat('en-SG', {
+          timeZone: 'Asia/Singapore', day: 'numeric', month: 'short', year: 'numeric',
+          hour: 'numeric', minute: '2-digit', hour12: true
+        }).format(savedAt) + ' (SGT)';
+      } else {
+        time.removeAttribute('datetime');
+        time.textContent = '';
+      }
+      panel.hidden = false;
+      updateSavedReplyDirtyState();
+    }
+
+    function renderRequestStatus(pending, declinedRequest) {
+      CURRENT_PENDING = pending || null;
+      const panel = document.getElementById('rsvpChangeRequest');
+      const message = document.getElementById('rsvpRequestMessage');
+      const list = document.getElementById('rsvpRequestMembers');
+      if (!panel || !message || !list) return;
+      panel.hidden = !pending && !declinedRequest;
+      message.textContent = pending
+        ? "We've received your request. It isn't confirmed yet; your saved reply remains unchanged. Gabriel or Estella will be in touch."
+        : "We weren't able to confirm your last requested change. Your previously saved reply is unchanged. Please contact Gabriel or Estella.";
+      if (pending && !CURRENT_PRIOR) message.textContent = "We've received your reply and need to confirm availability. Please wait for Gabriel or Estella to confirm before making plans.";
+      list.innerHTML = pending ? normaliseReplyMembers(CURRENT_HOUSEHOLD, pending.members).map(member =>
+        `<p><strong>${escapeHtml(member.name)}</strong>: dinner ${member.attending === 'yes' ? 'attending' : member.attending === 'no' ? 'unable to attend' : 'unanswered'}${member.tea ? `; tea ${member.tea === 'yes' ? 'attending' : member.tea === 'no' ? 'unable to attend' : 'unanswered'}` : ''}</p>`).join('') : '';
+      updateSavedReplyDirtyState();
+    }
+
+    function rsvpRequestId() {
+      if (crypto.randomUUID) return crypto.randomUUID();
+      return Array.from(crypto.getRandomValues(new Uint8Array(20)), byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+
+    document.getElementById('rsvpForm')?.addEventListener('input', updateSavedReplyDirtyState);
+    document.getElementById('rsvpForm')?.addEventListener('change', updateSavedReplyDirtyState);
 
     (async function initInvite() {
       const params = new URLSearchParams(window.location.search);
       const code = (params.get('inv') || '').trim().toLowerCase();
       if (!code) return; // no code → public preview state stays visible
 
+      // A code is present, so retire the "Welcome, friend" copy straight away
+      // and show a loading state while the gateway is queried. Without this the
+      // guest reads the public wording for a couple of seconds before it swaps.
+      const publicBlock = document.getElementById('rsvpPublic');
+      const loading     = document.getElementById('rsvpLoading');
+      if (publicBlock) publicBlock.style.display = 'none';
+      if (loading) loading.style.display = 'block';
+
       const result = await fetchHousehold(code);
+      if (loading) loading.style.display = 'none';
+
       if (!result || !result.ok || !result.household) {
-        if (result && result.error) console.warn('Lookup failed:', result.error);
-        return; // unknown / error → public preview stays visible
+        const err = (result && result.error) || 'no response';
+        console.warn('Lookup failed:', err);
+        showLookupError(err); // tell the guest, rather than failing silently
+        return;
       }
 
       CURRENT_HOUSEHOLD = result.household;
       CURRENT_PRIOR = result.prior || null;
+      CURRENT_PENDING = result.pending || null;
 
       // 1. Greeting banner
       const greet = document.getElementById('inviteGreeting');
@@ -3809,6 +4338,9 @@
         who.textContent = CURRENT_HOUSEHOLD.household;
         greet.classList.add('show');
       }
+
+      // 1b. The envelope is still on screen at this point, so address it to them too
+      personaliseEnvelope(CURRENT_HOUSEHOLD.household);
 
       // 2. Reveal family-only sections if applicable
       const events = CURRENT_HOUSEHOLD.events || [];
@@ -3823,20 +4355,71 @@
       // 4. Pre-fill if they've RSVP'd before — they can edit & resubmit
       if (CURRENT_PRIOR) {
         applyPrior(CURRENT_PRIOR);
+        renderSavedReply(CURRENT_PRIOR);
         const submitBtn = document.getElementById('rsvpSubmit');
         if (submitBtn) submitBtn.textContent = 'Update Our RSVP';
         const note = document.getElementById('rsvpReturningNote');
         if (note) note.style.display = 'block';
+        revealCalendar((CURRENT_PRIOR.members || []).some(m => m.attending === 'yes'));
       }
+      if (result.pending) {
+        applyPrior(result.pending);
+        const note = document.getElementById('rsvpReturningNote');
+        if (note) {
+          note.style.display = 'block';
+          note.textContent = "We've loaded your requested answers. They are awaiting our confirmation; any previously saved reply is shown separately above.";
+        }
+        const submitBtn = document.getElementById('rsvpSubmit');
+        if (submitBtn) submitBtn.textContent = 'Update Our RSVP';
+      }
+      renderRequestStatus(result.pending, result.declinedRequest);
 
-      // 5. Hide public preview
-      const publicBlock = document.getElementById('rsvpPublic');
-      if (publicBlock) publicBlock.style.display = 'none';
     })();
+
+    // Unknown code, or the guest list could not be reached. Either way the guest
+    // gets an explanation instead of a page that quietly looks like everyone else's.
+    function showLookupError(err) {
+      const notFound = document.getElementById('rsvpNotFound');
+      const msg      = document.getElementById('rsvpNotFoundMsg');
+      if (!notFound) return;
+      // 'not found' means the gateway answered and had no matching row;
+      // anything else means we could not reach or read the guest list at all.
+      const unknownCode = /not found|not invited/i.test(String(err));
+      if (msg) {
+        msg.textContent = unknownCode
+          ? "This link doesn't match anyone on our guest list. It may have been retired, or copied without the full code at the end. Please message Gabriel or Estella and we'll send you a fresh one."
+          : "Something went wrong on our end while loading your invitation. Please refresh the page in a moment, and if it keeps happening, message Gabriel or Estella.";
+      }
+      notFound.style.display = 'block';
+    }
+
+    // The envelope is what the guest sees while the lookup is still in flight, so
+    // the generic wording lands first. Cross-fade it to their name once we have it
+    // rather than letting the text snap under them.
+    function personaliseEnvelope(label) {
+      const to = document.getElementById('envAddressTo');
+      if (!to || !label) return;
+      const text = 'for ' + label;
+      if (to.textContent.trim() === text) return;
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        to.textContent = text;
+        return;
+      }
+      to.classList.add('swapping');
+      setTimeout(function () {
+        to.textContent = text;
+        to.classList.remove('swapping');
+      }, 450);
+    }
 
     async function fetchHousehold(code) {
       // Preferred path: ask the Apps Script gateway for live data + any prior submission
       if (RSVP_ENDPOINT) {
+        // Apps Script is slow (~2-3s) and occasionally hangs, so cap the wait
+        // rather than leaving the guest on a spinner indefinitely.
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 15000);
         try {
           const res = await fetch(RSVP_ENDPOINT, {
             method: 'POST',
@@ -3844,23 +4427,19 @@
             // text/plain avoids the CORS preflight; Apps Script reads e.postData.contents anyway
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify({ action: 'lookup', code }),
-            redirect: 'follow'
+            redirect: 'follow',
+            signal: ctrl.signal
           });
-          return await res.json();
+          if (!res.ok) throw new Error('Invitation service unavailable');
+          const result = await res.json();
+          return result.protocol === 2 ? result : {ok: false, error: 'The invitation service needs an update. Please contact Gabriel or Estella.'};
         } catch (err) {
-          console.error('Apps Script lookup failed, falling back to local JSON:', err);
+          console.error('Invitation lookup failed:', err);
+        } finally {
+          clearTimeout(timer);
         }
       }
-      // Fallback: bundled guestlist.json (used during local dev / before script is wired up)
-      try {
-        const res = await fetch('guestlist.json', { cache: 'no-store' });
-        if (!res.ok) return { ok: false, error: 'guestlist fetch failed' };
-        const list = await res.json();
-        if (list[code]) return { ok: true, household: { code, ...list[code] }, prior: null };
-        return { ok: false, error: 'invite code not found' };
-      } catch (err) {
-        return { ok: false, error: String(err) };
-      }
+      return {ok: false, error: 'The invitation service is temporarily unavailable. Please try again shortly.'};
     }
 
     function applyPrior(prior) {
@@ -3868,7 +4447,7 @@
       (prior.members || []).forEach(m => {
         const card = [...document.querySelectorAll('.member-card')].find(c => {
           const nm = c.querySelector('.member-name');
-          return nm && nm.textContent.trim() === String(m.name).trim();
+          return m.id ? c.dataset.guestId === m.id : nm && nm.textContent.trim() === String(m.name).trim();
         });
         if (!card) return;
 
@@ -3888,10 +4467,6 @@
           const r = card.querySelector(`input[name^="tea_"][value="${m.tea}"]`);
           if (r) r.checked = true;
         }
-        if (m.solem === 'yes' || m.solem === 'no') {
-          const r = card.querySelector(`input[name^="solem_"][value="${m.solem}"]`);
-          if (r) r.checked = true;
-        }
       });
 
     }
@@ -3903,31 +4478,16 @@
 
       const events = household.events || [];
       const showTea = events.includes('tea');
-      const showSolem = events.includes('solem');
 
       // Reusable inline SVG icons for each event
-      const ICON_SOLEM = `<svg viewBox="0 0 24 24"><circle cx="9" cy="14" r="4.5"/><circle cx="15" cy="14" r="4.5"/><path d="M7 9 L9 11"/><path d="M17 9 L15 11"/></svg>`;
       const ICON_TEA   = `<svg viewBox="0 0 24 24"><path d="M5 10 h12 v6 a3 3 0 0 1 -3 3 H8 a3 3 0 0 1 -3 -3 z"/><path d="M17 11 h2 a2 2 0 0 1 0 4 h-2"/><path d="M19 21 H4"/><path d="M9 7 c0 -1 1 -1 1 -2 s -1 -1 -1 -2"/><path d="M13 7 c0 -1 1 -1 1 -2 s -1 -1 -1 -2"/></svg>`;
       const ICON_DINNER = `<svg viewBox="0 0 24 24"><path d="M9 4 L8 11 a4 4 0 0 0 8 0 L15 4 Z"/><path d="M12 15 v5"/><path d="M9 20 h6"/><circle cx="11" cy="8" r="0.6" fill="currentColor" stroke="none"/></svg>`;
 
       memberList.innerHTML = (household.members || []).map((m, i) => `
-        <div class="member-card" data-member-index="${i}">
+        <div class="member-card" data-member-index="${i}" data-guest-id="${escapeHtml(m.id || '')}">
           <div class="member-header">
             <div class="member-name">${escapeHtml(m.name)}</div>
           </div>
-
-          ${showSolem ? `
-            <div class="event-block">
-              <div class="event-block-head">
-                <span class="event-block-icon" aria-hidden="true">${ICON_SOLEM}</span>
-                <span class="event-block-title">Solemnisation</span>
-              </div>
-              <div class="attend-toggle event-attend" role="radiogroup">
-                <label><input type="radio" name="solem_${i}" value="yes" /><span>Count Me In</span></label>
-                <label><input type="radio" name="solem_${i}" value="no"  /><span>Unable to attend</span></label>
-              </div>
-            </div>
-          ` : ''}
 
           ${showTea ? `
             <div class="event-block">
@@ -3935,7 +4495,7 @@
                 <span class="event-block-icon" aria-hidden="true">${ICON_TEA}</span>
                 <span class="event-block-title">Tea Ceremony</span>
               </div>
-              <div class="attend-toggle event-attend" role="radiogroup">
+              <div class="attend-toggle event-attend" role="radiogroup" aria-label="Tea attendance for ${escapeHtml(m.name)}">
                 <label><input type="radio" name="tea_${i}" value="yes" /><span>Count Me In</span></label>
                 <label><input type="radio" name="tea_${i}" value="no"  /><span>Unable to attend</span></label>
               </div>
@@ -3956,11 +4516,11 @@
           <div class="member-fields">
             <div class="full">
               <label class="field-label">Dietary restrictions or allergies</label>
-              <input class="field-input" type="text" name="diet_${i}" placeholder="e.g. vegetarian, no shellfish, peanut allergy" />
+              <input class="field-input" type="text" name="diet_${i}" maxlength="300" placeholder="e.g. vegetarian, no shellfish, peanut allergy" />
             </div>
             <div class="full">
               <label class="field-label">Anything we need to know</label>
-              <textarea class="field-textarea" name="notes_${i}" placeholder="Anything we need to know?"></textarea>
+              <textarea class="field-textarea" name="notes_${i}" maxlength="1000" placeholder="Anything we need to know?"></textarea>
             </div>
           </div>
         </div>
@@ -3982,67 +4542,280 @@
     // Form submission → upsert through Apps Script (replaces prior rows for this code)
     document.getElementById('rsvpForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if (!CURRENT_HOUSEHOLD) return;
-
-      const formData = new FormData(e.target);
-      const members = (CURRENT_HOUSEHOLD.members || []).map((m, i) => ({
-        name: m.name,
-        attending: formData.get(`attend_${i}`) || 'pending',
-        dietary: formData.get(`diet_${i}`) || '',
-        notes: formData.get(`notes_${i}`) || '',
-        tea: formData.get(`tea_${i}`) || '',
-        solem: formData.get(`solem_${i}`) || ''
-      }));
-
-      const payload = {
-        code: CURRENT_HOUSEHOLD.code,
-        household: CURRENT_HOUSEHOLD.household,
-        type: CURRENT_HOUSEHOLD.type,
-        events: CURRENT_HOUSEHOLD.events,
-        submittedAt: new Date().toISOString(),
-        members,
-        driving: 'no',
-        vehicles: ''
-      };
-
       const submit = document.getElementById('rsvpSubmit');
+      if (!CURRENT_HOUSEHOLD || submit.disabled) return;
+
+      const members = readRsvpMembers(e.target);
+
+      // Every named guest needs an attendance answer. Without this the form
+      // accepted an untouched page, wrote everyone as 'pending', and told the
+      // guest it had saved. Ask about the first person missing and go to them,
+      // rather than listing errors at the top.
+      const missingIdx = members.findIndex(m => m.attending === 'pending' || CURRENT_HOUSEHOLD.events.includes('tea') && !m.tea);
+      if (missingIdx !== -1) {
+        showBanner('We still need an attendance answer for ' + members[missingIdx].name + '.', 'error');
+        const card = document.querySelector('.member-card[data-member-index="' + missingIdx + '"]');
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.classList.add('needs-answer');
+          setTimeout(() => card.classList.remove('needs-answer'), 2800);
+        }
+        return;
+      }
+
+      const draft = {
+        code: CURRENT_HOUSEHOLD.code,
+        revision: CURRENT_HOUSEHOLD.revision,
+        rosterVersion: CURRENT_HOUSEHOLD.rosterVersion,
+        members
+      };
+      const key = JSON.stringify(draft);
+      if (!RSVP_ATTEMPT || RSVP_ATTEMPT.key !== key) RSVP_ATTEMPT = {key, payload: {...draft, requestId: rsvpRequestId()}};
+      const payload = RSVP_ATTEMPT.payload;
+
       const originalLabel = submit.textContent;
       submit.disabled = true;
       submit.textContent = 'Saving…';
 
       try {
+        let result;
         if (RSVP_ENDPOINT) {
-          await fetch(RSVP_ENDPOINT, {
+          // 'cors', not 'no-cors': an opaque response cannot be inspected, which
+          // is how a rejected write used to still show the guest a green tick.
+          // The lookup already reads JSON back from this same endpoint.
+          const res = await fetch(RSVP_ENDPOINT, {
             method: 'POST',
-            mode: 'no-cors', // we don't need to read the response body for write
+            mode: 'cors',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify({ action: 'submit', payload }),
             redirect: 'follow'
           });
+          if (!res.ok) throw new Error('the guest list returned HTTP ' + res.status);
+          const out = await res.json();
+          if (!out || out.ok !== true || out.protocol !== 2 || !['saved', 'requested'].includes(out.status) || !out.revision) {
+            throw Object.assign(new Error((out && out.error) || 'the guest list rejected the save'), {rsvpCode: out && out.errorCode});
+          }
+          result = out;
         } else {
-          console.log('RSVP payload (no endpoint configured — would have been upserted):', payload);
-          await new Promise(r => setTimeout(r, 600)); // simulate latency for demo
+          throw new Error('RSVP saving is not configured');
         }
         // Mark as having a prior submission going forward
-        CURRENT_PRIOR = payload;
+        CURRENT_HOUSEHOLD.revision = result.revision;
+        CURRENT_PRIOR = result.prior || null;
+        CURRENT_PENDING = result.pending || null;
+        RSVP_ATTEMPT = null;
+        const reload = document.getElementById('rsvpReload');
+        if (reload) reload.hidden = true;
+        renderSavedReply(CURRENT_PRIOR);
+        renderRequestStatus(result.pending, result.declinedRequest);
         // Show inline saved banner; KEEP the form visible & editable
-        const banner = document.getElementById('rsvpSavedBanner');
-        if (banner) {
-          banner.classList.add('show');
-          setTimeout(() => banner.classList.remove('show'), 5000);
-        }
+        showBanner(result.status === 'requested' ? 'Request received. Please wait for our confirmation; your saved reply is unchanged.' : members.every(m => m.attending === 'no') ? "Thank you for letting us know. We'll miss you and are sending our love." : "Saved! Thank you, we can't wait to celebrate with you.", 'ok');
+        revealCalendar((CURRENT_PRIOR?.members || []).some(m => m.attending === 'yes'));
         const note = document.getElementById('rsvpReturningNote');
         if (note) note.style.display = 'block';
         submit.disabled = false;
         submit.textContent = 'Update Our RSVP';
-        submit.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById(result.pending ? 'rsvpChangeRequest' : 'rsvpSavedReply')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } catch (err) {
         console.error('RSVP submit failed:', err);
         submit.disabled = false;
         submit.textContent = originalLabel;
-        alert('Something went wrong saving your RSVP. Please try again, or message us directly.');
+        showBanner(err.rsvpCode ? err.message : "We couldn't confirm that save. Your answers are still here. Please try again; repeating the save won't create a duplicate reply.", 'error');
+        const reload = document.getElementById('rsvpReload');
+        if (reload) reload.hidden = !['conflict', 'roster_changed', 'refresh_required', 'not_invited', 'not_found'].includes(err.rsvpCode);
+        document.getElementById('rsvpSavedBanner')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     });
+
+    document.getElementById('rsvpReload')?.addEventListener('click', () => {
+      if (window.confirm('Reload the latest invitation? Any changes you have not saved will be discarded.')) window.location.reload();
+    });
+
+    // One banner doing three jobs: saved, incomplete, and failed-to-save. Errors
+    // stay on screen because the guest has to act on them; success clears itself.
+    function showBanner(message, kind) {
+      const banner = document.getElementById('rsvpSavedBanner');
+      const icon   = document.getElementById('rsvpBannerIcon');
+      const msg    = document.getElementById('rsvpBannerMsg');
+      if (!banner || !msg) return;
+      msg.textContent = message;
+      if (icon) icon.textContent = kind === 'ok' ? '\u2713' : '!';
+      banner.classList.toggle('error', kind !== 'ok');
+      banner.classList.add('show');
+      clearTimeout(showBanner._timer);
+      if (kind === 'ok') {
+        showBanner._timer = setTimeout(() => banner.classList.remove('show'), 5000);
+      }
+    }
+
+    // ── DRESS CODE COLOURS ──
+    (function initDressColours() {
+      const wrap = document.querySelector('.dresscode-image');
+      const reset = document.getElementById('dresscodeReset');
+      const status = document.getElementById('dresscodeColourStatus');
+      const palette = document.getElementById('dresscodeSwatches');
+      const target = document.getElementById('dresscodeColourTarget');
+      if (!wrap || !reset || !status || !palette || !target) return;
+      const swatches = Array.from(palette.querySelectorAll('.swatch'));
+      const pieces = new Map(Array.from(wrap.querySelectorAll('[data-piece]')).map(piece => [piece.getAttribute('data-piece'), piece]));
+      const fabrics = new Map(Array.from(wrap.querySelectorAll('[data-fabric-piece]')).map(piece => [piece.getAttribute('data-fabric-piece'), piece]));
+      const looks = Array.from(document.querySelectorAll('.dresscode-look')).map(panel => {
+        const select = panel.querySelector('[data-piece-select]');
+        return {
+          panel,
+          name: panel.getAttribute('data-look') === 'her' ? 'Her outfit' : 'His outfit',
+          radio: panel.querySelector('[data-look-select]'),
+          select,
+          finish: panel.querySelector('[data-finish-select]'),
+          labels: new Map(Array.from(select.options).map(option => [option.value, option.textContent.trim()]))
+        };
+      });
+      if (!looks.length || !swatches.length) return;
+      let activeLook = looks.find(look => look.radio.checked) || looks[0];
+      const colours = new Map();
+      const finishes = new Map();
+      const ownsPiece = look => look.labels.has(look.select.value) && pieces.has(look.select.value);
+
+      function render(announceLook) {
+        pieces.forEach((piece, name) => {
+          const colour = colours.get(name) || 'transparent';
+          piece.setAttribute('fill', colour);
+          piece.setAttribute('color', colour);
+          const fabric = fabrics.get(name);
+          if (fabric) fabric.setAttribute('fill', finishes.has(name) ? 'url(#dresscode-' + finishes.get(name) + ')' : 'transparent');
+        });
+        looks.forEach(look => {
+          look.radio.checked = look === activeLook;
+          look.panel.setAttribute('data-active', String(look === activeLook));
+          look.finish.value = finishes.get(look.select.value) || 'plain';
+        });
+        const active = colours.get(activeLook.select.value);
+        const name = activeLook.labels.get(activeLook.select.value) || 'Piece';
+        swatches.forEach(swatch => swatch.setAttribute('aria-pressed', String(swatch.getAttribute('data-tint') === active)));
+        palette.setAttribute('aria-label', activeLook.name + ', ' + name + ' colour');
+        target.textContent = (activeLook.name === 'Her outfit' ? 'her ' : 'his ') + name.toLowerCase();
+        if (announceLook) {
+          const swatch = swatches.find(button => button.getAttribute('data-tint') === active);
+          status.textContent = activeLook.name + ', ' + name + ': ' + (swatch ? swatch.textContent.trim() : 'no colour selected') + ', ' + (activeLook.finish.value === 'dots' ? 'polka dots' : activeLook.finish.value);
+        }
+        reset.disabled = colours.size === 0 && finishes.size === 0;
+      }
+
+      function activate(look) {
+        activeLook = look;
+        render(look);
+      }
+
+      swatches.forEach(swatch => {
+        swatch.addEventListener('click', () => {
+          const tint = swatch.getAttribute('data-tint');
+          if (!ownsPiece(activeLook) || !/^#[0-9a-f]{6}$/i.test(tint)) return;
+          if (colours.get(activeLook.select.value) === tint) colours.delete(activeLook.select.value);
+          else colours.set(activeLook.select.value, tint);
+          render(activeLook);
+        });
+      });
+      looks.forEach(look => {
+        look.radio.addEventListener('change', () => {
+          if (look.radio.checked) activate(look);
+        });
+        look.select.addEventListener('pointerdown', () => activate(look));
+        look.select.addEventListener('change', () => activate(look));
+        look.finish.addEventListener('pointerdown', () => activate(look));
+        look.finish.addEventListener('change', () => {
+          if (!ownsPiece(look) || !['plain', 'dots', 'stripes'].includes(look.finish.value)) return;
+          if (look.finish.value === 'plain') finishes.delete(look.select.value);
+          else finishes.set(look.select.value, look.finish.value);
+          activate(look);
+        });
+      });
+      reset.addEventListener('click', () => {
+        colours.clear();
+        finishes.clear();
+        render();
+        status.textContent = 'All outfit colours and finishes cleared';
+      });
+      render();
+    })();
+
+    // ── ADD TO CALENDAR ──
+    // Offered only once someone in the household has actually said yes, and set
+    // to that household's own start: family from the tea ceremony, everyone
+    // else from arrival. Times are UTC; the wedding is 17:30 SGT (UTC+8).
+    const WEDDING_END = '20270711T143000Z';   // 10.30pm SGT
+    const WEDDING_PLAN = {
+      family: { start: '20270711T093000Z',    // 5.30pm SGT
+                detail: 'Tea ceremony 5.30pm. Please be seated by 6.30pm so everyone is settled for our walk-in.' },
+      guest:  { start: '20270711T100000Z',    // 6pm SGT
+                detail: 'Arrival from 6pm. Please be seated by 6.30pm so everyone is settled for our walk-in.' }
+    };
+    const WEDDING_TITLE = 'Gabriel & Estella are getting married';
+    const WEDDING_PLACE = 'The Aloes Ballroom, Oasia Resort Sentosa, Singapore';
+
+    function calendarPlan() {
+      const events = (CURRENT_HOUSEHOLD && CURRENT_HOUSEHOLD.events) || [];
+      const early = events.includes('solem') || events.includes('tea');
+      return early ? WEDDING_PLAN.family : WEDDING_PLAN.guest;
+    }
+
+    function buildIcs() {
+      const plan = calendarPlan();
+      const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+      const uid = (CURRENT_HOUSEHOLD && CURRENT_HOUSEHOLD.code ? CURRENT_HOUSEHOLD.code : 'guest');
+      return [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Gabriel & Estella//Wedding//EN',
+        'CALSCALE:GREGORIAN',
+        'BEGIN:VEVENT',
+        'UID:' + uid + '-20270711@estella-gabriel-wedding',
+        'DTSTAMP:' + stamp,
+        'DTSTART:' + plan.start,
+        'DTEND:' + WEDDING_END,
+        'SUMMARY:' + WEDDING_TITLE,
+        'LOCATION:' + WEDDING_PLACE.replace(/,/g, '\\,'),
+        'DESCRIPTION:' + plan.detail,
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ].join('\r\n');
+    }
+
+    function googleCalendarUrl() {
+      const plan = calendarPlan();
+      const params = new URLSearchParams({
+        action: 'TEMPLATE',
+        text: WEDDING_TITLE,
+        dates: plan.start + '/' + WEDDING_END,
+        details: plan.detail,
+        location: WEDDING_PLACE
+      });
+      return 'https://calendar.google.com/calendar/render?' + params.toString();
+    }
+
+    function revealCalendar(show) {
+      const box = document.getElementById('rsvpCalendar');
+      if (!box) return;
+      box.hidden = !show;
+      if (!show) return;
+      const google = document.getElementById('calGoogle');
+      if (google) google.href = googleCalendarUrl();
+    }
+
+    (function initCalendarButton() {
+      const dl = document.getElementById('calDownload');
+      if (!dl) return;
+      dl.addEventListener('click', () => {
+        const blob = new Blob([buildIcs()], { type: 'text/calendar;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'gabriel-estella-11-july-2027.ics';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      });
+    })();
 
     function escapeHtml(s) {
       return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -4174,7 +4947,7 @@
       layer.setAttribute('aria-hidden', 'true');
       document.body.appendChild(layer);
 
-      const colors = ['#b4313a', '#d94f5a', '#f3bbb2', '#c46a70', '#7f1f29'];
+      const colors = ['#b5766c', '#c98d84', '#dcaba1', '#a8635c', '#83473f'];
 
       document.addEventListener('pointerdown', (event) => {
         if (event.pointerType === 'mouse' && event.button !== 0) return;
@@ -4281,9 +5054,9 @@
           ctx.globalCompositeOperation = 'source-over';
           heartPath(ctx, rect.width, rect.height);
           const grad = ctx.createRadialGradient(rect.width * 0.34, rect.height * 0.24, 4, rect.width * 0.5, rect.height * 0.52, rect.width * 0.66);
-          grad.addColorStop(0, '#e46368');
-          grad.addColorStop(0.48, '#bd303a');
-          grad.addColorStop(1, '#7f1f29');
+          grad.addColorStop(0, '#e8d5a3');
+          grad.addColorStop(0.48, '#c9a24f');
+          grad.addColorStop(1, '#8a6a32');
           ctx.fillStyle = grad;
           ctx.fill();
           ctx.save();
@@ -4435,9 +5208,13 @@
     // ── Direction sub-tabs (car / taxi / mrt)
     document.querySelectorAll('.dir-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.dir-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.dir-btn').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-pressed', 'false');
+        });
         document.querySelectorAll('.dir-panel').forEach(p => p.classList.remove('active'));
         btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
         document.getElementById('dir-' + btn.dataset.dir).classList.add('active');
       });
     });
@@ -4445,9 +5222,13 @@
     // ── Car parking pill toggle (valet / selfpark)
     document.querySelectorAll('.car-toggle-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.car-toggle-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.car-toggle-btn').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-pressed', 'false');
+        });
         document.querySelectorAll('.car-subpanel').forEach(p => p.classList.remove('active'));
         btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
         document.getElementById('car-' + btn.dataset.car).classList.add('active');
       });
     });
