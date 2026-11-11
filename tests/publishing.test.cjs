@@ -9,7 +9,7 @@ test('the public website never fetches a bundled guest list or stores invitation
   assert.doesNotMatch(html, /fetch\(['"]guestlist\.json/);
   const rsvp = html.slice(html.indexOf('    const RSVP_ENDPOINT ='), html.indexOf('    // ── ADD TO CALENDAR'));
   assert.equal(/localStorage\.setItem|sessionStorage\.setItem/.test(rsvp), false);
-  assert.match(html, /result\.protocol === 2/);
+  assert.match(html, /result\.protocol === 3/);
 });
 test('publishing uses an explicit public build and ignores local private backups', () => {
   const workflow = fs.readFileSync(path.join(root, '.github/workflows/pages.yml'), 'utf8');

@@ -41,10 +41,10 @@ function walkAssets(directory, relative = 'assets') {
 
 copy('index.html', path.join(root, 'dist'));
 walkAssets(path.join(root, 'dist/assets'));
-for (const relative of ['README.md', 'RSVP-SETUP.md', 'GITHUB-UPLOAD.md', 'rsvp-handler.gs', '.gitignore',
+for (const relative of ['README.md', 'RSVP-SETUP.md', 'TEST-TAB-GUIDE.md', 'GITHUB-UPLOAD.md', 'LAUNCH-CHECKLIST.md', 'rsvp-handler.gs', '.gitignore',
   '.github/workflows/pages.yml', 'scripts/build-site.cjs', 'scripts/preview-rsvp.cjs', 'scripts/prepare-github-upload.cjs',
   'tests/dresscode-colours.test.cjs', 'tests/guest-experience.test.cjs', 'tests/saved-reply.test.cjs',
-  'tests/rsvp-timestamps.test.cjs', 'tests/publishing.test.cjs', 'tests/github-upload.test.cjs', 'tests/helpers/rsvp-gateway.cjs']) copy(relative);
+  'tests/rsvp-simple.test.cjs', 'tests/rsvp-timestamps.test.cjs', 'tests/rsvp-environments.test.cjs', 'tests/publishing.test.cjs', 'tests/github-upload.test.cjs', 'tests/helpers/rsvp-gateway.cjs']) copy(relative);
 manifest.sort((a, b) => a.path.localeCompare(b.path));
 if (manifest.length > 100) throw new Error('Package exceeds the 100-file browser upload limit. Split the upload before proceeding.');
 if (manifest.some(file => /(?:^|\/)(?:guestlist\.json|\.private-rsvp|\.DS_Store|drafts|github-upload|dist)(?:\/|$)/.test(file.path))) {

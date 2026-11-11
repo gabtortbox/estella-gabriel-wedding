@@ -1,98 +1,64 @@
-# Drag-And-Drop Upload To GitHub
+# Upload The Final Simple RSVP Version
 
-This package updates the original wedding website. The repository in your screenshot
-uses the main branch. The workflow has been corrected to publish from main.
-Your working project, private guest backup and drafts remain separate.
+This updates the original ivory website, not either draft theme.
+Keep your private workbook and `.private-rsvp/` backup off GitHub.
 
-## What To Upload
+## Before Upload
 
-Open the folder named UPLOAD-THESE-CONTENTS.
-It contains the current website, referenced assets, backend source, tests,
-publishing workflow, README and RSVP setup instructions. It contains NO guest list.
+Update the Apps Script using RSVP-SETUP.md first. The new website requires the
+protocol 3 script, so do not send invitations while either half is still old.
 
-Do NOT drag the enclosing github-upload or UPLOAD-THESE-CONTENTS folder into GitHub.
-Drag the files and folders INSIDE UPLOAD-THESE-CONTENTS together. Otherwise GitHub
-will put the site in an unwanted subfolder instead of updating the existing site.
+## Drag And Drop
 
-## Upload Steps
+1. Open `github-upload/UPLOAD-THESE-CONTENTS` in Finder.
+2. Press Command + Shift + period to show hidden files. Include `.github` and
+   `.gitignore`; do not select `.DS_Store` if Finder creates one.
+3. Open GitHub > gabtortbox/estella-gabriel-wedding > main > repository root.
+   Choose Add file / + > Upload files.
+4. Drag the CONTENTS of UPLOAD-THESE-CONTENTS into GitHub, not the enclosing folder.
+   The proposed paths should be `index.html`, `assets/...`, `scripts/...`,
+   `tests/...` and `.github/workflows/pages.yml`, without an upload-folder prefix.
+5. Commit to main: `Simplify and test wedding RSVP before launch`.
+   If a branch is required, merge its pull request into main.
+6. Settings > Pages > Source = GitHub Actions. Actions > Wedding website must
+   finish successfully before you check the public site in a private window.
+7. Complete LAUNCH-CHECKLIST.md. Do not use old draft invitation codes.
 
-1. In GitHub, open gabtortbox/estella-gabriel-wedding and select main.
-2. At the repository root (where your current index.html appears), choose
-   the + / Add file menu, then Upload files.
-3. Open UPLOAD-THESE-CONTENTS in Finder. Press Command + Shift + period (.)
-   to show hidden files. You MUST include .github and .gitignore.
-4. Select EVERYTHING INSIDE that folder, including the hidden items, and drag
-   those selected items onto GitHub's upload area. If Finder creates a hidden
-   .DS_Store file, leave that one unselected.
-5. Check the proposed paths BEFORE committing. You should see index.html,
-   assets/photos/..., .github/workflows/pages.yml, scripts/... and tests/...
-   at their original paths. There must NOT be a github-upload/ or
-   UPLOAD-THESE-CONTENTS/ prefix. Older files with the same paths are updated.
-6. Use the commit message: Update wedding website and RSVP system.
-   Commit to main if your repository allows it. If GitHub requires a new branch,
-   create the pull request and merge it into main before expecting deployment.
-7. Go to Settings > Pages. Set the publishing Source to GitHub Actions.
-8. Go to Actions > Wedding website and wait for success. If the first run failed
-   before the Pages setting was changed, use Run workflow on main or rerun the job.
-9. Open the published site in a private/incognito window. Check the schedule now
-   says seating at 6.30 pm and The Fun Begins at 9 pm. A working RSVP additionally
-   requires the separate Apps Script setup below.
+Uploading rsvp-handler.gs to GitHub does NOT update Google Apps Script. The script
+must separately be saved, run once, and redeployed using the existing deployment.
 
-The .github folder is essential for this publishing method. If it is missing from
-the uploaded list, cancel the upload, show hidden files and select the contents again.
+## Old Public Files
 
-## Old Files Need Separate Deletion
+Uploads overwrite matching paths but do not remove old files.
 
-Uploading files DOES NOT remove old files already on GitHub.
+PRIORITY: remove any ROOT `guestlist.json` from the public GitHub repository.
+It is excluded from the current public build but files in a public source repository
+remain readable. Keep your private local backup. Deletion does not erase old commits.
+The new short codes replace unsent legacy codes; never publish new codes/guest data.
 
-PRIORITY: remove the existing ROOT guestlist.json from the public repository.
-Make sure your private local backup is retained first. Never upload it again.
-Deleting the current file does not erase old commits or previously shared codes.
-Reissue affected group links if real invitation codes were previously public.
+Retired files can be deleted separately from GitHub after checking they are the
+old versions: advisory.html, confirmed.html, directions.html, helpers.html,
+rsvp.html, css/ and js/. Do not delete the entire assets folder.
 
-The following old pages and folders are no longer used by the current website:
+Open an old file in GitHub > ... > Delete file, then commit the deletion.
+The current tests and old-named test files in this upload are deliberately all
+updated, so the existing workflow will not pick up obsolete backend tests.
 
-  advisory.html
-  confirmed.html
-  directions.html
-  helpers.html
-  rsvp.html
-  css/
-  js/
+## Later Directions QR
 
-Remove those separately on GitHub after checking they are the retired versions.
-The old image files outside the new upload are not required by the public build;
-do not delete the whole assets folder, because current assets share that folder.
-The new publishing workflow includes only the current public build, but a public
-GitHub repository still exposes files left in its source tree.
+Add/replace `assets/photos/sentosa-qr.png` at that exact repository path and commit.
+After the Pages run succeeds, scan it on a second phone. No code changes needed.
 
-To remove an old root file: open it in GitHub, choose the ... menu > Delete file,
-and commit the deletion to main (or merge its pull request). Keep the private
-backup; you do not need to delete it from your computer.
+## Regenerate The Upload Snapshot
 
-## Apps Script Is A Separate Update
+The upload folder is a snapshot, not the source project. After any local edit:
 
-Uploading rsvp-handler.gs to GitHub does NOT deploy it to Google.
+```sh
+node scripts/prepare-github-upload.cjs
+```
 
-1. Follow RSVP-SETUP.md in the upload folder, beginning with a private workbook backup.
-2. Replace the Apps Script code with the current rsvp-handler.gs. Preserve your
-   actual DINNER_CAPACITY setting; its source default is zero (no numerical limit).
-3. For the duplicated code in your sheet, run repairDuplicateGroupLink and enter
-   51. Group 50 retains its original link; group 51 gets its own link.
-4. Run setupRsvp, then validate the guest list. Uninvited ungrouped planning rows
-   are allowed. Fictional test rows need Invite Intent = Yes and Status = Active.
-5. Deploy > Manage deployments > edit the existing web app > New version > Deploy.
-   Keep Execute as Me and access Anyone. Its existing /exec URL remains the same.
-
-Do not submit test answers through real guests' links. Complete the fictional
-tests in RSVP-SETUP.md before sending invitations.
-
-## Rebuilding This Package Later
-
-The upload folder is a snapshot, not your working project. After making more
-changes, run node scripts/prepare-github-upload.cjs from the original project.
-It regenerates only the marked upload/build folders and leaves source files alone.
+This rebuilds only marked generated folders. It does not change your source/drafts.
 
 References:
-https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository
-https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
+- https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository
+- https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages

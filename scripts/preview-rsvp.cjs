@@ -4,11 +4,11 @@ const path = require('node:path');
 const {gateway, headers, guests} = require('../tests/helpers/rsvp-gateway.cjs');
 const root = path.resolve(__dirname, '..');
 const previewGuests = [headers, ...guests,
-  ['fam123', 20, 'Estella', 'Family', '', 'Taylor Koh', 'Yes', '', 'Yes', '', '', ''],
-  ['fam123', 20, 'Estella', 'Family', '', 'Robin Tan', 'Yes', '', 'Yes', '', '', ''],
-  ['review123', 30, 'Gabriel', 'Friends', '', 'Morgan Lee', 'Yes', '', 'Yes', 'No', '', '']];
+  ['fam123', 20, 'Estella', 'Family', '', 'Taylor Koh', 'Yes', '', 'No', '', '', ''],
+  ['fam123', 20, 'Estella', 'Family', '', 'Robin Tan', 'Yes', '', 'No', '', '', ''],
+  ['', 30, 'Gabriel', 'Friends', '', 'Morgan Lee', 'Yes', '', 'No', '', '', '']];
 const mock = gateway({guestRows: previewGuests});
-mock.master(8, 'Seat Status', 'Released');
+mock.submit(mock.payload(mock.code(30)));
 const types = {'.png': 'image/png', '.webp': 'image/webp', '.jpeg': 'image/jpeg', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml'};
 const server = http.createServer((request, response) => {
   const url = new URL(request.url, 'http://localhost');
@@ -37,5 +37,5 @@ server.on('error', error => {
   if (error.code === 'EADDRINUSE' && port < 4180) server.listen(++port, '127.0.0.1');
   else { console.error(error.message); process.exitCode = 1; }
 });
-server.on('listening', () => console.log(`FICTIONAL DATA ONLY: http://127.0.0.1:${port}/?inv=old123#rsvp (friends), ?inv=fam123#rsvp (family), ?inv=review123#rsvp (approval). Nothing is sent to Google.`));
+server.on('listening', () => console.log(`FICTIONAL DATA ONLY:\nhttp://127.0.0.1:${port}/?inv=${mock.code(10)}#rsvp (two friends)\nhttp://127.0.0.1:${port}/?inv=${mock.code(20)}#rsvp (three family members)\nhttp://127.0.0.1:${port}/?inv=${mock.code(30)}#rsvp (one saved reply)\nNothing is sent to Google.`));
 server.listen(port, '127.0.0.1');

@@ -33,13 +33,13 @@ function harness(household = friend, saved = null, values = {}) {
   nodes.rsvpSubmit.disabled = false;
   const banners = [], calendars = [], requests = [];
   const context = vm.createContext({
-    CURRENT_HOUSEHOLD: {...household}, CURRENT_PRIOR: saved, CURRENT_PENDING: null, RSVP_ATTEMPT: null, RSVP_ENDPOINT: 'test-gateway',
+    CURRENT_HOUSEHOLD: {...household}, CURRENT_PRIOR: saved, RSVP_ATTEMPT: null, RSVP_ENDPOINT: 'test-gateway',
     crypto: require('node:crypto').webcrypto,
     document: {getElementById: id => nodes[id] || null, querySelector: () => null},
     FormData: class { constructor(form) { this.values = {...form.values}; } get(name) { return this.values[name] ?? null; } },
     showBanner: (...args) => banners.push(args), revealCalendar: value => calendars.push(value),
-    fetch: async (url, options) => { const request = JSON.parse(options.body); requests.push(request); return {ok: true, json: async () => ({ok: true, protocol: 2, status: 'saved', revision: request.payload.requestId, prior: {members: request.payload.members, submittedAt: stamp}})}; },
-    console: {error() {}}, setTimeout() {}
+    fetch: async (url, options) => { const request = JSON.parse(options.body); requests.push(request); return {ok: true, json: async () => ({ok: true, protocol: 3, status: 'saved', revision: request.payload.requestId, prior: {members: request.payload.members, submittedAt: stamp}})}; },
+    console: {error() {}}, setTimeout() {}, clearTimeout() {}, AbortController
   });
   vm.runInContext(escapeSource + '\n' + featureSource + '\n' + submitSource, context);
   return {context, nodes, banners, calendars, requests, submit: () => nodes.rsvpForm.listeners.submit[0]({preventDefault() {}, target: nodes.rsvpForm})};
@@ -191,7 +191,7 @@ test('edits made during a save remain unsaved, and duplicate submissions are blo
   await h.submit();
   assert.equal(requestCount, 1);
   h.nodes.rsvpForm.values.diet_0 = 'Later edit';
-  acknowledge({ok: true, json: async () => ({ok: true, protocol: 2, status: 'saved', revision: sent.requestId, prior: {members: sent.members, submittedAt: stamp}})});
+  acknowledge({ok: true, json: async () => ({ok: true, protocol: 3, status: 'saved', revision: sent.requestId, prior: {members: sent.members, submittedAt: stamp}})});
   await saving;
   assert.match(h.nodes.savedReplyMembers.innerHTML, /Submitted value/);
   assert.ok(!h.nodes.savedReplyMembers.innerHTML.includes('Later edit'));
@@ -206,21 +206,19 @@ test('missing dinner answers prevent sending and leave the saved panel hidden', 
   assert.equal(h.banners.at(-1)[1], 'error');
 });
 
-test('pending approval does not replace a confirmed reply or create an unsaved warning', async () => {
+test('an obsolete pending-only acknowledgement is rejected without replacing the saved reply', async () => {
   const h = harness(friend, prior, {attend_0: 'yes', attend_1: 'yes'});
   h.context.renderSavedReply(prior);
   const before = h.nodes.savedReplyMembers.innerHTML;
   h.context.fetch = async (url, options) => {
     const payload = JSON.parse(options.body).payload;
-    return {ok: true, json: async () => ({ok: true, protocol: 2, status: 'requested', revision: payload.requestId,
+    return {ok: true, json: async () => ({ok: true, protocol: 3, status: 'requested', revision: payload.requestId,
       prior, pending: {requestId: payload.requestId, submittedAt: stamp, members: payload.members}})};
   };
   await h.submit();
   assert.equal(h.nodes.savedReplyMembers.innerHTML, before);
-  assert.equal(h.nodes.rsvpChangeRequest.hidden, false);
-  assert.match(h.nodes.rsvpRequestMessage.textContent, /isn't confirmed/);
-  assert.equal(h.nodes.savedReplyUnsaved.hidden, true);
-  assert.equal(h.banners.at(-1)[0].includes('Request received'), true);
+  assert.equal(h.nodes.rsvpChangeRequest.hidden, true);
+  assert.equal(h.banners.at(-1)[1], 'error');
 });
 
 test('uncertain network saves retry the same request ID while changed drafts use a fresh ID', async () => {
@@ -235,7 +233,7 @@ test('uncertain network saves retry the same request ID while changed drafts use
 
 test('conflicts keep the draft and offer an explicit invitation reload', async () => {
   const h = harness(friend, prior, {attend_0: 'no', attend_1: 'no'});
-  h.context.fetch = async () => ({ok: true, json: async () => ({ok: false, protocol: 2, errorCode: 'conflict', error: 'Someone updated this invitation.'})});
+  h.context.fetch = async () => ({ok: true, json: async () => ({ok: false, protocol: 3, errorCode: 'conflict', error: 'Someone updated this invitation.'})});
   await h.submit();
   assert.equal(h.nodes.rsvpReload.hidden, false);
   assert.equal(h.nodes.rsvpForm.values.attend_0, 'no');
@@ -252,8 +250,73 @@ test('family tea answers are required and saved summaries follow IDs across a na
   assert.match(h.nodes.savedReplyMembers.innerHTML, /Vegetarian/);
 });
 
+test('saves explicitly require protocol 3 and reject older gateways', async () => {
+  const h = harness(friend, null, {attend_0: 'yes', attend_1: 'no'});
+  let body;
+  h.context.fetch = async (url, options) => {
+    body = JSON.parse(options.body);
+    return {ok: true, json: async () => ({ok: true, protocol: 2, status: 'saved', revision: 'wrong', prior})};
+  };
+  await h.submit();
+  assert.equal(body.protocol, 3);
+  assert.equal(body.environment, undefined);
+  assert.equal(h.context.CURRENT_PRIOR, null);
+  assert.equal(h.nodes.rsvpSavedReply.hidden, true);
+  assert.equal(h.banners.at(-1)[1], 'error');
+});
+
+test('saves accept a complete current acknowledgement without any test mode', async () => {
+  const h = harness(friend, null, {attend_0: 'yes', attend_1: 'no'});
+  h.context.fetch = async (url, options) => {
+    const body = JSON.parse(options.body);
+    return {ok: true, json: async () => ({ok: true, protocol: 3, status: 'saved', revision: body.payload.requestId,
+      prior: {members: body.payload.members, submittedAt: stamp}})};
+  };
+  await h.submit();
+  assert.equal(h.nodes.rsvpSavedReply.hidden, false);
+  assert.equal(h.context.CURRENT_PRIOR.members[0].attending, 'yes');
+});
+
+test('lookups reject an older gateway before displaying guest controls', async () => {
+  const h = harness();
+  h.context.AbortController = AbortController; h.context.clearTimeout = () => {};
+  const fetchSource = html.slice(html.indexOf('    async function fetchHousehold('), html.indexOf('    function applyPrior('));
+  vm.runInContext(fetchSource, h.context);
+  let body;
+  h.context.fetch = async (url, options) => {
+    body = JSON.parse(options.body);
+    return {ok: true, json: async () => ({ok: true, protocol: 2, household: friend})};
+  };
+  const result = await h.context.fetchHousehold('abcdefg');
+  assert.equal(body.protocol, 3);
+  assert.equal(result.ok, false);
+  assert.equal(result.household, undefined);
+});
+
 test('the hero flows into the vision statement without the removed day section or stale scripts', () => {
   assert.ok(html.indexOf('id="hero"') < html.indexOf('id="vision"'));
   assert.match(html, /<!-- VISION -->\s*<div id="vision"/);
   assert.doesNotMatch(html, /For the day|day-details|dayDetails|dayArrival|dayQrDownload|dayHelperContact|WEDDING_DAY_EXTRAS|updateDayDetails/);
+});
+test('declining dinner does not send a hidden stale diet or show a false unsaved edit', async () => {
+  const h = harness(friend, null, {attend_0: 'no', diet_0: 'Old diet', attend_1: 'no'});
+  await h.submit();
+  assert.equal(h.requests[0].payload.members[0].dietary, '');
+  assert.equal(h.nodes.savedReplyUnsaved.hidden, true);
+});
+test('family tea-only attendance still accepts dietary information', async () => {
+  const h = harness(family, null, {attend_0: 'no', tea_0: 'yes', diet_0: '  No peanuts  ', attend_1: 'no', tea_1: 'no'});
+  await h.submit();
+  assert.equal(h.requests[0].payload.members[0].dietary, 'No peanuts');
+  assert.match(h.nodes.savedReplyMembers.innerHTML, /No peanuts/);
+  assert.equal(h.nodes.savedReplyUnsaved.hidden, true);
+});
+test('attendance radios remain keyboard accessible, field labels are connected and save messages are announced', () => {
+  assert.doesNotMatch(html, /\.attend-toggle input \{ display: none/);
+  assert.match(html, /input:focus-visible/);
+  assert.match(html, /for="diet_\$\{i\}"/);
+  assert.match(html, /for="notes_\$\{i\}"/);
+  assert.match(html, /id="rsvpSavedBanner"[^>]*role="status"[^>]*aria-live="polite"/);
+  assert.match(html, /controller\.abort\(\), 30000/);
+  assert.match(html, /clearTimeout\(saveTimer\)/);
 });

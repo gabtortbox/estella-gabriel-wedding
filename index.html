@@ -2237,13 +2237,8 @@
       border-bottom: 1px solid var(--sand);
       scroll-margin-top: 16px;
     }
-    .saved-reply[hidden], .saved-reply [hidden], .rsvp-request[hidden], .rsvp-reload[hidden] { display: none; }
+    .saved-reply[hidden], .saved-reply [hidden], .rsvp-reload[hidden] { display: none; }
     .saved-reply-summary { margin: 1rem 0 0.5rem; font: 400 0.85rem/1.6 var(--sans); color: var(--ink-soft); }
-    .rsvp-request { margin: 1.5rem 0; padding: 1.25rem 0; border-block: 1px solid var(--sand); color: var(--ink); }
-    .rsvp-request h3 { font: 500 1.5rem/1.3 var(--serif); margin-bottom: 0.6rem; }
-    .rsvp-request p { font: 400 0.9rem/1.7 var(--sans); overflow-wrap: anywhere; }
-    .rsvp-request-members { margin-top: 0.75rem; }
-    .rsvp-request-members p { margin-top: 0.35rem; }
     .rsvp-reload { margin: 1rem auto; }
     .saved-reply-heading {
       display: flex;
@@ -2423,7 +2418,8 @@
       line-height: 1.25;
     }
     .attend-toggle label:hover { background: var(--sand-light); color: var(--ink); }
-    .attend-toggle input { display: none; }
+    .attend-toggle input { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .attend-toggle label:has(input:focus-visible) { outline: 2px solid var(--ink); outline-offset: 3px; }
     .attend-toggle input:checked + span { color: var(--white); }
     .attend-toggle label:has(input[value="yes"]:checked) {
       background: #6a8545; color: var(--white); border-color: #6a8545;
@@ -2440,8 +2436,9 @@
       overflow: hidden;
       max-height: 0;
       opacity: 0;
+      visibility: hidden;
     }
-    .member-card.attending .member-fields { max-height: 600px; opacity: 1; margin-top: 0.6rem; }
+    .member-card.attending .member-fields { max-height: 600px; opacity: 1; visibility: visible; margin-top: 0.6rem; }
 
     .member-fields .full { grid-column: 1 / -1; }
 
@@ -3624,7 +3621,7 @@
 
       <!-- Shown when the invite code does not resolve -->
       <div class="rsvp-public" id="rsvpNotFound" style="display:none;">
-        <h3>We couldn&rsquo;t find your invitation.</h3>
+        <h3 id="rsvpNotFoundTitle">We couldn&rsquo;t find your invitation.</h3>
         <p id="rsvpNotFoundMsg"></p>
       </div>
 
@@ -3644,20 +3641,14 @@
         <p class="saved-reply-unsaved" id="savedReplyUnsaved" role="status" hidden>Unsaved changes</p>
       </section>
 
-      <section class="rsvp-request" id="rsvpChangeRequest" aria-labelledby="rsvpRequestTitle" role="status" hidden>
-        <h3 id="rsvpRequestTitle">Your change request</h3>
-        <p id="rsvpRequestMessage"></p>
-        <div class="rsvp-request-members" id="rsvpRequestMembers"></div>
-      </section>
-
       <!-- Dynamic form (rendered when ?inv=<code> is present) -->
       <form id="rsvpForm" autocomplete="off" novalidate>
         <div id="rsvpReturningNote" style="display:none; text-align:center; margin-bottom:1.5rem; font-family:var(--serif); font-style:italic; color:var(--ink-soft); font-size:0.95rem;">
           Welcome back. We've loaded your previous answers below. Feel free to update anything and save again.
         </div>
 
-        <div id="rsvpSavedBanner" class="rsvp-saved-banner">
-          <span class="check" id="rsvpBannerIcon">✓</span> <span id="rsvpBannerMsg">Saved! You can keep editing or close this page. We'll have the latest version.</span>
+        <div id="rsvpSavedBanner" class="rsvp-saved-banner" role="status" aria-live="polite">
+          <span class="check" id="rsvpBannerIcon" aria-hidden="true"></span> <span id="rsvpBannerMsg"></span>
         </div>
         <button type="button" class="cal-btn rsvp-reload" id="rsvpReload" hidden>Reload invitation</button>
 
@@ -3667,7 +3658,7 @@
           <button type="submit" class="rsvp-submit" id="rsvpSubmit">Send Our RSVP</button>
         </div>
         <div class="rsvp-notes">
-          <p>You can return to this same link anytime to update your answers. Changes after the RSVP deadline, or after a seat has been released, may need our confirmation.</p>
+          <p>You can return to this same link to see or update your saved reply. If your plans change after 31 January, please let us know directly too.</p>
         </div>
 
         <!-- Shown once at least one guest in the household is coming -->
@@ -4199,7 +4190,6 @@
     const RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyLh5eGRXSoLtA5zuCLt1iYcVkqdituew1c35RU-pvo-kj-qVB_tAwqDLd6FxADsmZU/exec';
     let CURRENT_HOUSEHOLD = null;
     let CURRENT_PRIOR = null;
-    let CURRENT_PENDING = null;
     let RSVP_ATTEMPT = null;
 
     function normaliseReplyMembers(household, members) {
@@ -4211,8 +4201,8 @@
           id: guest.id,
           name: String(guest.name),
           attending: answer(saved.attending),
-          dietary: String(saved.dietary || ''),
-          notes: String(saved.notes || ''),
+          dietary: String(saved.dietary || '').trim(),
+          notes: String(saved.notes || '').trim(),
           tea: events.includes('tea') ? answer(saved.tea) : ''
         };
       });
@@ -4224,8 +4214,8 @@
         id: member.id,
         name: member.name,
         attending: data.get(`attend_${index}`) || 'pending',
-        dietary: data.get(`diet_${index}`) || '',
-        notes: data.get(`notes_${index}`) || '',
+        dietary: data.get(`attend_${index}`) === 'yes' || data.get(`tea_${index}`) === 'yes' ? String(data.get(`diet_${index}`) || '').trim() : '',
+        notes: String(data.get(`notes_${index}`) || '').trim(),
         tea: data.get(`tea_${index}`) || ''
       }));
     }
@@ -4233,8 +4223,8 @@
     function updateSavedReplyDirtyState() {
       const status = document.getElementById('savedReplyUnsaved');
       const form = document.getElementById('rsvpForm');
-      if (!status || !form || !CURRENT_HOUSEHOLD || !(CURRENT_PENDING || CURRENT_PRIOR)) return;
-      const saved = normaliseReplyMembers(CURRENT_HOUSEHOLD, (CURRENT_PENDING || CURRENT_PRIOR).members);
+      if (!status || !form || !CURRENT_HOUSEHOLD || !CURRENT_PRIOR) return;
+      const saved = normaliseReplyMembers(CURRENT_HOUSEHOLD, CURRENT_PRIOR.members);
       const current = normaliseReplyMembers(CURRENT_HOUSEHOLD, readRsvpMembers(form));
       status.hidden = JSON.stringify(saved) === JSON.stringify(current);
     }
@@ -4254,7 +4244,7 @@
         const details = [];
         if (events.includes('tea')) details.push(['Tea ceremony', status(member.tea)]);
         details.push(['Dinner reception', status(member.attending)]);
-        if (member.attending === 'yes') details.push(['Dietary notes', member.dietary || 'Not provided']);
+        if (member.attending === 'yes' || member.tea === 'yes') details.push(['Dietary notes', member.dietary || 'Not provided']);
         if (member.notes) details.push(['Message', member.notes]);
         return `<div class="saved-reply-member"><h4>${escapeHtml(member.name)}</h4><dl class="saved-reply-details">${details.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl></div>`;
       }).join('');
@@ -4280,22 +4270,6 @@
       updateSavedReplyDirtyState();
     }
 
-    function renderRequestStatus(pending, declinedRequest) {
-      CURRENT_PENDING = pending || null;
-      const panel = document.getElementById('rsvpChangeRequest');
-      const message = document.getElementById('rsvpRequestMessage');
-      const list = document.getElementById('rsvpRequestMembers');
-      if (!panel || !message || !list) return;
-      panel.hidden = !pending && !declinedRequest;
-      message.textContent = pending
-        ? "We've received your request. It isn't confirmed yet; your saved reply remains unchanged. Gabriel or Estella will be in touch."
-        : "We weren't able to confirm your last requested change. Your previously saved reply is unchanged. Please contact Gabriel or Estella.";
-      if (pending && !CURRENT_PRIOR) message.textContent = "We've received your reply and need to confirm availability. Please wait for Gabriel or Estella to confirm before making plans.";
-      list.innerHTML = pending ? normaliseReplyMembers(CURRENT_HOUSEHOLD, pending.members).map(member =>
-        `<p><strong>${escapeHtml(member.name)}</strong>: dinner ${member.attending === 'yes' ? 'attending' : member.attending === 'no' ? 'unable to attend' : 'unanswered'}${member.tea ? `; tea ${member.tea === 'yes' ? 'attending' : member.tea === 'no' ? 'unable to attend' : 'unanswered'}` : ''}</p>`).join('') : '';
-      updateSavedReplyDirtyState();
-    }
-
     function rsvpRequestId() {
       if (crypto.randomUUID) return crypto.randomUUID();
       return Array.from(crypto.getRandomValues(new Uint8Array(20)), byte => byte.toString(16).padStart(2, '0')).join('');
@@ -4317,19 +4291,24 @@
       if (publicBlock) publicBlock.style.display = 'none';
       if (loading) loading.style.display = 'block';
 
+      if (params.has('test') || !/^[a-z2-9]{6,7}$/.test(code)) {
+        if (loading) loading.style.display = 'none';
+        showLookupError('Please use your new invitation link.', 'unknown_invitation');
+        return;
+      }
+
       const result = await fetchHousehold(code);
       if (loading) loading.style.display = 'none';
 
       if (!result || !result.ok || !result.household) {
         const err = (result && result.error) || 'no response';
         console.warn('Lookup failed:', err);
-        showLookupError(err); // tell the guest, rather than failing silently
+        showLookupError(err, result && result.errorCode);
         return;
       }
 
       CURRENT_HOUSEHOLD = result.household;
       CURRENT_PRIOR = result.prior || null;
-      CURRENT_PENDING = result.pending || null;
 
       // 1. Greeting banner
       const greet = document.getElementById('inviteGreeting');
@@ -4362,31 +4341,24 @@
         if (note) note.style.display = 'block';
         revealCalendar((CURRENT_PRIOR.members || []).some(m => m.attending === 'yes'));
       }
-      if (result.pending) {
-        applyPrior(result.pending);
-        const note = document.getElementById('rsvpReturningNote');
-        if (note) {
-          note.style.display = 'block';
-          note.textContent = "We've loaded your requested answers. They are awaiting our confirmation; any previously saved reply is shown separately above.";
-        }
-        const submitBtn = document.getElementById('rsvpSubmit');
-        if (submitBtn) submitBtn.textContent = 'Update Our RSVP';
-      }
-      renderRequestStatus(result.pending, result.declinedRequest);
 
     })();
 
     // Unknown code, or the guest list could not be reached. Either way the guest
     // gets an explanation instead of a page that quietly looks like everyone else's.
-    function showLookupError(err) {
+    function showLookupError(err, errorCode) {
       const notFound = document.getElementById('rsvpNotFound');
       const msg      = document.getElementById('rsvpNotFoundMsg');
+      const title    = document.getElementById('rsvpNotFoundTitle');
       if (!notFound) return;
       // 'not found' means the gateway answered and had no matching row;
       // anything else means we could not reach or read the guest list at all.
-      const unknownCode = /not found|not invited/i.test(String(err));
+      const unknownCode = ['unknown_invitation', 'not_found', 'not_invited'].includes(errorCode) || /not found|not invited/i.test(String(err));
+      if (title) title.textContent = unknownCode ? "We couldn't find your invitation." : 'Your invitation is not ready yet';
       if (msg) {
-        msg.textContent = unknownCode
+        msg.textContent = errorCode === 'setup_required'
+          ? 'Our RSVP invitations are still being prepared. Please check back shortly or contact Gabriel or Estella.'
+          : unknownCode
           ? "This link doesn't match anyone on our guest list. It may have been retired, or copied without the full code at the end. Please message Gabriel or Estella and we'll send you a fresh one."
           : "Something went wrong on our end while loading your invitation. Please refresh the page in a moment, and if it keeps happening, message Gabriel or Estella.";
       }
@@ -4426,13 +4398,13 @@
             mode: 'cors',
             // text/plain avoids the CORS preflight; Apps Script reads e.postData.contents anyway
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: 'lookup', code }),
+            body: JSON.stringify({ action: 'lookup', code, protocol: 3 }),
             redirect: 'follow',
             signal: ctrl.signal
           });
           if (!res.ok) throw new Error('Invitation service unavailable');
           const result = await res.json();
-          return result.protocol === 2 ? result : {ok: false, error: 'The invitation service needs an update. Please contact Gabriel or Estella.'};
+          return result.protocol === 3 ? result : {ok: false, error: 'The invitation service needs an update. Please contact Gabriel or Estella.'};
         } catch (err) {
           console.error('Invitation lookup failed:', err);
         } finally {
@@ -4465,7 +4437,10 @@
         setField('textarea[name^="notes_"]', m.notes);
         if (m.tea === 'yes' || m.tea === 'no') {
           const r = card.querySelector(`input[name^="tea_"][value="${m.tea}"]`);
-          if (r) r.checked = true;
+          if (r) {
+            r.checked = true;
+            r.dispatchEvent(new Event('change', { bubbles: true }));
+          }
         }
       });
 
@@ -4515,12 +4490,12 @@
 
           <div class="member-fields">
             <div class="full">
-              <label class="field-label">Dietary restrictions or allergies</label>
-              <input class="field-input" type="text" name="diet_${i}" maxlength="300" placeholder="e.g. vegetarian, no shellfish, peanut allergy" />
+              <label class="field-label" for="diet_${i}">Dietary restrictions or allergies</label>
+              <input class="field-input" id="diet_${i}" type="text" name="diet_${i}" maxlength="300" placeholder="e.g. vegetarian, no shellfish, peanut allergy" />
             </div>
             <div class="full">
-              <label class="field-label">Anything we need to know</label>
-              <textarea class="field-textarea" name="notes_${i}" maxlength="1000" placeholder="Anything we need to know?"></textarea>
+              <label class="field-label" for="notes_${i}">Anything we need to know</label>
+              <textarea class="field-textarea" id="notes_${i}" name="notes_${i}" maxlength="1000" placeholder="Anything we need to know?"></textarea>
             </div>
           </div>
         </div>
@@ -4528,10 +4503,12 @@
 
       // Wire attend toggle → reveal/collapse member fields
       memberList.querySelectorAll('.member-card').forEach(card => {
-        card.querySelectorAll('input[type="radio"][name^="attend_"]').forEach(input => {
+        card.querySelectorAll('input[type="radio"]').forEach(input => {
           input.addEventListener('change', () => {
-            card.classList.toggle('attending', input.value === 'yes' && input.checked);
-            card.classList.toggle('declining', input.value === 'no' && input.checked);
+            const dinner = card.querySelector('input[name^="attend_"]:checked')?.value;
+            const tea = card.querySelector('input[name^="tea_"]:checked')?.value;
+            card.classList.toggle('attending', dinner === 'yes' || tea === 'yes');
+            card.classList.toggle('declining', dinner === 'no' && tea !== 'yes');
           });
         });
       });
@@ -4558,6 +4535,7 @@
         if (card) {
           card.scrollIntoView({ behavior: 'smooth', block: 'center' });
           card.classList.add('needs-answer');
+          card.querySelector('input[type="radio"]')?.focus({preventScroll: true});
           setTimeout(() => card.classList.remove('needs-answer'), 2800);
         }
         return;
@@ -4576,6 +4554,8 @@
       const originalLabel = submit.textContent;
       submit.disabled = true;
       submit.textContent = 'Saving…';
+      const controller = new AbortController();
+      const saveTimer = setTimeout(() => controller.abort(), 30000);
 
       try {
         let result;
@@ -4587,12 +4567,13 @@
             method: 'POST',
             mode: 'cors',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: 'submit', payload }),
-            redirect: 'follow'
+            body: JSON.stringify({ action: 'submit', protocol: 3, payload }),
+            redirect: 'follow',
+            signal: controller.signal
           });
           if (!res.ok) throw new Error('the guest list returned HTTP ' + res.status);
           const out = await res.json();
-          if (!out || out.ok !== true || out.protocol !== 2 || !['saved', 'requested'].includes(out.status) || !out.revision) {
+          if (!out || out.ok !== true || out.protocol !== 3 || out.status !== 'saved' || !out.revision || !Array.isArray(out.prior?.members)) {
             throw Object.assign(new Error((out && out.error) || 'the guest list rejected the save'), {rsvpCode: out && out.errorCode});
           }
           result = out;
@@ -4602,28 +4583,28 @@
         // Mark as having a prior submission going forward
         CURRENT_HOUSEHOLD.revision = result.revision;
         CURRENT_PRIOR = result.prior || null;
-        CURRENT_PENDING = result.pending || null;
         RSVP_ATTEMPT = null;
         const reload = document.getElementById('rsvpReload');
         if (reload) reload.hidden = true;
         renderSavedReply(CURRENT_PRIOR);
-        renderRequestStatus(result.pending, result.declinedRequest);
         // Show inline saved banner; KEEP the form visible & editable
-        showBanner(result.status === 'requested' ? 'Request received. Please wait for our confirmation; your saved reply is unchanged.' : members.every(m => m.attending === 'no') ? "Thank you for letting us know. We'll miss you and are sending our love." : "Saved! Thank you, we can't wait to celebrate with you.", 'ok');
+        showBanner(members.every(m => m.attending === 'no') ? "Thank you for letting us know. We'll miss you and are sending our love." : "Saved! Thank you, we can't wait to celebrate with you.", 'ok');
         revealCalendar((CURRENT_PRIOR?.members || []).some(m => m.attending === 'yes'));
         const note = document.getElementById('rsvpReturningNote');
         if (note) note.style.display = 'block';
         submit.disabled = false;
         submit.textContent = 'Update Our RSVP';
-        document.getElementById(result.pending ? 'rsvpChangeRequest' : 'rsvpSavedReply')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('rsvpSavedReply')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } catch (err) {
         console.error('RSVP submit failed:', err);
         submit.disabled = false;
         submit.textContent = originalLabel;
         showBanner(err.rsvpCode ? err.message : "We couldn't confirm that save. Your answers are still here. Please try again; repeating the save won't create a duplicate reply.", 'error');
         const reload = document.getElementById('rsvpReload');
-        if (reload) reload.hidden = !['conflict', 'roster_changed', 'refresh_required', 'not_invited', 'not_found'].includes(err.rsvpCode);
+        if (reload) reload.hidden = !['conflict', 'roster_changed', 'refresh_required', 'unknown_invitation'].includes(err.rsvpCode);
         document.getElementById('rsvpSavedBanner')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } finally {
+        clearTimeout(saveTimer);
       }
     });
 
