@@ -4,319 +4,194 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 
-const root = path.resolve(__dirname, '..');
-const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-const start = html.indexOf('    function normaliseReplyMembers(');
-const featureSource = html.slice(start, html.indexOf('    (async function initInvite()', start));
+const html = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf8');
+const featureSource = html.slice(html.indexOf('    function normaliseReplyMembers('), html.indexOf('    (async function initInvite()'));
 const escapeSource = html.match(/    function escapeHtml\(s\) \{[\s\S]*?\n    \}/)[0];
 const submitStart = html.indexOf("    document.getElementById('rsvpForm')?.addEventListener('submit'");
 const submitSource = html.slice(submitStart, html.indexOf('    // One banner doing three jobs', submitStart));
-
-const friend = {code: 'fictional-friends', revision: 'initial', rosterVersion: 'fictional-roster', events: ['ceremony'], members: [{id: 'alex-id', name: 'Alex Tan'}, {id: 'jamie-id', name: 'Jamie Lim'}]};
-const family = {...friend, events: ['solem', 'tea', 'ceremony']};
+const initSource = html.slice(html.indexOf('    (async function initInvite()'), html.indexOf('    // Unknown code,'));
+const friend = {code: 'abcdefg', household: 'Alex Tan & Jamie Lim', revision: 'initial', rosterVersion: 'fictional-roster', events: ['dinner'], members: [{id: 'alex-id', name: 'Alex Tan'}, {id: 'jamie-id', name: 'Jamie Lim'}]};
+const family = {...friend, events: ['tea', 'dinner']};
 const stamp = '2026-10-31T02:15:00.000Z';
-const prior = {submittedAt: stamp, members: [{name: 'Alex Tan', attending: 'yes', dietary: 'Vegetarian'}, {name: 'Jamie Lim', attending: 'no'}]};
+const prior = {submittedAt: stamp, members: [{id: 'alex-id', name: 'Alex Tan', attending: 'yes', dietary: 'Vegetarian'}, {id: 'jamie-id', name: 'Jamie Lim', attending: 'no'}]};
 
 function harness(household = friend, saved = null, values = {}) {
-  saved?.members.forEach(member => { member.id ||= household.members.find(guest => guest.name === member.name)?.id; });
   const nodes = {};
-  for (const id of ['rsvpSavedReply', 'savedReplyMembers', 'savedReplyTime', 'savedReplySummary', 'savedReplyUnsaved', 'rsvpForm', 'rsvpSubmit', 'rsvpReturningNote', 'rsvpChangeRequest', 'rsvpRequestMessage', 'rsvpRequestMembers', 'rsvpReload']) {
-    nodes[id] = {
-      hidden: true, innerHTML: '', textContent: '', style: {}, values: {}, listeners: {},
+  for (const id of ['rsvpSaveStatus', 'rsvpLastSaved', 'rsvpUnsaved', 'rsvpForm', 'rsvpSubmit', 'rsvpReturningNote', 'rsvpReload', 'rsvpPublic', 'rsvpLoading', 'inviteGreeting', 'inviteWho']) {
+    nodes[id] = {hidden: true, innerHTML: '', textContent: '', style: {}, values: {}, listeners: {}, classList: {add() {}},
       addEventListener(type, handler) { (this.listeners[type] ||= []).push(handler); },
-      removeAttribute(name) { if (name === 'datetime') this.dateTime = ''; },
-      scrollIntoView() {}
-    };
+      removeAttribute(name) { if (name === 'datetime') this.dateTime = ''; }, scrollIntoView() {}};
   }
   nodes.rsvpForm.values = values;
-  nodes.rsvpSubmit.textContent = 'Send Our RSVP';
-  nodes.rsvpSubmit.disabled = false;
+  nodes.rsvpSubmit.textContent = 'Send Our RSVP'; nodes.rsvpSubmit.disabled = false;
+  nodes.rsvpReturningNote.style.display = 'none';
   const banners = [], calendars = [], requests = [];
   const context = vm.createContext({
-    CURRENT_HOUSEHOLD: {...household}, CURRENT_PRIOR: saved, RSVP_ATTEMPT: null, RSVP_ENDPOINT: 'test-gateway',
+    CURRENT_HOUSEHOLD: structuredClone(household), CURRENT_PRIOR: saved, RSVP_ATTEMPT: null, RSVP_ENDPOINT: 'fictional-gateway',
     crypto: require('node:crypto').webcrypto,
-    document: {getElementById: id => nodes[id] || null, querySelector: () => null},
+    document: {getElementById: id => nodes[id] || null, querySelector: () => null, querySelectorAll: () => [], body: {classList: {add() {}}}},
+    window: {location: {search: '?inv=abcdefg'}}, URLSearchParams,
     FormData: class { constructor(form) { this.values = {...form.values}; } get(name) { return this.values[name] ?? null; } },
     showBanner: (...args) => banners.push(args), revealCalendar: value => calendars.push(value),
     fetch: async (url, options) => { const request = JSON.parse(options.body); requests.push(request); return {ok: true, json: async () => ({ok: true, protocol: 3, status: 'saved', revision: request.payload.requestId, prior: {members: request.payload.members, submittedAt: stamp}})}; },
-    console: {error() {}}, setTimeout() {}, clearTimeout() {}, AbortController
+    console: {error() {}, warn() {}}, setTimeout() {}, clearTimeout() {}, AbortController
   });
   vm.runInContext(escapeSource + '\n' + featureSource + '\n' + submitSource, context);
-  return {context, nodes, banners, calendars, requests, submit: () => nodes.rsvpForm.listeners.submit[0]({preventDefault() {}, target: nodes.rsvpForm})};
+  return {context, nodes, banners, calendars, requests,
+    submit: () => nodes.rsvpForm.listeners.submit[0]({preventDefault() {}, target: nodes.rsvpForm}),
+    async init(result = {ok: true, household, prior: saved}) {
+      context.fetchHousehold = async () => structuredClone(result);
+      context.personaliseEnvelope = () => {}; context.renderRsvpForm = () => {}; context.applyPrior = () => {}; context.showLookupError = () => {};
+      await vm.runInContext(initSource, context);
+    }};
 }
 
-test('new and anonymous invitations never display an invented saved reply', () => {
-  const {context, nodes} = harness();
-  context.renderSavedReply(null);
-  assert.equal(nodes.rsvpSavedReply.hidden, true);
-  context.renderSavedReply({members: []});
-  assert.equal(nodes.rsvpSavedReply.hidden, true);
-  assert.match(html, /id="rsvpSavedReply"[^>]*hidden/);
-  assert.ok(html.indexOf('id="rsvpSavedReply"') < html.indexOf('<form id="rsvpForm"'));
+test('saved reply summary is removed; only timestamp and unsaved status sit beneath the save button', () => {
+  assert.doesNotMatch(html, /rsvpSavedReply|savedReplyMembers|savedReplySummary|Your saved reply|saved-reply-details/);
+  assert.match(html, /id="rsvpSaveStatus"[^>]*hidden/);
+  assert.ok(html.indexOf('id="rsvpSubmit"') < html.indexOf('id="rsvpSaveStatus"'));
+  assert.ok(html.indexOf('id="rsvpSaveStatus"') < html.indexOf('id="rsvpCalendar"'));
 });
-
-test('saved summaries show named guests, escape text and omit uninvited people and events', () => {
-  const record = {members: [{name: 'Alex Tan', attending: 'yes', dietary: '<img src=x onerror=alert(1)>', notes: 'A & B', tea: 'yes'}, {name: 'Jamie Lim', attending: 'no'}, {name: 'Uninvited Person', attending: 'yes'}]};
-  const {context, nodes} = harness(friend, record);
-  context.renderSavedReply(record);
-  const output = nodes.savedReplyMembers.innerHTML;
-  assert.match(output, /Alex Tan/);
-  assert.match(output, /Jamie Lim/);
-  assert.match(output, /Not attending/);
-  assert.match(output, /&lt;img/);
-  assert.match(output, /A &amp; B/);
-  assert.ok(!output.includes('<img'));
-  assert.ok(!output.includes('Uninvited Person'));
-  assert.ok(!output.includes('Tea ceremony'));
+test('new and anonymous invitations never display an invented last-saved time', () => {
+  const h = harness(); h.context.renderSaveStatus(null); assert.equal(h.nodes.rsvpSaveStatus.hidden, true);
+  h.context.renderSaveStatus({members: []}); assert.equal(h.nodes.rsvpSaveStatus.hidden, true);
 });
-
-test('family summaries keep tea answers separate from dinner and omit the retired ceremony', () => {
-  const record = {members: [{name: 'Alex Tan', attending: 'yes', tea: 'no', solem: 'yes'}, {name: 'Jamie Lim', attending: 'no', tea: 'yes', solem: 'no'}]};
-  const {context, nodes} = harness(family, record);
-  context.renderSavedReply(record);
-  const output = nodes.savedReplyMembers.innerHTML;
-  assert.doesNotMatch(output, /Solemnisation/);
-  assert.match(output, /Tea ceremony<\/dt><dd>Not attending/);
-  assert.match(output, /Dinner reception<\/dt><dd>Not attending/);
+test('first-time guests never see Welcome back, including immediately after their first save', async () => {
+  const h = harness(friend, null, {attend_0: 'yes', attend_1: 'no'});
+  await h.init(); assert.equal(h.nodes.rsvpReturningNote.style.display, 'none');
+  await h.submit(); assert.equal(h.nodes.rsvpReturningNote.style.display, 'none');
+  assert.match(h.nodes.rsvpLastSaved.textContent, /Last saved/);
+  assert.equal(h.nodes.rsvpSaveStatus.hidden, false);
 });
-
-test('retired ceremony answers do not mark a reply unsaved and are not editable in client payloads', async () => {
-  const record = {members: [{name: 'Alex Tan', attending: 'yes', tea: 'no', solem: 'yes'}, {name: 'Jamie Lim', attending: 'no', tea: 'yes', solem: 'no'}]};
-  const h = harness(family, record, {attend_0: 'yes', tea_0: 'no', attend_1: 'no', tea_1: 'yes'});
-  h.context.renderSavedReply(record);
-  assert.equal(h.nodes.savedReplyUnsaved.hidden, true);
-  await h.submit();
-  assert.equal(h.requests[0].payload.members[0].solem, undefined);
-  assert.equal(h.requests[0].payload.members[1].solem, undefined);
-  assert.doesNotMatch(h.nodes.savedReplyMembers.innerHTML, /Solemnisation/);
-});
-
-test('family forms show tea and dinner only, even with a legacy solemnisation invite flag', () => {
-  const memberList = {innerHTML: '', querySelectorAll: () => []};
-  const form = {classList: {add() {}}};
-  const context = vm.createContext({document: {getElementById: id => id === 'memberList' ? memberList : form}});
-  const render = html.slice(html.indexOf('    function renderRsvpForm('), html.indexOf('    // Form submission'));
-  vm.runInContext(escapeSource + '\n' + render, context);
-  context.renderRsvpForm(family);
-  assert.equal((memberList.innerHTML.match(/event-block-title">Tea Ceremony/g) || []).length, 2);
-  assert.equal((memberList.innerHTML.match(/event-block-title">Dinner Reception/g) || []).length, 2);
-  assert.doesNotMatch(memberList.innerHTML, /Solemnisation|solem_/);
-  context.renderRsvpForm(friend);
-  assert.doesNotMatch(memberList.innerHTML, /Tea Ceremony|tea_|Solemnisation|solem_/);
-});
-
-test('server timestamps display in Singapore time and legacy or invalid timestamps remain hidden', () => {
-  const {context, nodes} = harness(friend, prior);
-  context.renderSavedReply(prior);
-  assert.equal(nodes.savedReplyTime.hidden, false);
-  assert.equal(nodes.savedReplyTime.dateTime, stamp);
-  assert.match(nodes.savedReplyTime.textContent, /31 Oct 2026/);
-  assert.match(nodes.savedReplyTime.textContent, /10:15/);
-  assert.match(nodes.savedReplyTime.textContent, /SGT/);
-  for (const submittedAt of [null, '', 'not-a-date']) {
-    context.renderSavedReply({...prior, submittedAt});
-    assert.equal(nodes.savedReplyTime.hidden, true);
-    assert.equal(nodes.savedReplyTime.textContent, '');
-    assert.equal(nodes.rsvpSavedReply.hidden, false);
-  }
-});
-
-test('unsaved edits mark the form without modifying the last saved summary, and reverting clears the marker', () => {
-  const values = {attend_0: 'yes', diet_0: 'Vegetarian', attend_1: 'no'};
-  const {context, nodes} = harness(friend, prior, values);
-  context.renderSavedReply(prior);
-  const original = nodes.savedReplyMembers.innerHTML;
-  assert.equal(nodes.savedReplyUnsaved.hidden, true);
-  nodes.rsvpForm.values.diet_0 = 'New preference';
-  context.updateSavedReplyDirtyState();
-  assert.equal(nodes.savedReplyUnsaved.hidden, false);
-  assert.equal(nodes.savedReplyMembers.innerHTML, original);
-  nodes.rsvpForm.values.diet_0 = 'Vegetarian';
-  context.updateSavedReplyDirtyState();
-  assert.equal(nodes.savedReplyUnsaved.hidden, true);
-});
-
-test('only a successful server acknowledgement creates a saved summary', async () => {
-  const {context, nodes, submit, requests} = harness(friend, null, {attend_0: 'yes', attend_1: 'no'});
-  await submit();
-  assert.equal(requests.length, 1);
-  assert.equal(context.CURRENT_PRIOR.submittedAt, stamp);
-  assert.equal(nodes.rsvpSavedReply.hidden, false);
-  assert.equal(nodes.savedReplyUnsaved.hidden, true);
-  assert.equal(nodes.rsvpSubmit.disabled, false);
-  assert.equal(nodes.rsvpSubmit.textContent, 'Update Our RSVP');
-});
-
-test('an all-declined reply is saved without dietary claims or a calendar invitation', async () => {
-  const h = harness(friend, null, {attend_0: 'no', attend_1: 'no'});
-  await h.submit();
-  assert.equal(h.nodes.rsvpSavedReply.hidden, false);
-  assert.equal((h.nodes.savedReplyMembers.innerHTML.match(/Not attending/g) || []).length, 2);
-  assert.ok(!h.nodes.savedReplyMembers.innerHTML.includes('Dietary notes'));
-  assert.equal(h.calendars.at(-1), false);
-});
-
-test('rejected, failed and unconfigured saves never replace the previous confirmed reply', async () => {
+test('Welcome back is shown only when a previous response is loaded and disappears after updating', async () => {
   const h = harness(friend, prior, {attend_0: 'yes', diet_0: 'Vegetarian', attend_1: 'no'});
-  h.context.renderSavedReply(prior);
-  const original = h.nodes.savedReplyMembers.innerHTML;
-  h.nodes.rsvpForm.values.attend_1 = 'yes';
-  const failures = [
-    async () => ({ok: true, json: async () => ({ok: false, error: 'Rejected'})}),
-    async () => ({ok: true, json: async () => ({ok: 'true'})}),
-    async () => ({ok: false, status: 503}),
-    async () => { throw new Error('Offline'); }
-  ];
-  for (const fetch of failures) {
-    h.context.fetch = fetch;
-    await h.submit();
-    assert.equal(h.nodes.savedReplyMembers.innerHTML, original);
-    assert.equal(h.context.CURRENT_PRIOR.submittedAt, stamp);
-    assert.equal(h.nodes.rsvpSubmit.disabled, false);
-    assert.equal(h.banners.at(-1)[1], 'error');
-  }
-  h.context.RSVP_ENDPOINT = '';
-  await h.submit();
-  assert.equal(h.nodes.savedReplyMembers.innerHTML, original);
-  assert.equal(h.banners.at(-1)[1], 'error');
+  await h.init(); assert.equal(h.nodes.rsvpReturningNote.style.display, 'block');
+  assert.equal(h.nodes.rsvpSubmit.textContent, 'Update Our RSVP');
+  await h.submit(); assert.equal(h.nodes.rsvpReturningNote.style.display, 'none');
 });
-
-test('edits made during a save remain unsaved, and duplicate submissions are blocked', async () => {
+test('server timestamps display in Singapore time and invalid timestamps remain hidden', () => {
+  const h = harness(friend, prior, {attend_0: 'yes', diet_0: 'Vegetarian', attend_1: 'no'});
+  h.context.renderSaveStatus(prior);
+  assert.equal(h.nodes.rsvpLastSaved.hidden, false); assert.equal(h.nodes.rsvpLastSaved.dateTime, stamp);
+  assert.match(h.nodes.rsvpLastSaved.textContent, /31 Oct 2026, 10:15 am \(SGT\)/);
+  for (const submittedAt of [null, '', 'not-a-date']) {
+    h.context.renderSaveStatus({...prior, submittedAt});
+    assert.equal(h.nodes.rsvpLastSaved.hidden, true); assert.equal(h.nodes.rsvpLastSaved.textContent, '');
+    assert.equal(h.nodes.rsvpSaveStatus.hidden, true);
+  }
+});
+test('unsaved edits preserve the saved timestamp, and reverting clears the warning', () => {
+  const h = harness(friend, prior, {attend_0: 'yes', diet_0: 'Vegetarian', attend_1: 'no'});
+  h.context.renderSaveStatus(prior); const time = h.nodes.rsvpLastSaved.textContent;
+  assert.equal(h.nodes.rsvpUnsaved.hidden, true);
+  h.nodes.rsvpForm.values.diet_0 = 'New preference'; h.context.updateSavedReplyDirtyState();
+  assert.equal(h.nodes.rsvpUnsaved.hidden, false); assert.equal(h.nodes.rsvpLastSaved.textContent, time);
+  h.nodes.rsvpForm.values.diet_0 = 'Vegetarian'; h.context.updateSavedReplyDirtyState(); assert.equal(h.nodes.rsvpUnsaved.hidden, true);
+});
+test('only a successful current server acknowledgement creates a last-saved timestamp', async () => {
+  const h = harness(friend, null, {attend_0: 'yes', attend_1: 'no'}); await h.submit();
+  assert.equal(h.requests.length, 1); assert.equal(h.context.CURRENT_PRIOR.submittedAt, stamp);
+  assert.equal(h.nodes.rsvpSaveStatus.hidden, false); assert.equal(h.nodes.rsvpUnsaved.hidden, true);
+  assert.equal(h.nodes.rsvpSubmit.disabled, false); assert.equal(h.nodes.rsvpSubmit.textContent, 'Update Our RSVP');
+});
+test('an all-declined reply gets the timestamp and a warm confirmation without a calendar invitation', async () => {
+  const h = harness(friend, null, {attend_0: 'no', attend_1: 'no'}); await h.submit();
+  assert.equal(h.nodes.rsvpSaveStatus.hidden, false); assert.equal(h.calendars.at(-1), false);
+  assert.match(h.banners.at(-1)[0], /We'll miss you/);
+});
+test('rejected, failed and unconfigured saves never change the confirmed timestamp or returning state', async () => {
+  const h = harness(friend, prior, {attend_0: 'yes', diet_0: 'Vegetarian', attend_1: 'no'});
+  await h.init(); const time = h.nodes.rsvpLastSaved.textContent; h.nodes.rsvpForm.values.attend_1 = 'yes';
+  for (const fetch of [async () => ({ok: true, json: async () => ({ok: false, error: 'Rejected'})}), async () => ({ok: true, json: async () => ({ok: 'true'})}), async () => ({ok: false, status: 503}), async () => {throw new Error('Offline');}]) {
+    h.context.fetch = fetch; await h.submit();
+    assert.equal(h.nodes.rsvpLastSaved.textContent, time); assert.equal(h.context.CURRENT_PRIOR.submittedAt, stamp);
+    assert.equal(h.nodes.rsvpReturningNote.style.display, 'block'); assert.equal(h.nodes.rsvpSubmit.disabled, false); assert.equal(h.banners.at(-1)[1], 'error');
+  }
+  h.context.RSVP_ENDPOINT = ''; await h.submit(); assert.equal(h.nodes.rsvpLastSaved.textContent, time);
+});
+test('edits made during a save remain unsaved and duplicate submissions are blocked', async () => {
   const h = harness(friend, prior, {attend_0: 'yes', diet_0: 'Submitted value', attend_1: 'no'});
-  let acknowledge;
-  let requestCount = 0;
-  let sent;
-  h.context.fetch = (url, options) => { requestCount++; sent = JSON.parse(options.body).payload; return new Promise(resolve => { acknowledge = resolve; }); };
-  const saving = h.submit();
-  await h.submit();
-  assert.equal(requestCount, 1);
+  let acknowledge, sent, count = 0;
+  h.context.fetch = (url, options) => {count++; sent = JSON.parse(options.body).payload; return new Promise(resolve => {acknowledge = resolve;});};
+  const saving = h.submit(); await h.submit(); assert.equal(count, 1);
   h.nodes.rsvpForm.values.diet_0 = 'Later edit';
   acknowledge({ok: true, json: async () => ({ok: true, protocol: 3, status: 'saved', revision: sent.requestId, prior: {members: sent.members, submittedAt: stamp}})});
-  await saving;
-  assert.match(h.nodes.savedReplyMembers.innerHTML, /Submitted value/);
-  assert.ok(!h.nodes.savedReplyMembers.innerHTML.includes('Later edit'));
-  assert.equal(h.nodes.savedReplyUnsaved.hidden, false);
+  await saving; assert.equal(h.context.CURRENT_PRIOR.members[0].dietary, 'Submitted value'); assert.equal(h.nodes.rsvpUnsaved.hidden, false);
 });
-
-test('missing dinner answers prevent sending and leave the saved panel hidden', async () => {
-  const h = harness(friend, null, {attend_0: 'yes'});
-  await h.submit();
-  assert.equal(h.requests.length, 0);
-  assert.equal(h.nodes.rsvpSavedReply.hidden, true);
-  assert.equal(h.banners.at(-1)[1], 'error');
+test('missing dinner answers prevent sending and leave timestamp hidden', async () => {
+  const h = harness(friend, null, {attend_0: 'yes'}); await h.submit();
+  assert.equal(h.requests.length, 0); assert.equal(h.nodes.rsvpSaveStatus.hidden, true); assert.equal(h.banners.at(-1)[1], 'error');
 });
-
-test('an obsolete pending-only acknowledgement is rejected without replacing the saved reply', async () => {
-  const h = harness(friend, prior, {attend_0: 'yes', attend_1: 'yes'});
-  h.context.renderSavedReply(prior);
-  const before = h.nodes.savedReplyMembers.innerHTML;
-  h.context.fetch = async (url, options) => {
-    const payload = JSON.parse(options.body).payload;
-    return {ok: true, json: async () => ({ok: true, protocol: 3, status: 'requested', revision: payload.requestId,
-      prior, pending: {requestId: payload.requestId, submittedAt: stamp, members: payload.members}})};
-  };
-  await h.submit();
-  assert.equal(h.nodes.savedReplyMembers.innerHTML, before);
-  assert.equal(h.nodes.rsvpChangeRequest.hidden, true);
-  assert.equal(h.banners.at(-1)[1], 'error');
+test('family tea answers remain independent and mandatory; retired ceremony is not submitted', async () => {
+  const h = harness(family, null, {attend_0: 'yes', attend_1: 'no'}); await h.submit(); assert.equal(h.requests.length, 0);
+  h.nodes.rsvpForm.values.tea_0 = 'no'; h.nodes.rsvpForm.values.tea_1 = 'yes'; await h.submit();
+  assert.equal(h.requests[0].payload.members[0].tea, 'no'); assert.equal(h.requests[0].payload.members[1].tea, 'yes');
+  assert.equal(h.requests[0].payload.members[0].solem, undefined);
 });
-
-test('uncertain network saves retry the same request ID while changed drafts use a fresh ID', async () => {
+test('family forms retain tea and dinner and escape guest names without creating another reply summary', () => {
+  const list = {innerHTML: '', querySelectorAll: () => []}, form = {classList: {add() {}}};
+  const context = vm.createContext({document: {getElementById: id => id === 'memberList' ? list : form}});
+  vm.runInContext(escapeSource + '\n' + html.slice(html.indexOf('    function renderRsvpForm('), html.indexOf('    // Form submission')), context);
+  context.renderRsvpForm({...family, events: ['tea', 'dinner', 'solem'], members: [{id: 'safe', name: '<img src=x onerror=alert(1)>'}]});
+  assert.match(list.innerHTML, /Tea Ceremony/); assert.match(list.innerHTML, /Dinner Reception/); assert.match(list.innerHTML, /&lt;img/);
+  assert.doesNotMatch(list.innerHTML, /<img|Solemnisation|solem_/);
+  context.renderRsvpForm(friend); assert.doesNotMatch(list.innerHTML, /Tea Ceremony|tea_/);
+});
+test('an obsolete pending-only acknowledgement does not replace the saved response', async () => {
+  const h = harness(friend, prior, {attend_0: 'yes', attend_1: 'yes'}); h.context.renderSaveStatus(prior);
+  const time = h.nodes.rsvpLastSaved.textContent;
+  h.context.fetch = async () => ({ok: true, json: async () => ({ok: true, protocol: 3, status: 'requested', revision: 'old', prior})});
+  await h.submit(); assert.equal(h.nodes.rsvpLastSaved.textContent, time); assert.equal(h.context.CURRENT_PRIOR, prior); assert.equal(h.banners.at(-1)[1], 'error');
+});
+test('uncertain network retries reuse the request ID while edited drafts use a fresh ID', async () => {
   const h = harness(friend, null, {attend_0: 'yes', attend_1: 'no'}), attempts = [];
-  h.context.fetch = async (url, options) => { attempts.push(JSON.parse(options.body).payload); throw new Error('Network interrupted'); };
-  await h.submit(); await h.submit();
-  assert.equal(attempts[0].requestId, attempts[1].requestId);
-  h.nodes.rsvpForm.values.attend_1 = 'yes'; await h.submit();
-  assert.notEqual(attempts[1].requestId, attempts[2].requestId);
-  assert.match(h.banners[0][0], /answers are still here/);
+  h.context.fetch = async (url, options) => {attempts.push(JSON.parse(options.body).payload); throw new Error('Network interrupted');};
+  await h.submit(); await h.submit(); assert.equal(attempts[0].requestId, attempts[1].requestId);
+  h.nodes.rsvpForm.values.attend_1 = 'yes'; await h.submit(); assert.notEqual(attempts[1].requestId, attempts[2].requestId);
+  assert.match(h.banners[0][0], /answers are still here/); assert.equal(h.nodes.rsvpSaveStatus.hidden, true);
 });
-
-test('conflicts keep the draft and offer an explicit invitation reload', async () => {
-  const h = harness(friend, prior, {attend_0: 'no', attend_1: 'no'});
+test('conflicts keep the draft and offer an explicit reload without changing the saved timestamp', async () => {
+  const h = harness(friend, prior, {attend_0: 'no', attend_1: 'no'}); h.context.renderSaveStatus(prior);
+  const time = h.nodes.rsvpLastSaved.textContent;
   h.context.fetch = async () => ({ok: true, json: async () => ({ok: false, protocol: 3, errorCode: 'conflict', error: 'Someone updated this invitation.'})});
-  await h.submit();
-  assert.equal(h.nodes.rsvpReload.hidden, false);
-  assert.equal(h.nodes.rsvpForm.values.attend_0, 'no');
-  assert.equal(h.context.CURRENT_PRIOR, prior);
-  assert.match(h.banners.at(-1)[0], /Someone updated/);
+  await h.submit(); assert.equal(h.nodes.rsvpReload.hidden, false); assert.equal(h.nodes.rsvpForm.values.attend_0, 'no');
+  assert.equal(h.context.CURRENT_PRIOR, prior); assert.equal(h.nodes.rsvpLastSaved.textContent, time);
 });
-
-test('family tea answers are required and saved summaries follow IDs across a name correction', async () => {
-  const h = harness(family, prior, {attend_0: 'yes', attend_1: 'no'});
-  await h.submit(); assert.equal(h.requests.length, 0);
-  h.context.CURRENT_HOUSEHOLD.members = [{id: 'alex-id', name: 'Alex Corrected'}, {id: 'jamie-id', name: 'Jamie Lim'}];
-  h.context.renderSavedReply(prior);
-  assert.match(h.nodes.savedReplyMembers.innerHTML, /Alex Corrected/);
-  assert.match(h.nodes.savedReplyMembers.innerHTML, /Vegetarian/);
+test('saved answer comparisons use guest IDs across name corrections', () => {
+  const h = harness(friend, prior, {attend_0: 'yes', diet_0: 'Vegetarian', attend_1: 'no'});
+  h.context.CURRENT_HOUSEHOLD.members[0].name = 'Alex Corrected'; h.context.renderSaveStatus(prior);
+  assert.equal(h.nodes.rsvpUnsaved.hidden, true);
 });
-
-test('saves explicitly require protocol 3 and reject older gateways', async () => {
-  const h = harness(friend, null, {attend_0: 'yes', attend_1: 'no'});
-  let body;
-  h.context.fetch = async (url, options) => {
-    body = JSON.parse(options.body);
-    return {ok: true, json: async () => ({ok: true, protocol: 2, status: 'saved', revision: 'wrong', prior})};
-  };
-  await h.submit();
-  assert.equal(body.protocol, 3);
-  assert.equal(body.environment, undefined);
-  assert.equal(h.context.CURRENT_PRIOR, null);
-  assert.equal(h.nodes.rsvpSavedReply.hidden, true);
-  assert.equal(h.banners.at(-1)[1], 'error');
+test('saves explicitly require protocol 3 and reject older acknowledgements', async () => {
+  const h = harness(friend, null, {attend_0: 'yes', attend_1: 'no'}); let body;
+  h.context.fetch = async (url, options) => {body = JSON.parse(options.body); return {ok: true, json: async () => ({ok: true, protocol: 2, status: 'saved', revision: 'wrong', prior})};};
+  await h.submit(); assert.equal(body.protocol, 3); assert.equal(body.environment, undefined);
+  assert.equal(h.context.CURRENT_PRIOR, null); assert.equal(h.nodes.rsvpSaveStatus.hidden, true);
 });
-
-test('saves accept a complete current acknowledgement without any test mode', async () => {
-  const h = harness(friend, null, {attend_0: 'yes', attend_1: 'no'});
-  h.context.fetch = async (url, options) => {
-    const body = JSON.parse(options.body);
-    return {ok: true, json: async () => ({ok: true, protocol: 3, status: 'saved', revision: body.payload.requestId,
-      prior: {members: body.payload.members, submittedAt: stamp}})};
-  };
-  await h.submit();
-  assert.equal(h.nodes.rsvpSavedReply.hidden, false);
-  assert.equal(h.context.CURRENT_PRIOR.members[0].attending, 'yes');
+test('lookups reject older gateways before displaying guest controls', async () => {
+  const h = harness(); vm.runInContext(html.slice(html.indexOf('    async function fetchHousehold('), html.indexOf('    function applyPrior(')), h.context);
+  let body; h.context.fetch = async (url, options) => {body = JSON.parse(options.body); return {ok: true, json: async () => ({ok: true, protocol: 2, household: friend})};};
+  const result = await h.context.fetchHousehold('abcdefg'); assert.equal(body.protocol, 3); assert.equal(result.ok, false); assert.equal(result.household, undefined);
 });
-
-test('lookups reject an older gateway before displaying guest controls', async () => {
-  const h = harness();
-  h.context.AbortController = AbortController; h.context.clearTimeout = () => {};
-  const fetchSource = html.slice(html.indexOf('    async function fetchHousehold('), html.indexOf('    function applyPrior('));
-  vm.runInContext(fetchSource, h.context);
-  let body;
-  h.context.fetch = async (url, options) => {
-    body = JSON.parse(options.body);
-    return {ok: true, json: async () => ({ok: true, protocol: 2, household: friend})};
-  };
-  const result = await h.context.fetchHousehold('abcdefg');
-  assert.equal(body.protocol, 3);
-  assert.equal(result.ok, false);
-  assert.equal(result.household, undefined);
+test('declining dinner does not send hidden stale dietary information or show a false unsaved warning', async () => {
+  const h = harness(friend, null, {attend_0: 'no', diet_0: 'Old diet', attend_1: 'no'}); await h.submit();
+  assert.equal(h.requests[0].payload.members[0].dietary, ''); assert.equal(h.nodes.rsvpUnsaved.hidden, true);
 });
-
-test('the hero flows into the vision statement without the removed day section or stale scripts', () => {
-  assert.ok(html.indexOf('id="hero"') < html.indexOf('id="vision"'));
-  assert.match(html, /<!-- VISION -->\s*<div id="vision"/);
-  assert.doesNotMatch(html, /For the day|day-details|dayDetails|dayArrival|dayQrDownload|dayHelperContact|WEDDING_DAY_EXTRAS|updateDayDetails/);
+test('tea-only guests can still save dietary information', async () => {
+  const h = harness(family, null, {attend_0: 'no', tea_0: 'yes', diet_0: '  No peanuts  ', attend_1: 'no', tea_1: 'no'}); await h.submit();
+  assert.equal(h.requests[0].payload.members[0].dietary, 'No peanuts'); assert.equal(h.context.CURRENT_PRIOR.members[0].dietary, 'No peanuts'); assert.equal(h.nodes.rsvpUnsaved.hidden, true);
 });
-test('declining dinner does not send a hidden stale diet or show a false unsaved edit', async () => {
-  const h = harness(friend, null, {attend_0: 'no', diet_0: 'Old diet', attend_1: 'no'});
-  await h.submit();
-  assert.equal(h.requests[0].payload.members[0].dietary, '');
-  assert.equal(h.nodes.savedReplyUnsaved.hidden, true);
-});
-test('family tea-only attendance still accepts dietary information', async () => {
-  const h = harness(family, null, {attend_0: 'no', tea_0: 'yes', diet_0: '  No peanuts  ', attend_1: 'no', tea_1: 'no'});
-  await h.submit();
-  assert.equal(h.requests[0].payload.members[0].dietary, 'No peanuts');
-  assert.match(h.nodes.savedReplyMembers.innerHTML, /No peanuts/);
-  assert.equal(h.nodes.savedReplyUnsaved.hidden, true);
-});
-test('attendance radios remain keyboard accessible, field labels are connected and save messages are announced', () => {
-  assert.doesNotMatch(html, /\.attend-toggle input \{ display: none/);
-  assert.match(html, /input:focus-visible/);
-  assert.match(html, /for="diet_\$\{i\}"/);
-  assert.match(html, /for="notes_\$\{i\}"/);
+test('attendance controls remain accessible and save messages and timestamps are announced', () => {
+  assert.doesNotMatch(html, /\.attend-toggle input \{ display: none/); assert.match(html, /input:focus-visible/);
+  assert.match(html, /for="diet_\$\{i\}"/); assert.match(html, /for="notes_\$\{i\}"/);
   assert.match(html, /id="rsvpSavedBanner"[^>]*role="status"[^>]*aria-live="polite"/);
-  assert.match(html, /controller\.abort\(\), 30000/);
-  assert.match(html, /clearTimeout\(saveTimer\)/);
+  assert.match(html, /id="rsvpSaveStatus"[^>]*role="status"[^>]*aria-live="polite"/);
+  assert.match(html, /controller\.abort\(\), 30000/); assert.match(html, /clearTimeout\(saveTimer\)/);
+});
+test('hero can grow to fit its full RSVP button on desktop and mobile while countdown space stays reserved', () => {
+  const blocks = [...html.matchAll(/#hero \{([\s\S]*?)\n\s*\}/g)].map(match => match[1]);
+  assert.equal(blocks.length, 2); blocks.forEach(block => {assert.match(block, /min-height: var\(--hero-height\)/); assert.match(block, /height: auto/);});
+  assert.match(html, /\.hero-cta \.btn \{[^}]*min-height: 44px/);
+  assert.ok(html.indexOf('id="hero"') < html.indexOf('id="vision"'));
+  assert.doesNotMatch(html, /For the day|day-details|dayDetails|dayArrival|WEDDING_DAY_EXTRAS|updateDayDetails/);
 });

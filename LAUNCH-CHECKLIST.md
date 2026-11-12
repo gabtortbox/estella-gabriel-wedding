@@ -32,7 +32,9 @@ Use fake names only. Let A fill, then open the corresponding published links:
 - [ ] Try saving with one unanswered guest/event. It must ask for that answer,
   not claim success or add a saved reply.
 - [ ] Submit mixed Yes/No answers with independent tea/dinner answers and a
-  dietary note. Confirm the saved summary, Singapore timestamp and response tab.
+  dietary note. Confirm the Singapore Last saved timestamp beneath the save
+  button and the response tab. A first save must not say Welcome back; only
+  reopening an existing reply should show that message. No separate summary panel.
 - [ ] Verify H-K in Guestlist are STILL unchanged. Website replies are NOT copied
   into manual column J; record those manually when you choose.
 - [ ] Reopen the same link on another device. The saved answers are prefilled.
@@ -57,7 +59,9 @@ Use fake names only. Let A fill, then open the corresponding published links:
   seats by 6.30 pm; Family tea starts 5.30 pm. Verify venue and deadline yourself.
 - [ ] Finalise wording that still promises later confirmation, especially the
   dress-code FAQ's "we'll confirm closer to the day", before sending invitations.
-- [ ] Saved-reply/calendar controls work; messages are readable on a narrow phone.
+- [ ] Last saved/calendar controls work; messages are readable on a narrow phone.
+- [ ] The hero RSVP button is fully visible and does not move when scratching
+  the last heart reveals the countdown, on both phone and laptop.
 - [ ] Test invalid link and no-code public page. Neither should expose a guest list
   or show a form for unnamed guests.
 - [ ] Replace the directions QR image before guests need it and scan the actual

@@ -187,7 +187,7 @@
       position: relative;
       background: var(--sand-pale);
       min-height: var(--hero-height);
-      height: var(--hero-height);
+      height: auto;
       padding: clamp(6.9rem, calc(var(--hero-height) * 0.12), 9.4rem) 1.5rem clamp(0.8rem, calc(var(--hero-height) * 0.018), 1.45rem);
       gap: 0;
       box-sizing: border-box;
@@ -608,8 +608,10 @@
     .hero-cta {
       margin-top: 0.5rem;
       display: flex;
+      flex: 0 0 auto;
       gap: 1.2rem;
     }
+    .hero-cta .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; line-height: 1.4; }
     .btn {
       font-family: var(--sans);
       font-size: 0.68rem;
@@ -1840,7 +1842,7 @@
       /* Hero scaling */
       #hero {
         min-height: var(--hero-height);
-        height: var(--hero-height);
+        height: auto;
         justify-content: flex-start;
         padding: clamp(6.6rem, calc(var(--hero-height) * 0.12), 7.9rem) 1rem max(0.75rem, env(safe-area-inset-bottom));
         gap: 0;
@@ -2230,66 +2232,20 @@
       letter-spacing: 0.02em;
     }
 
-    .saved-reply {
-      margin: 0 0 2.5rem;
-      padding: 1.5rem 0 0.5rem;
-      border-top: 2px solid var(--sand-dark);
-      border-bottom: 1px solid var(--sand);
-      scroll-margin-top: 16px;
-    }
-    .saved-reply[hidden], .saved-reply [hidden], .rsvp-reload[hidden] { display: none; }
-    .saved-reply-summary { margin: 1rem 0 0.5rem; font: 400 0.85rem/1.6 var(--sans); color: var(--ink-soft); }
-    .rsvp-reload { margin: 1rem auto; }
-    .saved-reply-heading {
+    .rsvp-save-status {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      align-items: baseline;
+      justify-content: center;
       flex-wrap: wrap;
-      gap: 0.5rem 1.5rem;
-      padding-bottom: 1.25rem;
-      border-bottom: 1px solid var(--sand-light);
-    }
-    .saved-reply h3 { font: italic 400 1.85rem/1.3 var(--serif); }
-    .saved-reply time {
-      max-width: 215px;
+      gap: 0.35rem 1rem;
+      margin: 0.9rem 0 0;
+      color: var(--ink-soft);
       font: 400 0.78rem/1.6 var(--sans);
-      color: var(--ink-soft);
-      text-align: right;
+      text-align: center;
     }
-    .saved-reply-member {
-      display: grid;
-      grid-template-columns: minmax(130px, 0.7fr) minmax(0, 1.6fr);
-      gap: 1.5rem;
-      padding: 1.35rem 0;
-    }
-    .saved-reply-member + .saved-reply-member { border-top: 1px solid var(--sand-light); }
-    .saved-reply-member h4 { font: 500 1.45rem/1.4 var(--serif); overflow-wrap: anywhere; }
-    .saved-reply-details { min-width: 0; }
-    .saved-reply-details > div {
-      display: grid;
-      grid-template-columns: 135px minmax(0, 1fr);
-      gap: 0.75rem;
-      margin: 0.35rem 0;
-      font: 400 0.88rem/1.6 var(--sans);
-    }
-    .saved-reply-details > div:first-child { margin-top: 0; }
-    .saved-reply-details > div:last-child { margin-bottom: 0; }
-    .saved-reply-details dt { color: var(--ink-soft); }
-    .saved-reply-details dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
-    .saved-reply-unsaved {
-      margin: 0 0 0.85rem;
-      padding-left: 0.75rem;
-      border-left: 2px solid var(--sand-dark);
-      color: var(--ink-soft);
-      font: 400 0.85rem/1.6 var(--sans);
-    }
-
-    @media (max-width: 768px) {
-      .saved-reply-heading { align-items: flex-start; gap: 0.5rem; }
-      .saved-reply time { max-width: none; flex-basis: 100%; text-align: left; }
-      .saved-reply-member { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
-      .saved-reply-details > div { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 0.6rem; }
-    }
+    .rsvp-save-status[hidden], .rsvp-save-status [hidden], .rsvp-reload[hidden] { display: none; }
+    .rsvp-unsaved { color: var(--ink); }
+    .rsvp-reload { margin: 1rem auto; }
 
     /* Event block — per-event rsvp segment with icon + title + toggle */
     .event-block {
@@ -3631,16 +3587,6 @@
         <p>This page is personalised for each guest. If you've received an invitation from us, please use the unique link we sent you to RSVP. If you can't find it, just message Gabriel or Estella and we'll resend it.</p>
       </div>
 
-      <section class="saved-reply" id="rsvpSavedReply" aria-labelledby="savedReplyTitle" hidden>
-        <div class="saved-reply-heading">
-          <h3 id="savedReplyTitle">Your saved reply</h3>
-          <time id="savedReplyTime" hidden></time>
-        </div>
-        <p class="saved-reply-summary" id="savedReplySummary"></p>
-        <div id="savedReplyMembers"></div>
-        <p class="saved-reply-unsaved" id="savedReplyUnsaved" role="status" hidden>Unsaved changes</p>
-      </section>
-
       <!-- Dynamic form (rendered when ?inv=<code> is present) -->
       <form id="rsvpForm" autocomplete="off" novalidate>
         <div id="rsvpReturningNote" style="display:none; text-align:center; margin-bottom:1.5rem; font-family:var(--serif); font-style:italic; color:var(--ink-soft); font-size:0.95rem;">
@@ -3656,6 +3602,10 @@
 
         <div class="submit-row">
           <button type="submit" class="rsvp-submit" id="rsvpSubmit">Send Our RSVP</button>
+        </div>
+        <div class="rsvp-save-status" id="rsvpSaveStatus" role="status" aria-live="polite" hidden>
+          <time id="rsvpLastSaved" hidden></time>
+          <span class="rsvp-unsaved" id="rsvpUnsaved" hidden>Unsaved changes</span>
         </div>
         <div class="rsvp-notes">
           <p>You can return to this same link to see or update your saved reply. If your plans change after 31 January, please let us know directly too.</p>
@@ -4221,38 +4171,24 @@
     }
 
     function updateSavedReplyDirtyState() {
-      const status = document.getElementById('savedReplyUnsaved');
+      const status = document.getElementById('rsvpUnsaved');
       const form = document.getElementById('rsvpForm');
       if (!status || !form || !CURRENT_HOUSEHOLD || !CURRENT_PRIOR) return;
       const saved = normaliseReplyMembers(CURRENT_HOUSEHOLD, CURRENT_PRIOR.members);
       const current = normaliseReplyMembers(CURRENT_HOUSEHOLD, readRsvpMembers(form));
       status.hidden = JSON.stringify(saved) === JSON.stringify(current);
+      const panel = document.getElementById('rsvpSaveStatus');
+      const time = document.getElementById('rsvpLastSaved');
+      if (panel && time) panel.hidden = status.hidden && time.hidden;
     }
 
-    function renderSavedReply(prior) {
-      const panel = document.getElementById('rsvpSavedReply');
-      const list = document.getElementById('savedReplyMembers');
-      const time = document.getElementById('savedReplyTime');
-      if (!panel || !list || !time || !CURRENT_HOUSEHOLD) return;
+    function renderSaveStatus(prior) {
+      const panel = document.getElementById('rsvpSaveStatus');
+      const time = document.getElementById('rsvpLastSaved');
+      if (!panel || !time || !CURRENT_HOUSEHOLD) return;
       if (!prior || !Array.isArray(prior.members) || !prior.members.length) {
         panel.hidden = true;
         return;
-      }
-      const events = CURRENT_HOUSEHOLD.events || [];
-      const status = value => value === 'yes' ? 'Attending' : value === 'no' ? 'Not attending' : 'Not yet answered';
-      list.innerHTML = normaliseReplyMembers(CURRENT_HOUSEHOLD, prior.members).map(member => {
-        const details = [];
-        if (events.includes('tea')) details.push(['Tea ceremony', status(member.tea)]);
-        details.push(['Dinner reception', status(member.attending)]);
-        if (member.attending === 'yes' || member.tea === 'yes') details.push(['Dietary notes', member.dietary || 'Not provided']);
-        if (member.notes) details.push(['Message', member.notes]);
-        return `<div class="saved-reply-member"><h4>${escapeHtml(member.name)}</h4><dl class="saved-reply-details">${details.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl></div>`;
-      }).join('');
-      const summary = document.getElementById('savedReplySummary');
-      if (summary) {
-        const members = normaliseReplyMembers(CURRENT_HOUSEHOLD, prior.members);
-        const count = value => members.filter(m => m.attending === value).length;
-        summary.textContent = `${count('yes')} attending · ${count('no')} unable to attend` + (count('pending') ? ` · ${count('pending')} awaiting reply` : '');
       }
       const savedAt = prior.submittedAt ? new Date(prior.submittedAt) : null;
       time.hidden = !savedAt || Number.isNaN(savedAt.getTime());
@@ -4266,7 +4202,7 @@
         time.removeAttribute('datetime');
         time.textContent = '';
       }
-      panel.hidden = false;
+      panel.hidden = time.hidden;
       updateSavedReplyDirtyState();
     }
 
@@ -4334,7 +4270,7 @@
       // 4. Pre-fill if they've RSVP'd before — they can edit & resubmit
       if (CURRENT_PRIOR) {
         applyPrior(CURRENT_PRIOR);
-        renderSavedReply(CURRENT_PRIOR);
+        renderSaveStatus(CURRENT_PRIOR);
         const submitBtn = document.getElementById('rsvpSubmit');
         if (submitBtn) submitBtn.textContent = 'Update Our RSVP';
         const note = document.getElementById('rsvpReturningNote');
@@ -4586,15 +4522,15 @@
         RSVP_ATTEMPT = null;
         const reload = document.getElementById('rsvpReload');
         if (reload) reload.hidden = true;
-        renderSavedReply(CURRENT_PRIOR);
+        renderSaveStatus(CURRENT_PRIOR);
         // Show inline saved banner; KEEP the form visible & editable
         showBanner(members.every(m => m.attending === 'no') ? "Thank you for letting us know. We'll miss you and are sending our love." : "Saved! Thank you, we can't wait to celebrate with you.", 'ok');
         revealCalendar((CURRENT_PRIOR?.members || []).some(m => m.attending === 'yes'));
         const note = document.getElementById('rsvpReturningNote');
-        if (note) note.style.display = 'block';
+        if (note) note.style.display = 'none';
         submit.disabled = false;
         submit.textContent = 'Update Our RSVP';
-        document.getElementById('rsvpSavedReply')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('rsvpSaveStatus')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } catch (err) {
         console.error('RSVP submit failed:', err);
         submit.disabled = false;
