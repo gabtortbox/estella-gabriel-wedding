@@ -115,3 +115,31 @@ test('every original inline script remains valid JavaScript', () => {
   assert.ok(scripts.length > 0);
   for (const match of scripts) new vm.Script(match[1]);
 });
+
+test('helpers include Amanda and Gladys without introducing bridal-party titles', () => {
+  const helpers = html.slice(html.indexOf('<!-- HELPERS -->'), html.indexOf('<!-- FOOTER -->'));
+  assert.equal((helpers.match(/class="helper-card"/g) || []).length, 9);
+  for (const name of ['Manju', 'Amanda Goh', 'Gladys Chng', 'Elsie Goh', 'Grace Chng', 'Winnie Chau', 'Khoo Guo Chin', 'Ang Wan Qi', 'Xaiver Sim']) {
+    assert.equal((helpers.match(new RegExp(`<p class="helper-name">${name}</p>`, 'g')) || []).length, 1);
+  }
+  assert.match(helpers, /<p class="helper-role">Supporting Estella<\/p>/);
+  assert.match(helpers, /<p class="helper-role">Supporting Gabriel<\/p>/);
+  assert.doesNotMatch(helpers, /bridesmaid|groomsman|groomsmen|bridal party/i);
+  assert.match(helpers, /src="assets\/photos\/optimized\/Amanda\.jpeg" width="900" height="900" alt="Amanda Goh"/);
+  const gladys = helpers.slice(helpers.indexOf('data-helper="gladys"'), helpers.indexOf('data-helper="elsie"'));
+  assert.match(gladys, /role="img" aria-label="Photo of Gladys Chng to follow"/);
+  assert.match(gladys, />GC<\/span>/);
+  assert.doesNotMatch(gladys, /<img|src=/);
+});
+
+test('helper portraits fit their columns and Amanda has a lightweight valid image', () => {
+  const grid = html.match(/\.helpers-grid \{([^}]+)\}/)[1];
+  const portrait = html.match(/\.helper-avatar \{([^}]+)\}/)[1];
+  assert.match(grid, /grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);
+  assert.match(portrait, /width: min\(180px, 100%\)/);
+  assert.match(portrait, /aspect-ratio: 1/);
+  assert.doesNotMatch(html, /\.helper-card:nth-child\(n\+4\) \{ grid-column: span 3/);
+  const photo = fs.readFileSync(path.resolve(__dirname, '../assets/photos/optimized/Amanda.jpeg'));
+  assert.equal(photo.readUInt16BE(0), 0xffd8);
+  assert.ok(photo.length < 200000);
+});

@@ -60,8 +60,9 @@ Use fake names only. Let A fill, then open the corresponding published links:
 - [ ] Finalise wording that still promises later confirmation, especially the
   dress-code FAQ's "we'll confirm closer to the day", before sending invitations.
 - [ ] Last saved/calendar controls work; messages are readable on a narrow phone.
-- [ ] The hero RSVP button is fully visible and does not move when scratching
-  the last heart reveals the countdown, on both phone and laptop.
+- [ ] The entire hero, including its full RSVP button, fits on the opening screen
+  without scrolling on phone and laptop. The button does not move when scratching
+  the last heart reveals the countdown. RSVP cards have no coloured side strips.
 - [ ] Test invalid link and no-code public page. Neither should expose a guest list
   or show a form for unnamed guests.
 - [ ] Replace the directions QR image before guests need it and scan the actual

@@ -188,10 +188,22 @@ test('attendance controls remain accessible and save messages and timestamps are
   assert.match(html, /id="rsvpSaveStatus"[^>]*role="status"[^>]*aria-live="polite"/);
   assert.match(html, /controller\.abort\(\), 30000/); assert.match(html, /clearTimeout\(saveTimer\)/);
 });
-test('hero can grow to fit its full RSVP button on desktop and mobile while countdown space stays reserved', () => {
+test('hero reserves a flexible photo row and fixed countdown space to keep RSVP in the first viewport', () => {
   const blocks = [...html.matchAll(/#hero \{([\s\S]*?)\n\s*\}/g)].map(match => match[1]);
-  assert.equal(blocks.length, 2); blocks.forEach(block => {assert.match(block, /min-height: var\(--hero-height\)/); assert.match(block, /height: auto/);});
+  const main = blocks.find(block => block.includes('grid-template-rows'));
+  assert.match(main, /grid-template-rows: auto minmax\(0, 1fr\) auto/);
+  const fullBlocks = blocks.filter(block => block.includes('min-height: var(--hero-height)'));
+  assert.equal(fullBlocks.length, 2); fullBlocks.forEach(block => assert.match(block, /\n\s*height: var\(--hero-height\)/));
+  assert.match(html, /\.hero-photo \{[^}]*max-height: 100%/);
+  assert.match(html, /\.countdown \{[^}]*height: 3\.5rem/);
   assert.match(html, /\.hero-cta \.btn \{[^}]*min-height: 44px/);
   assert.ok(html.indexOf('id="hero"') < html.indexOf('id="vision"'));
   assert.doesNotMatch(html, /For the day|day-details|dayDetails|dayArrival|WEDDING_DAY_EXTRAS|updateDayDetails/);
+});
+test('RSVP cards stay neutral without coloured edges or attendance-dependent card styling', () => {
+  const card = html.match(/\.member-card \{([^}]+)\}/)[1];
+  assert.match(card, /border: 1px solid var\(--sand-light\)/);
+  assert.doesNotMatch(card, /border-left/);
+  assert.doesNotMatch(html, /\.member-card\.(?:attending|declining)\s*\{/);
+  assert.match(html, /\.member-card\.attending \.member-fields/);
 });
