@@ -116,14 +116,15 @@ test('every original inline script remains valid JavaScript', () => {
   for (const match of scripts) new vm.Script(match[1]);
 });
 
-test('helpers include Amanda and Gladys without introducing bridal-party titles', () => {
+test('all nine helpers retain their names and portraits, with a role only for Manju', () => {
   const helpers = html.slice(html.indexOf('<!-- HELPERS -->'), html.indexOf('<!-- FOOTER -->'));
   assert.equal((helpers.match(/class="helper-card"/g) || []).length, 9);
   for (const name of ['Manju', 'Amanda Goh', 'Gladys Chng', 'Elsie Goh', 'Grace Chng', 'Winnie Chau', 'Khoo Guo Chin', 'Ang Wan Qi', 'Xaiver Sim']) {
     assert.equal((helpers.match(new RegExp(`<p class="helper-name">${name}</p>`, 'g')) || []).length, 1);
   }
-  assert.match(helpers, /<p class="helper-role">Supporting Estella<\/p>/);
-  assert.match(helpers, /<p class="helper-role">Supporting Gabriel<\/p>/);
+  assert.equal((helpers.match(/class="helper-role"/g) || []).length, 1);
+  assert.match(helpers, /<p class="helper-name">Manju<\/p>\s*<p class="helper-role">Wedding Coordinator<\/p>/);
+  assert.doesNotMatch(helpers, /Supporting Estella|Supporting Gabriel|Guest support|reception flow|Reception &amp; setup|Setup crew/);
   assert.doesNotMatch(helpers, /bridesmaid|groomsman|groomsmen|bridal party/i);
   assert.match(helpers, /src="assets\/photos\/optimized\/Amanda\.jpeg" width="900" height="900" alt="Amanda Goh"/);
   const gladys = helpers.slice(helpers.indexOf('data-helper="gladys"'), helpers.indexOf('data-helper="elsie"'));
@@ -142,4 +143,21 @@ test('helper portraits fit their columns and Amanda has a lightweight valid imag
   const photo = fs.readFileSync(path.resolve(__dirname, '../assets/photos/optimized/Amanda.jpeg'));
   assert.equal(photo.readUInt16BE(0), 0xffd8);
   assert.ok(photo.length < 200000);
+});
+
+test('hero uses the transparent colour portrait with an optimised preload and no muting filter', () => {
+  const hero = html.slice(html.indexOf('<!-- HERO -->'), html.indexOf('<!-- VISION -->'));
+  assert.match(html, /rel="preload" as="image" href="assets\/photos\/hero-colour\.webp"/);
+  assert.match(hero, /source srcset="assets\/photos\/hero-colour\.webp"/);
+  assert.match(hero, /src="assets\/photos\/hero-colour\.png"/);
+  assert.match(hero, /width="1402"\s+height="1122"/);
+  assert.match(html.match(/\.hero-photo \{([^}]+)\}/)[1], /filter: none/);
+  assert.doesNotMatch(hero, /hero-cutout/);
+  const png = fs.readFileSync(path.resolve(__dirname, '../assets/photos/hero-colour.png'));
+  assert.equal(png.readUInt32BE(16), 1402);
+  assert.equal(png.readUInt32BE(20), 1122);
+  assert.equal(png[25], 6, 'PNG retains its RGBA transparency');
+  const webp = fs.readFileSync(path.resolve(__dirname, '../assets/photos/hero-colour.webp'));
+  assert.equal(webp.subarray(8, 12).toString(), 'WEBP');
+  assert.ok(webp.length < 800000);
 });

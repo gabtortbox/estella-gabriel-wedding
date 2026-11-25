@@ -39,7 +39,7 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="image" href="assets/photos/hero-cutout.webp" type="image/webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/photos/hero-colour.webp" type="image/webp" fetchpriority="high" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&family=Pinyon+Script&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -249,7 +249,7 @@
       object-fit: contain;
       image-rendering: auto;
       opacity: 1;
-      filter: brightness(1.06) contrast(0.9) saturate(0.96);
+      filter: none;
     }
 
     @keyframes heroReveal {
@@ -3143,13 +3143,13 @@
     <!-- Hero photo as a picture card -->
     <div class="hero-photo-card">
       <picture>
-        <source srcset="assets/photos/hero-cutout.webp" type="image/webp" />
+        <source srcset="assets/photos/hero-colour.webp" type="image/webp" />
         <img loading="eager" decoding="async" fetchpriority="high"
-          src="assets/photos/hero-cutout.png"
-          alt="Gabriel and Estella at Lake Tekapo, New Zealand"
+          src="assets/photos/hero-colour.png"
+          alt="Colour pencil portrait of Gabriel and Estella"
           class="hero-photo"
-          width="1280"
-          height="1024"
+          width="1402"
+          height="1122"
         />
       </picture>
     </div>
@@ -3969,28 +3969,24 @@
         <div class="helper-avatar"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Amanda.jpeg" width="900" height="900" alt="Amanda Goh" /></div>
         <div>
           <p class="helper-name">Amanda Goh</p>
-          <p class="helper-role">Supporting Estella</p>
         </div>
       </div>
       <div class="helper-card" data-helper="gladys">
         <div class="helper-avatar helper-avatar-placeholder" role="img" aria-label="Photo of Gladys Chng to follow"><span aria-hidden="true">GC</span></div>
         <div>
           <p class="helper-name">Gladys Chng</p>
-          <p class="helper-role">Supporting Gabriel</p>
         </div>
       </div>
       <div class="helper-card" data-helper="elsie">
         <div class="helper-avatar"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Elsie.jpeg" alt="Elsie Goh" onerror="this.style.display='none'" /></div>
         <div>
           <p class="helper-name">Elsie Goh</p>
-          <p class="helper-role">Guest support &amp; reception flow</p>
         </div>
       </div>
       <div class="helper-card">
         <div class="helper-avatar"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Grace.jpeg" alt="Grace Chng" onerror="this.style.display='none'" /></div>
         <div>
           <p class="helper-name">Grace Chng</p>
-          <p class="helper-role">Guest support &amp; reception flow</p>
         </div>
       </div>
 
@@ -3998,28 +3994,24 @@
         <div class="helper-avatar"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Winnie.jpeg" alt="Winnie Chau" onerror="this.style.display='none'" /></div>
         <div>
           <p class="helper-name">Winnie Chau</p>
-          <p class="helper-role">Reception &amp; setup</p>
         </div>
       </div>
       <div class="helper-card" data-helper="guochin">
         <div class="helper-avatar"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/GuoChin.jpeg" alt="Khoo Guo Chin" onerror="this.style.display='none'" /></div>
         <div>
           <p class="helper-name">Khoo Guo Chin</p>
-          <p class="helper-role">Reception &amp; setup</p>
         </div>
       </div>
       <div class="helper-card">
         <div class="helper-avatar"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/WanQi.jpeg" alt="Ang Wan Qi" onerror="this.style.display='none'" /></div>
         <div>
           <p class="helper-name">Ang Wan Qi</p>
-          <p class="helper-role">Setup crew</p>
         </div>
       </div>
       <div class="helper-card">
         <div class="helper-avatar"><img fetchpriority="low" loading="lazy" decoding="async" src="assets/photos/optimized/Xaiver.jpeg" alt="Xaiver Sim" onerror="this.style.display='none'" /></div>
         <div>
           <p class="helper-name">Xaiver Sim</p>
-          <p class="helper-role">Setup crew</p>
         </div>
       </div>
     </div>

@@ -24,6 +24,9 @@ test('the drag-and-drop package contains only allowlisted files with intact cont
   assert.ok(fs.existsSync(path.join(upload, 'tests/helpers/rsvp-gateway.cjs')));
   assert.ok(fs.existsSync(path.join(upload, 'assets/photos/optimized/Us1.jpeg')));
   assert.ok(fs.existsSync(path.join(upload, 'assets/photos/optimized/Amanda.jpeg')));
+  assert.ok(fs.existsSync(path.join(upload, 'assets/photos/hero-colour.webp')));
+  assert.ok(fs.existsSync(path.join(upload, 'assets/photos/hero-colour.png')));
+  assert.ok(!fs.existsSync(path.join(upload, 'assets/photos/hero-cutout.webp')));
   assert.ok(!fs.existsSync(path.join(upload, 'START-HERE.txt')));
   assert.match(fs.readFileSync(path.join(directory, 'START-HERE.txt'), 'utf8'), /Uploads overwrite matching paths but do not remove old files/);
   assert.ok(fs.readFileSync(path.join(root, '.gitignore'), 'utf8').includes('github-upload/'));
